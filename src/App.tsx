@@ -1,25 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+/* import react router dom v6 packages */
+import { Route, Routes } from "react-router-dom";
+
+/* import local components */
+import Layout from "./core/Layout/Layout";
+import HomePage from "./Pages/HomePage/HomePage";
+import LoginPage from "./Pages/LoginPage/LoginPage";
+import RegisterPage from "./Pages/RegisterPage/RegisterPage";
+import ProfilePage from "./Pages/ProfilePage/ProfilePage";
+import PrivateRoutes from "./core/routes/PrivateRoutes/PrivateRoutes";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+
+        {/* Private routes */}
+        <Route element={<PrivateRoutes />}>
+          <Route path="profile" element={<ProfilePage />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 }
 
