@@ -1,11 +1,16 @@
 import clsx from "clsx";
 import React from "react";
+import { useAppSelector } from "../../hooks/redux/useRedux";
 
 /* import packages */
 import PuffLoader from "react-spinners/PuffLoader";
+import { ClimbingBoxLoader } from "react-spinners";
 
 export default function Spinner() {
-  let isLoading = false;
+  let isLoading = useAppSelector((state) => state.spinnerReducer.isLoading);
+  console.log("Sppiner is loading");
+  console.log(isLoading);
+
   const loadingClass = isLoading
     ? "opacity-100 visible "
     : "opacity-0 invisible";
@@ -13,13 +18,14 @@ export default function Spinner() {
     <div
       className={clsx(
         "spinner",
-        "fixed left-0 top-0 bg-slate-700 bg-opacity-95 flex justify-center items-center z-50",
+        "fixed left-0 top-0 bg-[#282c34] flex justify-center items-center z-50",
         "h-screen w-screen",
         loadingClass,
         "transition-all duration-[1200ms]"
       )}
     >
-      <PuffLoader color="#36d7b7" loading size={80} speedMultiplier={0.7} />
+
+      <ClimbingBoxLoader color="#ebbd60" loading size={80} speedMultiplier={0.7} />
     </div>
   );
 }

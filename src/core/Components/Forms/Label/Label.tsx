@@ -1,6 +1,8 @@
-import clsx from "clsx";
 import React from "react";
-import { BaseProps } from "../../../constant/Intefaces/BaseProps.Interface";
+import clsx from "clsx";
+
+/* import interfaces */
+import { BaseProps } from "../../../models/common/BaseProps.Interface";
 
 export default function Label({ className, children }: BaseProps) {
   return (

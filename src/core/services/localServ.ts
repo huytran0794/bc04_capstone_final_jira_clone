@@ -1,5 +1,5 @@
 const USER_STORAGE_KEY: string = 'USER_INFO';
-export const LOCAL_SERV = {
+export const LOCAL_SERVICE = {
     user: {
         set: (dataLogin: any) =>
           localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(dataLogin)),

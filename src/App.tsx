@@ -8,21 +8,25 @@ import LoginPage from "./Pages/LoginPage/LoginPage";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import PrivateRoutes from "./core/routes/PrivateRoutes/PrivateRoutes";
+import Spinner from "./core/Components/Spinner/Spinner";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="register" element={<RegisterPage />} />
+    <>
+      <Spinner />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
 
-        {/* Private routes */}
-        <Route element={<PrivateRoutes />}>
-          <Route path="profile" element={<ProfilePage />} />
+          {/* Private routes */}
+          <Route element={<PrivateRoutes />}>
+            <Route path="profile" element={<ProfilePage />} />
+          </Route>
         </Route>
-      </Route>
-    </Routes>
+      </Routes>
+    </>
   );
 }
 

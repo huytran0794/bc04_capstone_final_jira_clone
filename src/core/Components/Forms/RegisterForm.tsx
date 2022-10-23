@@ -13,13 +13,13 @@ import {
 import Label from "./Label/Label";
 
 /* import local interfaces */
-import { FormProps } from "../../constant/Intefaces/FormProps.interface";
+import { FormProps } from "../../models/common/FormProps.interface";
 
 const RegisterForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
   const onFinish = () => {};
   const onFinishFailed = () => {};
   const labelItem = (labelText: string) => (
-    <Label className="text-lg font-medium text capitalize">{labelText}</Label>
+    <Label className="text-lg font-medium text ">{labelText}</Label>
   );
   return (
     <Form
