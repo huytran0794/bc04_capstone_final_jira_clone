@@ -29,7 +29,7 @@ const LoginForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
     USER_SERVICE.login(values)
       .then((res) => {
         dispatch(userActions.login(res.content));
-        LOCAL_SERVICE.user.set(res.data.content);
+        LOCAL_SERVICE.user.set(res.content);
         toastify("success", "Login successfully !");
         setTimeout(() => {
           navigate("/", { replace: true });
