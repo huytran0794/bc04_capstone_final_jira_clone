@@ -9,6 +9,7 @@ import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import PrivateRoutes from "./core/routes/PrivateRoutes/PrivateRoutes";
 import Spinner from "./core/Components/Spinner/Spinner";
+import ProjectManagement from "./Pages/ProjectManagement/ProjectManagement";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route element={<PrivateRoutes />}>
             <Route index element={<HomePage />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="projectmanagement" element={<ProjectManagement />} />
           </Route>
         </Route>
       </Routes>
