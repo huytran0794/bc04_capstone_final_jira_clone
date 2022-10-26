@@ -10,11 +10,13 @@ import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import PrivateRoutes from "./core/routes/PrivateRoutes/PrivateRoutes";
 import Spinner from "./core/Components/Spinner/Spinner";
 import ProjectManagement from "./Pages/ProjectManagement/ProjectManagement";
+import GeneralDrawer from "./core/Components/Drawer/GeneralDrawer";
 
 function App() {
   return (
     <>
       <Spinner />
+      <GeneralDrawer />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="login" element={<LoginPage />} />

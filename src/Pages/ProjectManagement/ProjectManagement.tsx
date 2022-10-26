@@ -1,5 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 
+// import redux
+import { useAppDispatch } from "../../core/hooks/redux/useRedux";
+import { generalActions } from "../../core/redux/slice/generalSlice";
+
 // import local interface
 import {
   InterfaceMember,
@@ -10,8 +14,12 @@ import {
 import PROJECT_SERVICE from "../../core/services/projectServ";
 
 // import antd components
-import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table } from "antd";
+import {
+  DeleteOutlined,
+  FormOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
+import { Button, Input, Space, Table, Tag } from "antd";
 
 // import antd type
 import type { ColumnsType, ColumnType } from "antd/es/table";
@@ -20,8 +28,11 @@ import type { InputRef } from "antd";
 
 // import Highlighter component
 import Highlighter from "react-highlight-words";
+import ProjectEdit from "./ProjectEdit";
 
 export default function ProjectManagement() {
+  let dispatch = useAppDispatch();
+
   const [allProjects, setAllProjects] = useState<
     InterfaceProject[] | undefined
   >(undefined);
@@ -37,9 +48,12 @@ export default function ProjectManagement() {
       });
   }, []);
 
-  type ProjectIndex = keyof InterfaceProject;
+  const handleEditProject = () => {
+    dispatch(generalActions.handleDrawerOpen(<ProjectEdit />));
+  };
 
   //antd control
+  type ProjectIndex = keyof InterfaceProject;
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -149,6 +163,9 @@ export default function ProjectManagement() {
       ...getColumnSearchProps("projectName"),
       sorter: (a, b) => a.projectName.length - b.projectName.length,
       sortDirections: ["descend", "ascend"],
+      render: (projectName) => (
+        <span className="text-lg font-semibold">{projectName}</span>
+      ),
     },
     {
       title: "Category",
@@ -161,7 +178,7 @@ export default function ProjectManagement() {
       dataIndex: "creator",
       key: "creator",
       width: "20%",
-      render: (creator) => <>{creator.name}</>,
+      render: (creator) => <Tag color="lime">{creator.name}</Tag>,
     },
     {
       title: "Members",
@@ -172,7 +189,7 @@ export default function ProjectManagement() {
         return (
           <div className="space-x-2">
             {members.map((member: InterfaceMember) => (
-              <span>{member.name}</span>
+              <span key={member.userId.toString()}>{member.name}</span>
             ))}
           </div>
         );
@@ -183,16 +200,24 @@ export default function ProjectManagement() {
       dataIndex: "edit",
       key: "edit",
       render: () => (
-        <div>
-          <button>Edit</button>
-          <button>Delete</button>
+        <div className="space-x-1">
+          <button onClick={handleEditProject}>
+            <FormOutlined className="text-yellow-500 text-xl" />
+          </button>
+          <button>
+            <DeleteOutlined className="text-red-500 text-xl" />
+          </button>
         </div>
       ),
     },
   ];
   return (
     <div>
-      <Table columns={columns} dataSource={allProjects} />
+      <Table
+        columns={columns}
+        dataSource={allProjects}
+        rowKey={(project) => project.id.toString()}
+      />
     </div>
   );
 }
