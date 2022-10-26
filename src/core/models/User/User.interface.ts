@@ -1,6 +1,7 @@
 export interface User {
-    email: string
-    passWord: string,
-    name: string,
-    phoneNumber: BigInteger
-  }
+  id?: number;
+  email: string;
+  passWord: string;
+  name: string;
+  phoneNumber: BigInteger;
+}

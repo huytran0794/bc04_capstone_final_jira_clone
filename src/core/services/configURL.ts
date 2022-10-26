@@ -1,4 +1,5 @@
 import axios from "axios";
+import { LOCAL_SERVICE } from "./localServ";
 
 const BASE_URL = "https://jiranew.cybersoft.edu.vn";
 
@@ -16,7 +17,10 @@ const TOKEN_CYBERSOFT =
 const AXIOS_INSTANCE_GENERATOR = (BASE_URL: string, accessToken = false) => {
   let config = {
     baseURL: BASE_URL,
-    headers: { TokenCybersoft: TOKEN_CYBERSOFT },
+    headers: {
+      TokenCybersoft: TOKEN_CYBERSOFT,
+      Authorization: "Bearer " + LOCAL_SERVICE.user.get()?.accessToken,
+    },
   };
 
   return axios.create(config);
