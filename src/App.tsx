@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import PrivateRoutes from "./core/routes/PrivateRoutes/PrivateRoutes";
 import Spinner from "./core/Components/Spinner/Spinner";
+import ProjectManagement from "./Pages/ProjectManagement/ProjectManagement";
 
 /* import local components */
 import Layout from "./core/Layout/Layout";
@@ -23,6 +24,7 @@ function App() {
           <Route element={<PrivateRoutes />}>
             <Route index element={<CreateProjectPage />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="projectmanagement" element={<ProjectManagement />} />
           </Route>
         </Route>
       </Routes>
