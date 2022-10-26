@@ -1,0 +1,66 @@
+/* ================================== root variable styling */
+:root {
+  --toastify-toast-width: 400px !important;
+}
+
+h3,
+h6 {
+  margin-bottom: 0;
+}
+
+/* ================================== root variable styling */
+
+/* ================================== root container styling */
+#root {
+  height: 100%;
+  color: #344563;
+}
+
+/* ================================== root container styling */
+
+/* ================================== form item styling */
+
+.myform .ant-input-prefix {
+  margin-right: 10px !important;
+}
+
+/* error message styling */
+.myform .ant-form-item-explain-error {
+  padding: 12px 0 !important;
+}
+/* error message styling */
+
+.myform .select-category .ant-select-selector {
+  border-radius: 0.375rem !important;
+}
+
+/* form button group styling */
+.form-btn-group .ant-form-item-control-input-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: end;
+}
+
+.form-btn-group .btn-reset span {
+  position: relative;
+  transition: 0.4s;
+}
+
+.form-btn-group .btn-reset span::before {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background-color: currentColor;
+  transition: 0.4s;
+}
+
+.form-btn-group .btn-reset:hover span::before {
+  width: 100%;
+}
+
+/* form button group styling */
+/* ================================== form item styling */

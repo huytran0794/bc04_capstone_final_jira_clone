@@ -19,11 +19,10 @@ import { useAppDispatch } from "../../hooks/redux/useRedux";
 import USER_SERVICE from "../../services/userServ";
 import { userActions } from "../../redux/slice/userSlice";
 import { spinnerActions } from "../../redux/slice/spinnerSlice";
-import { useDispatch } from "react-redux";
 
 const LoginForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const onFinish = (values: any) => {
     dispatch(spinnerActions.setLoadingOn());
     USER_SERVICE.login(values)
@@ -69,7 +68,7 @@ const LoginForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
         <Input
           prefix={<MailOutlined className="site-form-item-icon" />}
           placeholder="Johndoe@email.com"
-          className="py-2 px-5 border rounded-md"
+          className="py-2 px-5 rounded-md"
         />
       </Form.Item>
       <Form.Item
@@ -81,7 +80,7 @@ const LoginForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Enter your passwords"
-          className="py-2 px-5 border rounded-md"
+          className="py-2 px-5 rounded-md"
         />
       </Form.Item>
       <Form.Item className="w-full">

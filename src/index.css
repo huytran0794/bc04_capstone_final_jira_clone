@@ -1,32 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* ================================== root variable styling */
-:root {
-    --toastify-toast-width: 400px!important;
-}
-
-/* ================================== root variable styling */
-
-/* ================================== root container styling */
-#root {
-    height: 100%;
-    color: #344563;
-}
-
-/* ================================== root container styling */
-
-/* ================================== form item styling */
-
-.myform .ant-input-prefix {
-    margin-right: 10px!important;
-}
-
-
-/* error message styling */
-.myform .ant-form-item-explain-error {
-    padding: 12px 0!important;
-}
-/* error message styling */
-/* ================================== form item styling */
