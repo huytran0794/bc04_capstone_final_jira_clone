@@ -4,9 +4,9 @@ import { LOCAL_SERVICE } from "./localServ";
 const BASE_URL = "https://jiranew.cybersoft.edu.vn";
 
 const BASE_USER_URL = `${BASE_URL}/api/Users/`;
-const BASE_TASK_TYPE_URL = `${BASE_URL}/api/TaskType//`;
+const BASE_TASK_TYPE_URL = `${BASE_URL}/api/TaskType/`;
 const BASE_STATUS_URL = `${BASE_URL}/api/Status/`;
-const BASE_PROJECT_CATEGORY_URL = `${BASE_URL}/api/ProjectCategory/`;
+const BASE_PROJECT_CATEGORY_URL = `${BASE_URL}/api/ProjectCategory`;
 const BASE_PROJECT_URL = `${BASE_URL}/api/Project/`;
 const BASE_PRIORITY_URL = `${BASE_URL}/api/Priority/`;
 const BASE_COMMENT_URL = `${BASE_URL}/api/Comment/`;
@@ -33,4 +33,5 @@ export {
   BASE_TASK_TYPE_URL,
   BASE_STATUS_URL,
   BASE_PROJECT_URL,
+  BASE_PROJECT_CATEGORY_URL
 };

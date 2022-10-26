@@ -1,16 +1,16 @@
 /* import react router dom v6 packages */
 import { Route, Routes } from "react-router-dom";
 
-/* import local components */
-import Layout from "./core/Layout/Layout";
-import HomePage from "./Pages/HomePage/HomePage";
-import LoginPage from "./Pages/LoginPage/LoginPage";
-import RegisterPage from "./Pages/RegisterPage/RegisterPage";
-import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import PrivateRoutes from "./core/routes/PrivateRoutes/PrivateRoutes";
 import Spinner from "./core/Components/Spinner/Spinner";
 import ProjectManagement from "./Pages/ProjectManagement/ProjectManagement";
 
+/* import local components */
+import Layout from "./core/Layout/Layout";
+import LoginPage from "./Pages/LoginPage/LoginPage";
+import RegisterPage from "./Pages/RegisterPage/RegisterPage";
+import ProfilePage from "./Pages/ProfilePage/ProfilePage";
+import CreateProjectPage from "./Pages/ProjectPage/CreateProject/CreateProjectPage";
 function App() {
   return (
     <>
@@ -22,7 +22,7 @@ function App() {
 
           {/* Private routes */}
           <Route element={<PrivateRoutes />}>
-            <Route index element={<HomePage />} />
+            <Route index element={<CreateProjectPage />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="projectmanagement" element={<ProjectManagement />} />
           </Route>

@@ -1,20 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,PayloadAction } from "@reduxjs/toolkit";
+import User from "../../models/common/User.interface";
 import { LOCAL_SERVICE } from "../../services/localServ";
 
-const initialState = {
-  user: LOCAL_SERVICE.user.get(),
+type InitialState = {
+  user: User;
+};
+
+const initialState:InitialState = {
+  user: LOCAL_SERVICE.user.get() ||  {},
 };
 
 const userSlice = createSlice({
   name: "userSlice",
   initialState: initialState,
   reducers: {
-    login: (state, action) => {
-      console.log(action);
-      
+    login: (state, action:PayloadAction<User>) => {      
       state.user = action.payload;
     },
-    updateProfile: (state, action) => {
+    updateProfile: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
   },
