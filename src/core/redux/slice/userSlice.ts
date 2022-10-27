@@ -1,5 +1,5 @@
 import { createSlice,PayloadAction } from "@reduxjs/toolkit";
-import User from "../../models/common/User.interface";
+import {User} from "../../models/User/User.interface";
 import { LOCAL_SERVICE } from "../../services/localServ";
 
 type InitialState = {

@@ -7,32 +7,47 @@ import { Button, Form, Input, Select } from "antd";
 import { FormProps } from "../../models/common/FormProps.interface";
 
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
-import { Project } from "../../models/Project.interface";
+import { InterfaceProject } from "../../models/Project/Project.interface";
 import Label from "./Label/Label";
 import CustomEditor from "../tinyEditor/CustomEditor";
+import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProjectCatList";
+import { createAlias } from "../../utils/string.utils";
+
+import { spinnerActions } from "../../redux/slice/spinnerSlice";
+import { useNavigate } from "react-router-dom";
+import { projectActions } from "../../redux/slice/projectSlice";
+import toastify from "../../utils/toastify/toastifyUtils";
 import PROJECT_SERVICE from "../../services/projectServ";
-import { projectCategoryActions } from "../../redux/slice/projectCategorySlice";
 
 const ProjectForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    PROJECT_SERVICE.getAllProjectCategory()
-      .then((res) => {
-        dispatch(projectCategoryActions.getAllProjectCategory(res.content))
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
+  const navigate = useNavigate();
+  useFetchProjectCatList(dispatch);
   const projectCategoryList = useAppSelector(
     (state) => state.projectCategoryReducer.projectCategoryArr
   );
-  
+
   const [form] = Form.useForm();
   const { Option } = Select;
-  const onFinish = (values: Project) => {
-    console.log(values);
+  const onFinish = (values: InterfaceProject) => {
+    values.alias = createAlias(values.projectName);
+
+    dispatch(spinnerActions.setLoadingOn());
+    PROJECT_SERVICE.createProject(values)
+      .then((res) => {
+        dispatch(projectActions.createProject(res.content));
+        toastify("success", "Create project successfully !");
+        setTimeout(() => {
+          navigate("/projectmanagement", { replace: true });
+          dispatch(spinnerActions.setLoadingOff());
+        }, 2500);
+      })
+      .catch((err) => {
+        setTimeout(() => {
+          toastify("error", err.response.data.message);
+          dispatch(spinnerActions.setLoadingOff());
+        }, 2500);
+      });
   };
 
   const onReset = () => {
@@ -75,7 +90,7 @@ const ProjectForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
       <Form.Item name="categoryId" label={labelItem("Project Category")}>
         <Select className="select-category">
           {/* map project category list */}
-          {projectCategoryList.map((cat, idx) => {            
+          {projectCategoryList.map((cat, idx) => {
             return (
               <Option key={cat.id.toString() + idx} value={cat.id}>
                 {cat.projectCategoryName}

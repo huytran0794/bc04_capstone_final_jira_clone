@@ -4,10 +4,10 @@ import React, { useEffect, useState, useRef } from "react";
 import {
   InterfaceMember,
   InterfaceProject,
-} from "../../core/models/Project/Project.interface";
+} from "../../../core/models/Project/Project.interface";
 
 // import Project Service
-import PROJECT_SERVICE from "../../core/services/projectServ";
+import PROJECT_SERVICE from "../../../core/services/projectServ";
 
 // import antd components
 import { SearchOutlined } from "@ant-design/icons";
@@ -25,7 +25,6 @@ export default function ProjectManagement() {
   const [allProjects, setAllProjects] = useState<
     InterfaceProject[] | undefined
   >(undefined);
-
   useEffect(() => {
     PROJECT_SERVICE.getAll()
       .then((res) => {
@@ -43,7 +42,6 @@ export default function ProjectManagement() {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
-
   const handleSearch = (
     selectedKeys: string[],
     confirm: (param?: FilterConfirmProps) => void,
@@ -190,6 +188,7 @@ export default function ProjectManagement() {
       ),
     },
   ];
+  
   return (
     <div>
       <Table columns={columns} dataSource={allProjects} />

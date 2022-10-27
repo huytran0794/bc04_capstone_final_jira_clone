@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import PrivateRoutes from "./core/routes/PrivateRoutes/PrivateRoutes";
 import Spinner from "./core/Components/Spinner/Spinner";
-import ProjectManagement from "./Pages/ProjectManagement/ProjectManagement";
+import ProjectManagement from "./Pages/ProjectPage/ProjectManagement/ProjectManagement";
 
 /* import local components */
 import Layout from "./core/Layout/Layout";

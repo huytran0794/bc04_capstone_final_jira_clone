@@ -3,7 +3,6 @@ import React from "react";
 import { useAppSelector } from "../../hooks/redux/useRedux";
 
 /* import packages */
-import PuffLoader from "react-spinners/PuffLoader";
 import { ClimbingBoxLoader } from "react-spinners";
 
 export default function Spinner() {

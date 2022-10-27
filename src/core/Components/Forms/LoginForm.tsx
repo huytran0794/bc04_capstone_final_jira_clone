@@ -5,10 +5,8 @@ import { Button, Form, Input } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 
 /* import react router dom packages */
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-/* import local components */
-import Label from "./Label/Label";
 
 /* import local interface */
 import { FormProps } from "../../models/common/FormProps.interface";
@@ -19,11 +17,13 @@ import { useAppDispatch } from "../../hooks/redux/useRedux";
 import USER_SERVICE from "../../services/userServ";
 import { userActions } from "../../redux/slice/userSlice";
 import { spinnerActions } from "../../redux/slice/spinnerSlice";
+import { User } from "../../models/User/User.interface";
 
 const LoginForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const onFinish = (values: any) => {
+  
+  const onFinish = (values: User) => {
     dispatch(spinnerActions.setLoadingOn());
     USER_SERVICE.login(values)
       .then((res) => {

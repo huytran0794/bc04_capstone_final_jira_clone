@@ -1,10 +1,8 @@
 import { createSlice,PayloadAction } from "@reduxjs/toolkit";
-import { useAppSelector } from "../../hooks/redux/useRedux";
-import { Project } from "../../models/Project.interface";
-
+import {InterfaceProject} from "../../models/Project/Project.interface";
 
 type InitialState = {
-  project: Project
+  project: Partial<InterfaceProject>
 };
 
 const initialState:InitialState = {
@@ -16,18 +14,18 @@ const initialState:InitialState = {
     }
 };
 
-const projectCategorySlice = createSlice({
-  name: "projectCategorySlice",
+const projectSlice = createSlice({
+  name: "projectSlice",
   initialState: initialState,
   reducers: {
-    createProject: (state, action:PayloadAction<Project>) => {      
+    createProject: (state, action:PayloadAction<InterfaceProject>) => {      
       state.project = action.payload;
     },
   },
 });
 
-export const projectCategoryActions = projectCategorySlice.actions;
+export const projectActions = projectSlice.actions;
 
-const projectCategoryReducer = projectCategorySlice.reducer;
+const projectReducer = projectSlice.reducer;
 
-export default projectCategoryReducer;
+export default projectReducer;
