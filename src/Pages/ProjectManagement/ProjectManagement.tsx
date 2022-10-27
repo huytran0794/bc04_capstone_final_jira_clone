@@ -48,8 +48,27 @@ export default function ProjectManagement() {
       });
   }, []);
 
-  const handleEditProject = () => {
-    dispatch(generalActions.handleDrawerOpen(<ProjectEdit />));
+  const handleEditProject = (project: InterfaceProject) => {
+    dispatch(
+      generalActions.handleDrawerOpen(<ProjectEdit project={project} />)
+    );
+  };
+  const handleDeleteProject = (projectID: number) => {
+    PROJECT_SERVICE.delete(projectID)
+      .then((res) => {
+        console.log(res);
+        PROJECT_SERVICE.getAll()
+          .then((res) => {
+            console.log(res);
+            setAllProjects(res.content);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   //antd control
@@ -197,14 +216,21 @@ export default function ProjectManagement() {
     },
     {
       title: "Edit",
-      dataIndex: "edit",
       key: "edit",
-      render: () => (
+      render: (_, project) => (
         <div className="space-x-1">
-          <button onClick={handleEditProject}>
+          <button
+            onClick={() => {
+              handleEditProject(project);
+            }}
+          >
             <FormOutlined className="text-yellow-500 text-xl" />
           </button>
-          <button>
+          <button
+            onClick={() => {
+              handleDeleteProject(project.id);
+            }}
+          >
             <DeleteOutlined className="text-red-500 text-xl" />
           </button>
         </div>

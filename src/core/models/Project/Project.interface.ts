@@ -18,3 +18,7 @@ export interface InterfaceProject {
   members: Array<InterfaceMember>;
   deleted: boolean;
 }
+
+export interface InterfaceProjectEditComponent {
+  project: InterfaceProject;
+}

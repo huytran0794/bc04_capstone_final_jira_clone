@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isDrawerOpen: false,
-  drawerContent: "AAAA",
+  drawerContent: "",
   handleSummitDrawer: () => {},
 };
 
