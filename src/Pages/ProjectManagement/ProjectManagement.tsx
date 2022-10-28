@@ -21,6 +21,7 @@ import type { InputRef } from "antd";
 // import Highlighter component
 import Highlighter from "react-highlight-words";
 import ProjectActionButtons from "./ProjectActionButtons";
+import ProjectMembers from "./ProjectMembers";
 
 export default function ProjectManagement() {
   const [allProjects, setAllProjects] = useState<
@@ -171,15 +172,9 @@ export default function ProjectManagement() {
       dataIndex: "members",
       key: "members",
       width: "20%",
-      render: (members) => {
-        return (
-          <div className="space-x-2">
-            {members.map((member: InterfaceMember) => (
-              <span key={member.userId.toString()}>{member.name}</span>
-            ))}
-          </div>
-        );
-      },
+      render: (members, project) => (
+        <ProjectMembers projectID={project.id} members={members} />
+      ),
     },
     {
       title: "Edit",
