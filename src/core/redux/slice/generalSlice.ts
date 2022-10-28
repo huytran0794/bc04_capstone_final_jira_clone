@@ -1,8 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+interface interfaceInitialStateGeneralReducer {
+  isDrawerOpen: boolean;
+  DrawerContent: React.ReactNode;
+  handleSummitDrawer: () => void;
+}
+
+const initialState: interfaceInitialStateGeneralReducer = {
   isDrawerOpen: false,
-  drawerContent: "",
+  DrawerContent: null,
   handleSummitDrawer: () => {},
 };
 
@@ -10,8 +16,8 @@ const generalSlice = createSlice({
   name: "generalSlice",
   initialState,
   reducers: {
-    handleDrawerOpen: (state, action) => {
-      state.drawerContent = action.payload;
+    handleDrawerOpen: (state, action: PayloadAction<React.ReactNode>) => {
+      state.DrawerContent = action.payload;
       state.isDrawerOpen = true;
     },
     closeDrawer: (state) => {

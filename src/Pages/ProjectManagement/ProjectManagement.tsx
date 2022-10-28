@@ -1,9 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 
-// import redux
-import { useAppDispatch } from "../../core/hooks/redux/useRedux";
-import { generalActions } from "../../core/redux/slice/generalSlice";
-
 // import local interface
 import {
   InterfaceMember,
@@ -14,11 +10,7 @@ import {
 import PROJECT_SERVICE from "../../core/services/projectServ";
 
 // import antd components
-import {
-  DeleteOutlined,
-  FormOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, Tag } from "antd";
 
 // import antd type
@@ -28,11 +20,9 @@ import type { InputRef } from "antd";
 
 // import Highlighter component
 import Highlighter from "react-highlight-words";
-import ProjectEdit from "./ProjectEdit";
+import ProjectActionButtons from "./ProjectActionButtons";
 
 export default function ProjectManagement() {
-  let dispatch = useAppDispatch();
-
   const [allProjects, setAllProjects] = useState<
     InterfaceProject[] | undefined
   >(undefined);
@@ -47,29 +37,6 @@ export default function ProjectManagement() {
         console.log(err);
       });
   }, []);
-
-  const handleEditProject = (project: InterfaceProject) => {
-    dispatch(
-      generalActions.handleDrawerOpen(<ProjectEdit project={project} />)
-    );
-  };
-  const handleDeleteProject = (projectID: number) => {
-    PROJECT_SERVICE.delete(projectID)
-      .then((res) => {
-        console.log(res);
-        PROJECT_SERVICE.getAll()
-          .then((res) => {
-            console.log(res);
-            setAllProjects(res.content);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   //antd control
   type ProjectIndex = keyof InterfaceProject;
@@ -218,22 +185,10 @@ export default function ProjectManagement() {
       title: "Edit",
       key: "edit",
       render: (_, project) => (
-        <div className="space-x-1">
-          <button
-            onClick={() => {
-              handleEditProject(project);
-            }}
-          >
-            <FormOutlined className="text-yellow-500 text-xl" />
-          </button>
-          <button
-            onClick={() => {
-              handleDeleteProject(project.id);
-            }}
-          >
-            <DeleteOutlined className="text-red-500 text-xl" />
-          </button>
-        </div>
+        <ProjectActionButtons
+          project={project}
+          setAllProjects={setAllProjects}
+        />
       ),
     },
   ];

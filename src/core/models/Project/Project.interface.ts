@@ -22,3 +22,15 @@ export interface InterfaceProject {
 export interface InterfaceProjectEditComponent {
   project: InterfaceProject;
 }
+
+export interface InterfaceProjectActionButtonsComponent {
+  project: InterfaceProject;
+  setAllProjects: React.Dispatch<
+    React.SetStateAction<InterfaceProject[] | undefined>
+  >;
+}
+
+export interface InterfaceProjectMembersComponent {
+  projectID: number;
+  members: Array<InterfaceMember>;
+}

@@ -8,7 +8,7 @@ import { generalActions } from "../../redux/slice/generalSlice";
 export default function GeneralDrawer() {
   let dispatch = useAppDispatch();
 
-  let { isDrawerOpen, drawerContent } = useAppSelector(
+  let { isDrawerOpen, DrawerContent } = useAppSelector(
     (state) => state.generalReducer
   );
 
@@ -24,7 +24,7 @@ export default function GeneralDrawer() {
       open={isDrawerOpen}
       key="right"
     >
-      {drawerContent}
+      {DrawerContent}
     </Drawer>
   );
 }
