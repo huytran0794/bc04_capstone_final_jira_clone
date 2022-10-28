@@ -1,5 +1,5 @@
 export const initEditorConfig = {
-  height: 500,
+  height: 350,
   menubar: false,
   plugIns: [
     "advlist",

@@ -30,8 +30,6 @@ const ProjectForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
   const [form] = Form.useForm();
   const { Option } = Select;
   const onFinish = (values: InterfaceProject) => {
-    values.alias = createAlias(values.projectName);
-
     dispatch(spinnerActions.setLoadingOn());
     PROJECT_SERVICE.createProject(values)
       .then((res) => {
