@@ -8,7 +8,7 @@ import {
 const PROJECT_SERVICE = {
   createProject: async (projectInfo: InterfaceProject) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).post(
-      "createProject",
+      "createProjectAuthorize",
       projectInfo
     );
     return data;
