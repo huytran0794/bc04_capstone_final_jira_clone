@@ -1,10 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 
 // import local interface
-import {
-  InterfaceMember,
-  InterfaceProject,
-} from "../../core/models/Project/Project.interface";
+import { InterfaceProject } from "../../core/models/Project/Project.interface";
 
 // import Project Service
 import PROJECT_SERVICE from "../../core/services/projectServ";
@@ -148,7 +145,7 @@ export default function ProjectManagement() {
       key: "projectName",
       width: "20%",
       ...getColumnSearchProps("projectName"),
-      sorter: (a, b) => a.projectName.length - b.projectName.length,
+      sorter: (a, b) => b.projectName.localeCompare(a.projectName),
       sortDirections: ["descend", "ascend"],
       render: (projectName) => (
         <span className="text-lg font-semibold">{projectName}</span>

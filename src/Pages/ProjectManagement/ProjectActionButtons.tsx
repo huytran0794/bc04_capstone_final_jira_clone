@@ -66,7 +66,8 @@ export default function ProjectActionButtons({
       <Popconfirm
         title={
           <span className="text-lg pl-1">
-            Are you sure to delete this project?
+            Are you sure to delete{" "}
+            <span className="font-semibold">{project.projectName}</span>?
           </span>
         }
         onConfirm={handleDeleteProject}
