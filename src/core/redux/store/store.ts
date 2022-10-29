@@ -4,8 +4,10 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "../slice/userSlice";
 import spinnerReducer from "../slice/spinnerSlice";
 import generalReducer from "../slice/generalSlice";
+import projectReducer from "../slice/projectSlice";
+
 const store = configureStore({
-  reducer: { userReducer, spinnerReducer, generalReducer },
+  reducer: { userReducer, projectReducer, spinnerReducer, generalReducer },
   devTools: true,
 });
 
