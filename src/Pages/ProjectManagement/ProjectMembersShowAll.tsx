@@ -1,26 +1,29 @@
 import React from "react";
 
 // import ant component
-import { Avatar, Popconfirm } from "antd";
+import { Avatar, message, Popconfirm } from "antd";
 import { CloseCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 // import local component Interface
 import { InterfaceProjectMembersShowAllComponent } from "../../core/models/Project/Project.interface";
 import PROJECT_SERVICE from "../../core/services/projectServ";
+import { useAppDispatch } from "../../core/hooks/redux/useRedux";
 
 export default function ProjectMembersShowAll({
   projectID,
   members,
 }: InterfaceProjectMembersShowAllComponent) {
+  const dispatch = useAppDispatch();
+
   const handleDeleteMember = (projectID: number, memberID: number) => {
     PROJECT_SERVICE.deleteMember(projectID, memberID)
       .then((res) => {
         console.log(res);
-        alert("Xoa user thanh cong");
+        dispatch(PROJECT_SERVICE.getAllAndDispatch("Member deleted"));
       })
       .catch((err) => {
         console.log(err);
-        alert("Xoa user that bai");
+        message.error(err.response.data.content);
       });
   };
   return (

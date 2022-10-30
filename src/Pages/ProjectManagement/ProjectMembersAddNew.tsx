@@ -9,13 +9,15 @@ import USER_SERVICE from "../../core/services/userServ";
 import PROJECT_SERVICE from "../../core/services/projectServ";
 
 // import antd components
-import { Avatar } from "antd";
+import { Avatar, message } from "antd";
+import { useAppDispatch } from "../../core/hooks/redux/useRedux";
 
 export default function ProjectMembersAddNew({
   projectID,
 }: InterfaceProjectMembersAddNewComponent) {
   let searchRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [userList, setUserList] = useState<User[] | null>(null);
+  const dispatch = useAppDispatch();
 
   const getUserList = (keyword: string) => {
     USER_SERVICE.getUserByKeyword(keyword)
@@ -32,11 +34,13 @@ export default function ProjectMembersAddNew({
     PROJECT_SERVICE.assignUser(projectId, userId)
       .then((res) => {
         console.log(res);
-        alert("Them User Thanh Cong");
+        dispatch(
+          PROJECT_SERVICE.getAllAndDispatch("Member added successfully")
+        );
       })
       .catch((err) => {
         console.log(err);
-        alert("Them User That Bai");
+        message.error(err.response.data.content);
       });
   };
 

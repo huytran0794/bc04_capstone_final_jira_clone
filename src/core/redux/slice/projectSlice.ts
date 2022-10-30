@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InterfaceProject } from "../../models/Project/Project.interface";
 
-// import local services
-import PROJECT_SERVICE from "../../services/projectServ";
-
 type InitialState = {
   project: Partial<InterfaceProject>;
   projectList: Array<InterfaceProject> | undefined;
@@ -26,10 +23,7 @@ const projectSlice = createSlice({
     createProject: (state, action: PayloadAction<InterfaceProject>) => {
       state.project = action.payload;
     },
-    updateProjectList: (
-      state,
-      action: PayloadAction<Array<InterfaceProject>>
-    ) => {
+    updateProjectList: (state, action) => {
       state.projectList = action.payload;
     },
   },

@@ -3,37 +3,41 @@ import React, { useEffect, useState, useRef } from "react";
 // import local interface
 import { InterfaceProject } from "../../core/models/Project/Project.interface";
 
-// import Project Service
+// import local components
+import ProjectActionButtons from "./ProjectActionButtons";
+import ProjectMembers from "./ProjectMembers";
+
+// import local Services
 import PROJECT_SERVICE from "../../core/services/projectServ";
+
+// import antd type
+import type { ColumnsType, ColumnType } from "antd/es/table";
+import type { FilterConfirmProps } from "antd/es/table/interface";
+import { InputRef } from "antd";
 
 // import antd components
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table, Tag } from "antd";
 
-// import antd type
-import type { ColumnsType, ColumnType } from "antd/es/table";
-import type { FilterConfirmProps } from "antd/es/table/interface";
-import type { InputRef } from "antd";
-
 // import Highlighter component
 import Highlighter from "react-highlight-words";
-import ProjectActionButtons from "./ProjectActionButtons";
-import ProjectMembers from "./ProjectMembers";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../core/hooks/redux/useRedux";
 
 export default function ProjectManagement() {
+  const dispatch = useAppDispatch();
+  const projectList = useAppSelector(
+    (state) => state.projectReducer.projectList
+  );
+
   const [allProjects, setAllProjects] = useState<
     InterfaceProject[] | undefined
   >(undefined);
 
   useEffect(() => {
-    PROJECT_SERVICE.getAll()
-      .then((res) => {
-        console.log(res);
-        setAllProjects(res.content);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(PROJECT_SERVICE.getAllAndDispatch(null));
   }, []);
 
   //antd control
@@ -176,19 +180,15 @@ export default function ProjectManagement() {
     {
       title: "Edit",
       key: "edit",
-      render: (_, project) => (
-        <ProjectActionButtons
-          project={project}
-          setAllProjects={setAllProjects}
-        />
-      ),
+      render: (_, project) => <ProjectActionButtons project={project} />,
     },
   ];
+  console.log("rendered");
   return (
     <div>
       <Table
         columns={columns}
-        dataSource={allProjects}
+        dataSource={projectList}
         rowKey={(project) => project.id.toString()}
       />
     </div>

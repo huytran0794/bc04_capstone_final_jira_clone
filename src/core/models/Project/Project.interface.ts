@@ -29,9 +29,9 @@ export interface InterfaceProjectEditComponent {
 
 export interface InterfaceProjectActionButtonsComponent {
   project: InterfaceProject;
-  setAllProjects: React.Dispatch<
-    React.SetStateAction<InterfaceProject[] | undefined>
-  >;
+  // setAllProjects: React.Dispatch<
+  //   React.SetStateAction<InterfaceProject[] | undefined>
+  // >;
 }
 
 export interface InterfaceProjectMembersComponent {

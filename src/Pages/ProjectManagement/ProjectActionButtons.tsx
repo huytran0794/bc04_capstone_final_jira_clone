@@ -26,7 +26,6 @@ import { message, Popconfirm } from "antd";
 
 export default function ProjectActionButtons({
   project,
-  setAllProjects,
 }: InterfaceProjectActionButtonsComponent) {
   let dispatch = useAppDispatch();
 
@@ -39,18 +38,11 @@ export default function ProjectActionButtons({
     PROJECT_SERVICE.delete(project.id)
       .then((res) => {
         console.log(res);
-        PROJECT_SERVICE.getAll()
-          .then((res) => {
-            console.log(res);
-            setAllProjects(res.content);
-            message.success("Project deleted");
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        dispatch(PROJECT_SERVICE.getAllAndDispatch("Project deleted"));
       })
       .catch((err) => {
         console.log(err);
+        message.error(err.response.data.content);
       });
   };
 
