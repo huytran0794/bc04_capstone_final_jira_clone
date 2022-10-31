@@ -36,6 +36,7 @@ export interface InterfaceProjectActionButtonsComponent {
 
 export interface InterfaceProjectMembersComponent {
   projectID: number;
+  projectName: string;
   members: InterfaceMember[];
 }
 
@@ -46,4 +47,5 @@ export interface InterfaceProjectMembersShowAllComponent {
 
 export interface InterfaceProjectMembersAddNewComponent {
   projectID: number;
+  projectName: string;
 }

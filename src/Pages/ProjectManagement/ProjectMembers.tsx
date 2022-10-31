@@ -12,6 +12,7 @@ import ProjectMembersShowAll from "./ProjectMembersShowAll";
 
 export default function ProjectMembers({
   projectID,
+  projectName,
   members,
 }: InterfaceProjectMembersComponent) {
   const renderMembers = () => {
@@ -53,7 +54,12 @@ export default function ProjectMembers({
       </Popover>
       <Popover
         placement="bottom"
-        content={<ProjectMembersAddNew projectID={projectID} />}
+        content={
+          <ProjectMembersAddNew
+            projectID={projectID}
+            projectName={projectName}
+          />
+        }
         trigger="click"
       >
         <div className="w-10 h-10 ml-2 flex justify-center items-center bg-orange-400 rounded-full text-white cursor-pointer">

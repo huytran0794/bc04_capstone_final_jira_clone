@@ -1,5 +1,8 @@
 import React, { useState, useRef } from "react";
 
+// import redux
+import { useAppDispatch } from "../../core/hooks/redux/useRedux";
+
 // import local Interface
 import { User } from "../../core/models/User/User.interface";
 import { InterfaceProjectMembersAddNewComponent } from "../../core/models/Project/Project.interface";
@@ -9,11 +12,12 @@ import USER_SERVICE from "../../core/services/userServ";
 import PROJECT_SERVICE from "../../core/services/projectServ";
 
 // import antd components
-import { Avatar, message } from "antd";
-import { useAppDispatch } from "../../core/hooks/redux/useRedux";
+import { Avatar, message, Popconfirm } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
 export default function ProjectMembersAddNew({
   projectID,
+  projectName,
 }: InterfaceProjectMembersAddNewComponent) {
   let searchRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [userList, setUserList] = useState<User[] | null>(null);
@@ -47,16 +51,30 @@ export default function ProjectMembersAddNew({
   let renderUsers = (userList: User[] | null) => {
     if (!userList) return null;
     return userList.map((user, index) => (
-      <div
-        className="px-3 py-2 flex justify-between items-center hover:bg-orange-100 cursor-pointer"
-        key={user.userId!.toString() + index}
-        onClick={() => {
+      <Popconfirm
+        title={
+          <span className="text-lg pl-1">
+            Adding <span className="font-semibold">{user.name}</span> to{" "}
+            <span className="font-semibold">{projectName}</span>?
+          </span>
+        }
+        onConfirm={() => {
           handleAssignUser(projectID, user.userId!);
         }}
+        okText="Yes"
+        cancelText="No"
+        icon={
+          <QuestionCircleOutlined className="top-1 text-yellow-500 text-xl" />
+        }
       >
-        <Avatar src={user.avatar} />
-        <span className="ml-2 align-middle text-lg">{user.name}</span>
-      </div>
+        <div
+          className="px-3 py-2 flex justify-between items-center hover:bg-orange-100 cursor-pointer"
+          key={user.userId!.toString() + index}
+        >
+          <Avatar src={user.avatar} />
+          <span className="ml-2 align-middle text-lg">{user.name}</span>
+        </div>
+      </Popconfirm>
     ));
   };
 
@@ -72,7 +90,7 @@ export default function ProjectMembersAddNew({
             clearTimeout(searchRef.current);
           }
           searchRef.current = setTimeout(() => {
-            console.log(e.target.value);
+            // console.log(e.target.value);
             getUserList(e.target.value);
           }, 300);
         }}

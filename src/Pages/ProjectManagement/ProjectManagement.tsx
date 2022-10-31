@@ -32,10 +32,6 @@ export default function ProjectManagement() {
     (state) => state.projectReducer.projectList
   );
 
-  const [allProjects, setAllProjects] = useState<
-    InterfaceProject[] | undefined
-  >(undefined);
-
   useEffect(() => {
     dispatch(PROJECT_SERVICE.getAllAndDispatch(null));
   }, []);
@@ -174,7 +170,11 @@ export default function ProjectManagement() {
       key: "members",
       width: "20%",
       render: (members, project) => (
-        <ProjectMembers projectID={project.id} members={members} />
+        <ProjectMembers
+          projectID={project.id}
+          projectName={project.projectName}
+          members={members}
+        />
       ),
     },
     {

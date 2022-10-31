@@ -44,7 +44,8 @@ export default function ProjectMembersShowAll({
             <Popconfirm
               title={
                 <span className="text-lg pl-1">
-                  Are you sure to delete {member.name}?
+                  Are you sure to delete{" "}
+                  <span className="font-semibold">{member.name}</span>?
                 </span>
               }
               onConfirm={() => {
