@@ -22,12 +22,6 @@ const PROJECT_SERVICE = {
     );
     return data;
   },
-  getAllProjectCategory: async () => {
-    let { data } = await AXIOS_INSTANCE_GENERATOR(
-      BASE_PROJECT_CATEGORY_URL
-    ).get("");
-    return data;
-  },
   getAllAndDispatch:
     (successMessage: string | null) => (dispatch: Dispatch) => {
       AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
@@ -44,6 +38,12 @@ const PROJECT_SERVICE = {
           message.error(err.response.data.content);
         });
     },
+  getAllProjectCategory: async () => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(
+      BASE_PROJECT_CATEGORY_URL
+    ).get("");
+    return data;
+  },
   getDetails: async (projectID: number) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).get(
       `/getProjectDetail?id=${projectID}`

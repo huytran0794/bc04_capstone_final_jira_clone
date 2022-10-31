@@ -4,7 +4,7 @@ import React from "react";
 import { InterfaceProjectEditComponent } from "../../core/models/Project/Project.interface";
 
 // import local component
-import ProjectForm from "../../core/Components/Forms/ProjectForm";
+import ProjectFormEdit from "../../core/Components/Forms/ProjectFormEdit";
 
 export default function ProjectEdit({
   project,
@@ -13,7 +13,7 @@ export default function ProjectEdit({
   return (
     <div className="form-wrapper">
       <div className="form-body">
-        <ProjectForm layout="vertical" size="large" />
+        <ProjectFormEdit layout="vertical" size="large" />
       </div>
     </div>
   );

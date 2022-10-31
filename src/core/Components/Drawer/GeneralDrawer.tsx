@@ -23,6 +23,7 @@ export default function GeneralDrawer() {
       onClose={onClose}
       open={isDrawerOpen}
       key="right"
+      size="large"
     >
       {DrawerContent}
     </Drawer>

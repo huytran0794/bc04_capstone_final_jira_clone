@@ -31,7 +31,7 @@ export default function ProjectMembersShowAll({
       <p className="w-full mb-0 px-2 bg-gray-200 text-sm text-gray-500 font-bold">
         ALL MEMBERS
       </p>
-      <div className="w-full">
+      <div className="w-full max-h-96 overflow-y-auto">
         {members.map((member, index) => (
           <div
             className="px-3 py-2 flex justify-between items-center hover:bg-orange-100"

@@ -1,14 +1,23 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
+
+// import redux
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../core/hooks/redux/useRedux";
+import { useNavigate } from "react-router-dom";
+
+// import custom Hooks
+import projectHooks from "../../core/hooks/ProjectHooks/projectHooks";
 
 // import local interface
 import { InterfaceProject } from "../../core/models/Project/Project.interface";
 
 // import local components
+import SectionWrapper from "../../core/Components/SectionWrapper/SectionWrapper";
 import ProjectActionButtons from "./ProjectActionButtons";
 import ProjectMembers from "./ProjectMembers";
-
-// import local Services
-import PROJECT_SERVICE from "../../core/services/projectServ";
+import ButtonLocal from "../../core/Components/Utils/ButtonLocal";
 
 // import antd type
 import type { ColumnsType, ColumnType } from "antd/es/table";
@@ -21,21 +30,23 @@ import { Button, Input, Space, Table, Tag } from "antd";
 
 // import Highlighter component
 import Highlighter from "react-highlight-words";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../core/hooks/redux/useRedux";
-import SectionWrapper from "../../core/Components/SectionWrapper/SectionWrapper";
+
+// import other library
+import clsx from "clsx";
 
 export default function ProjectManagement() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const projectList = useAppSelector(
     (state) => state.projectReducer.projectList
   );
 
-  useEffect(() => {
-    dispatch(PROJECT_SERVICE.getAllAndDispatch(null));
-  }, []);
+  projectHooks.useFetchProjectList(dispatch, null);
+
+  const handleOpenCreateProject = () => {
+    navigate("toCreateProject");
+  };
 
   //antd control
   type ProjectIndex = keyof InterfaceProject;
@@ -184,16 +195,33 @@ export default function ProjectManagement() {
       render: (_, project) => <ProjectActionButtons project={project} />,
     },
   ];
-  console.log("rendered");
+  // console.log("rendered");
   return (
     <SectionWrapper
-      title="Project Management"
       content={
-        <Table
-          columns={columns}
-          dataSource={projectList}
-          rowKey={(project) => project.id.toString()}
-        />
+        <>
+          <div className="mb-2 flex justify-between items-center">
+            <h3
+              className={clsx(
+                "title",
+                "uppercase text-[#172B4D] text-2xl font-extrabold tracking-wide"
+              )}
+            >
+              PROJECT MANAGEMENT
+            </h3>
+            <ButtonLocal
+              baseColor="red"
+              handleOnClick={handleOpenCreateProject}
+            >
+              Create Project
+            </ButtonLocal>
+          </div>
+          <Table
+            columns={columns}
+            dataSource={projectList}
+            rowKey={(project) => project.id.toString()}
+          />
+        </>
       }
     />
   );
