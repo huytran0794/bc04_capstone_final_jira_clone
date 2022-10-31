@@ -11,10 +11,14 @@ import LoginPage from "./Pages/LoginPage/LoginPage";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import CreateProjectPage from "./Pages/ProjectPage/CreateProject/CreateProjectPage";
+
+import GeneralDrawer from "./core/Components/Drawer/GeneralDrawer";
+
 function App() {
   return (
     <>
       <Spinner />
+      <GeneralDrawer />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="login" element={<LoginPage />} />
@@ -22,9 +26,10 @@ function App() {
 
           {/* Private routes */}
           <Route element={<PrivateRoutes />}>
-            <Route index element={<CreateProjectPage />} />
+            <Route index element={<ProjectManagement />} />
+            <Route path="create-project" element={<CreateProjectPage />} />
             <Route path="profile" element={<ProfilePage />} />
-            <Route path="projectmanagement" element={<ProjectManagement />} />
+
           </Route>
         </Route>
       </Routes>

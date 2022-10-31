@@ -1,9 +1,14 @@
 import { User } from "../User/User.interface";
 
-export interface InterfaceMember {
-  avatar: string;
+export interface InterfaceCreator {
   name: string;
+  id: number;
+}
+
+export interface InterfaceMember {
   userId: number;
+  name: string;
+  avatar: number;
 }
 
 export interface InterfaceProject {
@@ -13,8 +18,34 @@ export interface InterfaceProject {
   categoryName: string;
   projectName: string;
   description: string;
-  creator: Partial<User>;
-  // creator (only id and name)
-  members: Array<InterfaceMember>;
+  creator: InterfaceCreator;
+  members: InterfaceMember[];
   deleted: boolean;
+}
+
+export interface InterfaceProjectEditComponent {
+  project: InterfaceProject;
+}
+
+export interface InterfaceProjectActionButtonsComponent {
+  project: InterfaceProject;
+  // setAllProjects: React.Dispatch<
+  //   React.SetStateAction<InterfaceProject[] | undefined>
+  // >;
+}
+
+export interface InterfaceProjectMembersComponent {
+  projectID: number;
+  projectName: string;
+  members: InterfaceMember[];
+}
+
+export interface InterfaceProjectMembersShowAllComponent {
+  projectID: number;
+  members: InterfaceMember[];
+}
+
+export interface InterfaceProjectMembersAddNewComponent {
+  projectID: number;
+  projectName: string;
 }
