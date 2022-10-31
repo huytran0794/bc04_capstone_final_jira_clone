@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 /* import antd components */
 import { Button, Form, Input, Select } from "antd";
 
@@ -11,7 +9,6 @@ import { InterfaceProject } from "../../models/Project/Project.interface";
 import Label from "./Label/Label";
 import CustomEditor from "../tinyEditor/CustomEditor";
 import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProjectCatList";
-import { createAlias } from "../../utils/string.utils";
 
 import { spinnerActions } from "../../redux/slice/spinnerSlice";
 import { useNavigate } from "react-router-dom";
