@@ -1,4 +1,3 @@
-import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { LOCAL_SERVICE } from "../../services/localServ";
 

@@ -45,7 +45,7 @@ export default function ProjectManagement() {
   projectHooks.useFetchProjectList(dispatch, null);
 
   const handleOpenCreateProject = () => {
-    navigate("toCreateProject");
+    navigate("create-project");
   };
 
   //antd control

@@ -29,7 +29,6 @@ function App() {
             <Route index element={<ProjectManagement />} />
             <Route path="create-project" element={<CreateProjectPage />} />
             <Route path="profile" element={<ProfilePage />} />
-
           </Route>
         </Route>
       </Routes>
