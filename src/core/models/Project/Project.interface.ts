@@ -23,6 +23,14 @@ export interface InterfaceProject {
   deleted: boolean;
 }
 
+export interface InterfaceProjectUpdate {
+  id: number;
+  projectName: string;
+  creator: number;
+  description: string;
+  categoryId: string;
+}
+
 export interface InterfaceProjectEditComponent {
   project: InterfaceProject;
 }

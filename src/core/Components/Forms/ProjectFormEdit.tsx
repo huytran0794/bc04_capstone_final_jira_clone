@@ -1,49 +1,68 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+// import redux
+import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
+import { spinnerActions } from "../../redux/slice/spinnerSlice";
+import { generalActions } from "../../redux/slice/generalSlice";
+
+// import custom Hooks
+import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProjectCatList";
+
+// import local services
+import PROJECT_SERVICE from "../../services/projectServ";
+
+/* import local interface */
+import { InterfaceFromEditComponent } from "../../models/common/FormProps.interface";
+import { InterfaceProjectUpdate } from "../../models/Project/Project.interface";
+
+// import local component
+import Label from "./Label/Label";
+import toastify from "../../utils/toastify/toastifyUtils";
 
 /* import antd components */
 import { Button, Form, Input, Select } from "antd";
 
-/* import local interface */
-import { FormProps } from "../../models/common/FormProps.interface";
-
-import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
-import { InterfaceProject } from "../../models/Project/Project.interface";
-import Label from "./Label/Label";
+// import other component
 import CustomEditor from "../tinyEditor/CustomEditor";
-import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProjectCatList";
-import { createAlias } from "../../utils/string.utils";
-
-import { spinnerActions } from "../../redux/slice/spinnerSlice";
-import { useNavigate } from "react-router-dom";
-import { projectActions } from "../../redux/slice/projectSlice";
-import toastify from "../../utils/toastify/toastifyUtils";
-import PROJECT_SERVICE from "../../services/projectServ";
 
 const ProjectFormEdit = ({
   layout = "horizontal",
   size = "large",
-}: FormProps) => {
+  project,
+}: InterfaceFromEditComponent) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  useFetchProjectCatList(dispatch);
   const projectCategoryList = useAppSelector(
     (state) => state.projectCategoryReducer.projectCategoryArr
   );
 
   const [form] = Form.useForm();
   const { Option } = Select;
-  const onFinish = (values: InterfaceProject) => {
-    values.alias = createAlias(values.projectName);
+  const initialValues = {
+    categoryId: project.categoryId,
+    projectName: project.projectName,
+    description: project.description,
+  };
 
+  useFetchProjectCatList(dispatch);
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [form, initialValues]);
+
+  const onFinish = (values: InterfaceProjectUpdate) => {
     dispatch(spinnerActions.setLoadingOn());
-    PROJECT_SERVICE.createProject(values)
+    const updateProject = {
+      ...values,
+      id: project.id,
+      creator: project.creator.id,
+    };
+    PROJECT_SERVICE.update(project.id, updateProject)
       .then((res) => {
-        dispatch(projectActions.createProject(res.content));
-        toastify("success", "Create project successfully !");
-        setTimeout(() => {
-          navigate("/projectmanagement", { replace: true });
-          dispatch(spinnerActions.setLoadingOff());
-        }, 2500);
+        toastify("success", "Updated project successfully !");
+        dispatch(generalActions.closeDrawer());
+        dispatch(PROJECT_SERVICE.getAllAndDispatch(null));
+        dispatch(spinnerActions.setLoadingOff());
       })
       .catch((err) => {
         setTimeout(() => {
@@ -57,17 +76,14 @@ const ProjectFormEdit = ({
     form.resetFields();
   };
 
-  const initialValues = {
-    categoryId: projectCategoryList[0]?.id || 1,
-  };
-
-  const formProps = { form, onFinish, layout, size, initialValues };
+  const formProps = { form, onFinish, layout, size };
   const labelItem = (labelText: string) => (
     <Label className="text-sm font-medium text-pickled-bluewood-400 capitalize">
       {labelText}
     </Label>
   );
 
+  // console.log("Edit Form Rendered");
   return (
     <Form name="project_form" className="myform projectForm" {...formProps}>
       <Form.Item
@@ -88,7 +104,7 @@ const ProjectFormEdit = ({
         />
       </Form.Item>
       <Form.Item name="description" label={labelItem("description")}>
-        <CustomEditor formInstance={form} />
+        <CustomEditor formInstance={form} initialValue={project.description} />
       </Form.Item>
       <Form.Item name="categoryId" label={labelItem("Project Category")}>
         <Select className="select-category">
