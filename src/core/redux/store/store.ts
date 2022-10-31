@@ -1,13 +1,20 @@
 /* import packages */
 import { configureStore } from "@reduxjs/toolkit";
 
+import generalReducer from "../slice/generalSlice";
 import userReducer from "../slice/userSlice";
 import spinnerReducer from "../slice/spinnerSlice";
-import generalReducer from "../slice/generalSlice";
 import projectReducer from "../slice/projectSlice";
+import projectCategoryReducer from "../slice/projectCategorySlice";
 
 const store = configureStore({
-  reducer: { userReducer, projectReducer, spinnerReducer, generalReducer },
+  reducer: {
+    userReducer,
+    projectReducer,
+    spinnerReducer,
+    generalReducer,
+    projectCategoryReducer,
+  },
   devTools: true,
 });
 

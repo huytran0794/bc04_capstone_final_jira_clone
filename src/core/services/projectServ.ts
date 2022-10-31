@@ -1,13 +1,31 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { message } from "antd";
+import { InterfaceProject } from "../models/Project/Project.interface";
 import { projectActions } from "../redux/slice/projectSlice";
-import { AXIOS_INSTANCE_GENERATOR, BASE_PROJECT_URL } from "./configURL";
+import {
+  AXIOS_INSTANCE_GENERATOR,
+  BASE_PROJECT_URL,
+  BASE_PROJECT_CATEGORY_URL,
+} from "./configURL";
 
 const PROJECT_SERVICE = {
+  createProject: async (projectInfo: InterfaceProject) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).post(
+      "createProjectAuthorize",
+      projectInfo
+    );
+    return data;
+  },
   getAll: async () => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).get(
       `/getAllProject`
     );
+    return data;
+  },
+  getAllProjectCategory: async () => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(
+      BASE_PROJECT_CATEGORY_URL
+    ).get("");
     return data;
   },
   getAllAndDispatch:

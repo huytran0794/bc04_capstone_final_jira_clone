@@ -25,6 +25,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../core/hooks/redux/useRedux";
+import SectionWrapper from "../../core/Components/SectionWrapper/SectionWrapper";
 
 export default function ProjectManagement() {
   const dispatch = useAppDispatch();
@@ -185,12 +186,15 @@ export default function ProjectManagement() {
   ];
   console.log("rendered");
   return (
-    <div>
-      <Table
-        columns={columns}
-        dataSource={projectList}
-        rowKey={(project) => project.id.toString()}
-      />
-    </div>
+    <SectionWrapper
+      title="Project Management"
+      content={
+        <Table
+          columns={columns}
+          dataSource={projectList}
+          rowKey={(project) => project.id.toString()}
+        />
+      }
+    />
   );
 }
