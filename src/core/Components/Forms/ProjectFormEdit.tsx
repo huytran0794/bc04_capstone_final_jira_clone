@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 /* import antd components */
 import { Button, Form, Input, Select } from "antd";
 
@@ -9,6 +11,7 @@ import { InterfaceProject } from "../../models/Project/Project.interface";
 import Label from "./Label/Label";
 import CustomEditor from "../tinyEditor/CustomEditor";
 import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProjectCatList";
+import { createAlias } from "../../utils/string.utils";
 
 import { spinnerActions } from "../../redux/slice/spinnerSlice";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +19,10 @@ import { projectActions } from "../../redux/slice/projectSlice";
 import toastify from "../../utils/toastify/toastifyUtils";
 import PROJECT_SERVICE from "../../services/projectServ";
 
-const ProjectForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
+const ProjectFormEdit = ({
+  layout = "horizontal",
+  size = "large",
+}: FormProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   useFetchProjectCatList(dispatch);
@@ -27,6 +33,8 @@ const ProjectForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
   const [form] = Form.useForm();
   const { Option } = Select;
   const onFinish = (values: InterfaceProject) => {
+    values.alias = createAlias(values.projectName);
+
     dispatch(spinnerActions.setLoadingOn());
     PROJECT_SERVICE.createProject(values)
       .then((res) => {
@@ -100,7 +108,7 @@ const ProjectForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
           htmlType="submit"
           className="btn-login bg-science-blue-500 text-white border-none rounded-[4px] hover:bg-[#0065ff] font-semibold text-base transition-all duration-[400ms] order-2"
         >
-          Create project
+          Update project
         </Button>
         <Button
           htmlType="button"
@@ -114,4 +122,4 @@ const ProjectForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
   );
 };
 
-export default ProjectForm;
+export default ProjectFormEdit;

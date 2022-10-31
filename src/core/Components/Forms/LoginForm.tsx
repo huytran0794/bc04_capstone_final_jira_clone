@@ -1,5 +1,3 @@
-import React, { useEffect } from "react";
-
 /* import antd components */
 import { Button, Form, Input } from "antd";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
@@ -10,19 +8,23 @@ import { useNavigate } from "react-router-dom";
 
 /* import local interface */
 import { FormProps } from "../../models/common/FormProps.interface";
-
-import { LOCAL_SERVICE } from "../../services/localServ";
-import toastify from "../../utils/toastify/toastifyUtils";
-import { useAppDispatch } from "../../hooks/redux/useRedux";
-import USER_SERVICE from "../../services/userServ";
-import { userActions } from "../../redux/slice/userSlice";
-import { spinnerActions } from "../../redux/slice/spinnerSlice";
 import { User } from "../../models/User/User.interface";
 
+/* import local service */
+import USER_SERVICE from "../../services/userServ";
+import { LOCAL_SERVICE } from "../../services/localServ";
+
+/* import redux function */
+import { useAppDispatch } from "../../hooks/redux/useRedux";
+import { userActions } from "../../redux/slice/userSlice";
+import { spinnerActions } from "../../redux/slice/spinnerSlice";
+
+/* import local component */
+import toastify from "../../utils/toastify/toastifyUtils";
 const LoginForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  
+
   const onFinish = (values: User) => {
     dispatch(spinnerActions.setLoadingOn());
     USER_SERVICE.login(values)

@@ -1,44 +1,55 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
+
+// import redux
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../core/hooks/redux/useRedux";
+import { useNavigate } from "react-router-dom";
+
+// import custom Hooks
+import projectHooks from "../../../core/hooks/ProjectHooks/projectHooks";
 
 // import local interface
-import {
-  InterfaceMember,
-  InterfaceProject,
-} from "../../../core/models/Project/Project.interface";
+import { InterfaceProject } from "../../../core/models/Project/Project.interface";
 
-// import Project Service
-import PROJECT_SERVICE from "../../../core/services/projectServ";
-
-// import antd components
-import { SearchOutlined } from "@ant-design/icons";
-import { Button, Input, Space, Table } from "antd";
+// import local components
+import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapper";
+import ProjectActionButtons from "./ProjectActionButtons";
+import ProjectMembers from "./ProjectMembers";
+import ButtonLocal from "../../../core/Components/Utils/ButtonLocal";
 
 // import antd type
 import type { ColumnsType, ColumnType } from "antd/es/table";
 import type { FilterConfirmProps } from "antd/es/table/interface";
-import type { InputRef } from "antd";
+import { InputRef } from "antd";
+
+// import antd components
+import { SearchOutlined } from "@ant-design/icons";
+import { Button, Input, Space, Table, Tag } from "antd";
 
 // import Highlighter component
 import Highlighter from "react-highlight-words";
 
-export default function ProjectManagement() {
-  const [allProjects, setAllProjects] = useState<
-    InterfaceProject[] | undefined
-  >(undefined);
-  useEffect(() => {
-    PROJECT_SERVICE.getAll()
-      .then((res) => {
-        console.log(res);
-        setAllProjects(res.content);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+// import other library
+import clsx from "clsx";
 
-  type ProjectIndex = keyof InterfaceProject;
+export default function ProjectManagement() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const projectList = useAppSelector(
+    (state) => state.projectReducer.projectList
+  );
+
+  projectHooks.useFetchProjectList(dispatch, null);
+
+  const handleOpenCreateProject = () => {
+    navigate("create-project");
+  };
 
   //antd control
+  type ProjectIndex = keyof InterfaceProject;
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -145,8 +156,11 @@ export default function ProjectManagement() {
       key: "projectName",
       width: "20%",
       ...getColumnSearchProps("projectName"),
-      sorter: (a, b) => a.projectName.length - b.projectName.length,
+      sorter: (a, b) => b.projectName.localeCompare(a.projectName),
       sortDirections: ["descend", "ascend"],
+      render: (projectName) => (
+        <span className="text-lg font-semibold">{projectName}</span>
+      ),
     },
     {
       title: "Category",
@@ -159,39 +173,55 @@ export default function ProjectManagement() {
       dataIndex: "creator",
       key: "creator",
       width: "20%",
-      render: (creator) => <>{creator.name}</>,
+      render: (creator) => <Tag color="lime">{creator.name}</Tag>,
     },
     {
       title: "Members",
       dataIndex: "members",
       key: "members",
       width: "20%",
-      render: (members) => {
-        return (
-          <div className="space-x-2">
-            {members.map((member: InterfaceMember) => (
-              <span>{member.name}</span>
-            ))}
-          </div>
-        );
-      },
+      render: (members, project) => (
+        <ProjectMembers
+          projectID={project.id}
+          projectName={project.projectName}
+          members={members}
+        />
+      ),
     },
     {
       title: "Edit",
-      dataIndex: "edit",
       key: "edit",
-      render: () => (
-        <div>
-          <button>Edit</button>
-          <button>Delete</button>
-        </div>
-      ),
+      render: (_, project) => <ProjectActionButtons project={project} />,
     },
   ];
-  
+  // console.log("rendered");
   return (
-    <div>
-      <Table columns={columns} dataSource={allProjects} />
-    </div>
+    <SectionWrapper
+      content={
+        <>
+          <div className="mb-2 flex justify-between items-center">
+            <h3
+              className={clsx(
+                "title",
+                "uppercase text-[#172B4D] text-2xl font-extrabold tracking-wide"
+              )}
+            >
+              PROJECT MANAGEMENT
+            </h3>
+            <ButtonLocal
+              baseColor="red"
+              handleOnClick={handleOpenCreateProject}
+            >
+              Create Project
+            </ButtonLocal>
+          </div>
+          <Table
+            columns={columns}
+            dataSource={projectList}
+            rowKey={(project) => project.id.toString()}
+          />
+        </>
+      }
+    />
   );
 }
