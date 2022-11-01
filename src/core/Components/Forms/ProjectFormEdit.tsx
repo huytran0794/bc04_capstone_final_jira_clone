@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // import redux
@@ -36,6 +36,9 @@ const ProjectFormEdit = ({
   const projectCategoryList = useAppSelector(
     (state) => state.projectCategoryReducer.projectCategoryArr
   );
+  // let [initDescription, setInitDescription] = useState<string>(
+  //   project.description
+  // );
 
   const [form] = Form.useForm();
   const { Option } = Select;
@@ -47,6 +50,7 @@ const ProjectFormEdit = ({
 
   useFetchProjectCatList(dispatch);
   useEffect(() => {
+    // console.log("Editor useEffect");
     form.setFieldsValue(initialValues);
   }, [form, initialValues]);
 
@@ -83,7 +87,7 @@ const ProjectFormEdit = ({
     </Label>
   );
 
-  // console.log("Edit Form Rendered");
+  console.log("Edit Form Rendered");
   return (
     <Form name="project_form" className="myform projectForm" {...formProps}>
       <Form.Item

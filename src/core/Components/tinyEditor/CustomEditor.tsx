@@ -14,8 +14,10 @@ const CustomEditor = ({
   const handleChange = (newValue: string, editor: TinyMCEEditor) => {
     formInstance?.setFieldValue("description", newValue);
   };
+  // console.log("Custom Editor Rendered");
   return (
     <Editor
+      value={formInstance?.getFieldValue("description")}
       onInit={(evt, editor) => (editorRef.current = editor)}
       init={initEditorConfig}
       onEditorChange={handleChange}
