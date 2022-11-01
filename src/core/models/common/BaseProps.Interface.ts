@@ -10,7 +10,6 @@ export interface FormComponentProps extends BaseProps {
 
 export interface EditorProps extends FormComponentProps {
   formInstance?: FormInstance;
-  initialValue?: string;
 }
 
 export interface ButtonLocalProps extends BaseProps {

@@ -4,17 +4,12 @@ import { Editor as TinyMCEEditor } from "tinymce";
 import { EditorProps } from "../../models/common/BaseProps.Interface";
 import { initEditorConfig } from "./editorConfig";
 
-const CustomEditor = ({
-  name,
-  className,
-  formInstance,
-  initialValue,
-}: EditorProps) => {
+const CustomEditor = ({ name, className, formInstance }: EditorProps) => {
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const handleChange = (newValue: string, editor: TinyMCEEditor) => {
     formInstance?.setFieldValue("description", newValue);
   };
-  // console.log("Custom Editor Rendered");
+
   return (
     <Editor
       value={formInstance?.getFieldValue("description")}

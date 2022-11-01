@@ -108,7 +108,7 @@ const ProjectFormEdit = ({
         />
       </Form.Item>
       <Form.Item name="description" label={labelItem("description")}>
-        <CustomEditor formInstance={form} initialValue={project.description} />
+        <CustomEditor formInstance={form} />
       </Form.Item>
       <Form.Item name="categoryId" label={labelItem("Project Category")}>
         <Select className="select-category">
