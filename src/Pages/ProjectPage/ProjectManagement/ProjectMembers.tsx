@@ -9,6 +9,8 @@ import { InterfaceProjectMembersComponent } from "../../../core/models/Project/P
 // import local compoment
 import ProjectMembersAddNew from "./ProjectMembersAddNew";
 import ProjectMembersShowAll from "./ProjectMembersShowAll";
+import { PlusOutlined } from "@ant-design/icons";
+import clsx from "clsx";
 
 export default function ProjectMembers({
   projectID,
@@ -37,9 +39,9 @@ export default function ProjectMembers({
       </>
     );
   };
-
+  const addSpaceClass = renderMembers() ? "gap-3" : "";
   return (
-    <div className="flex items-center">
+    <div className={clsx("flex items-center", addSpaceClass)}>
       <Popover
         className="cursor-pointer"
         placement="bottom"
@@ -49,7 +51,7 @@ export default function ProjectMembers({
         trigger="click"
       >
         <div className="flex">
-          <Avatar.Group size={40}>{renderMembers()}</Avatar.Group>
+          <Avatar.Group size={35}>{renderMembers()}</Avatar.Group>
         </div>
       </Popover>
       <Popover
@@ -62,9 +64,10 @@ export default function ProjectMembers({
         }
         trigger="click"
       >
-        <div className="w-10 h-10 ml-2 flex justify-center items-center bg-orange-400 rounded-full text-white cursor-pointer">
+        {/* <div className="w-10 h-10 ml-2 flex justify-center items-center bg-orange-400 rounded-full text-white cursor-pointer">
           <span className="text-xl font-semibold">+</span>
-        </div>
+        </div> */}
+        <Avatar className="flex justify-center items-center bg-orange-400 text-white cursor-pointer" icon={<PlusOutlined className="text-sm" />} />
       </Popover>
     </div>
   );

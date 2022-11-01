@@ -10,6 +10,7 @@ export default function ButtonLocal({
   children,
   baseColor,
   handleOnClick,
+  className,
 }: ButtonLocalProps) {
   /* 
 
@@ -31,7 +32,8 @@ export default function ButtonLocal({
         `bg-${baseColor}-500 hover:bg-${baseColor}-600`,
         `text-white text-lg font-medium`,
         `focus:outline-none focus:ring-4 focus:ring-${baseColor}-300`,
-        `transition duration-300`
+        `transition duration-300`,
+        className
       )}
       onClick={handleOnClick}
     >
