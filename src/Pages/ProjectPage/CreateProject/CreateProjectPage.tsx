@@ -7,7 +7,7 @@ import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
 
 // import local component
 import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapper";
-import ProjectFormEdit from "../../../core/Components/Forms/ProjectFormEdit";
+import ProjectForm from "../../../core/Components/Forms/ProjectForm";
 
 // import local Services
 import PROJECT_SERVICE from "../../../core/services/projectServ";
@@ -41,7 +41,7 @@ const CreateProjectPage = () => {
   const pageContent = (
     <div className="form-wrapper">
       <div className="form-body">
-        <ProjectFormEdit
+        <ProjectForm
           layout="vertical"
           size="large"
           confirmText="Create Project"

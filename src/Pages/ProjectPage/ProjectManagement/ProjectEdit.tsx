@@ -13,7 +13,7 @@ import { generalActions } from "../../../core/redux/slice/generalSlice";
 import PROJECT_SERVICE from "../../../core/services/projectServ";
 
 // import local component
-import ProjectFormEdit from "../../../core/Components/Forms/ProjectFormEdit";
+import ProjectForm from "../../../core/Components/Forms/ProjectForm";
 
 // import utils
 import toastify from "../../../core/utils/toastify/toastifyUtils";
@@ -49,7 +49,7 @@ export default function ProjectEdit({
   return (
     <div className="form-wrapper">
       <div className="form-body">
-        <ProjectFormEdit
+        <ProjectForm
           layout="vertical"
           size="large"
           project={project}

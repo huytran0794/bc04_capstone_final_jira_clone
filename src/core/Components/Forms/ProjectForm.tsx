@@ -1,65 +1,84 @@
+import { useEffect } from "react";
+
+// import redux
+import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
+import { spinnerActions } from "../../redux/slice/spinnerSlice";
+import { generalActions } from "../../redux/slice/generalSlice";
+
+// import custom Hooks
+import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProjectCatList";
+
+// import local services
+import PROJECT_SERVICE from "../../services/projectServ";
+
+/* import local interface */
+import { InterfaceProjectFormComponent } from "../../models/common/FormProps.interface";
+import {
+  InterfaceProject,
+  InterfaceProjectUpdate,
+} from "../../models/Project/Project.interface";
+
+// import local component
+import Label from "./Label/Label";
+import toastify from "../../utils/toastify/toastifyUtils";
+
 /* import antd components */
 import { Button, Form, Input, Select } from "antd";
 
-/* import local interface */
-import { FormProps } from "../../models/common/FormProps.interface";
-
-import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
-import { InterfaceProject } from "../../models/Project/Project.interface";
-import Label from "./Label/Label";
+// import other component
 import CustomEditor from "../tinyEditor/CustomEditor";
-import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProjectCatList";
 
-import { spinnerActions } from "../../redux/slice/spinnerSlice";
-import { useNavigate } from "react-router-dom";
-import { projectActions } from "../../redux/slice/projectSlice";
-import toastify from "../../utils/toastify/toastifyUtils";
-import PROJECT_SERVICE from "../../services/projectServ";
-
-const ProjectForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
+const ProjectForm = ({
+  layout = "horizontal",
+  size = "large",
+  project,
+  confirmText,
+  handleOnFinish,
+}: InterfaceProjectFormComponent) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  useFetchProjectCatList(dispatch);
   const projectCategoryList = useAppSelector(
     (state) => state.projectCategoryReducer.projectCategoryArr
   );
+  // let [initDescription, setInitDescription] = useState<string>(
+  //   project.description
+  // );
 
   const [form] = Form.useForm();
   const { Option } = Select;
-  const onFinish = (values: InterfaceProject) => {
-    dispatch(spinnerActions.setLoadingOn());
-    PROJECT_SERVICE.createProject(values)
-      .then((res) => {
-        dispatch(projectActions.createProject(res.content));
-        toastify("success", "Create project successfully !");
-        setTimeout(() => {
-          navigate("/", { replace: true });
-          dispatch(spinnerActions.setLoadingOff());
-        }, 2500);
-      })
-      .catch((err) => {
-        setTimeout(() => {
-          toastify("error", err.response.data.message);
-          dispatch(spinnerActions.setLoadingOff());
-        }, 2500);
-      });
+
+  const getInitialValue = () => {
+    if (project)
+      return {
+        categoryId: project!.categoryId,
+        projectName: project!.projectName,
+        description: project!.description,
+      };
+    return { categoryId: projectCategoryList[0]?.id || 1 };
+  };
+  const initialValues = getInitialValue();
+
+  useFetchProjectCatList(dispatch);
+  useEffect(() => {
+    // console.log("Editor useEffect");
+    form.setFieldsValue(initialValues);
+  }, [form, initialValues]);
+
+  const onFinish = (values: any) => {
+    handleOnFinish(values);
   };
 
   const onReset = () => {
     form.resetFields();
   };
 
-  const initialValues = {
-    categoryId: projectCategoryList[0]?.id || 1,
-  };
-
-  const formProps = { form, onFinish, layout, size, initialValues };
+  const formProps = { form, onFinish, layout, size };
   const labelItem = (labelText: string) => (
     <Label className="text-sm font-medium text-pickled-bluewood-400 capitalize">
       {labelText}
     </Label>
   );
 
+  console.log("Edit Form Rendered");
   return (
     <Form name="project_form" className="myform projectForm" {...formProps}>
       <Form.Item
@@ -100,7 +119,7 @@ const ProjectForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
           htmlType="submit"
           className="btn-login bg-science-blue-500 text-white border-none rounded-[4px] hover:bg-[#0065ff] font-semibold text-base transition-all duration-[400ms] order-2"
         >
-          Create project
+          {confirmText}
         </Button>
         <Button
           htmlType="button"
