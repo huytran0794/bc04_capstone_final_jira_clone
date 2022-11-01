@@ -33,7 +33,7 @@ const ProjectForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
         dispatch(projectActions.createProject(res.content));
         toastify("success", "Create project successfully !");
         setTimeout(() => {
-          navigate("/projectmanagement", { replace: true });
+          navigate("/");
           dispatch(spinnerActions.setLoadingOff());
         }, 2500);
       })

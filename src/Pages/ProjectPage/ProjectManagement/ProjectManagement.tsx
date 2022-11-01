@@ -167,13 +167,14 @@ export default function ProjectManagement() {
       dataIndex: "categoryName",
       key: "categoryName",
       width: "20%",
+      render: (categoryName) => <span className="text-base">{categoryName}</span>
     },
     {
       title: "Creator",
       dataIndex: "creator",
       key: "creator",
       width: "20%",
-      render: (creator) => <Tag color="lime">{creator.name}</Tag>,
+      render: (creator) => <Tag color="lime" className="text-sm">{creator.name}</Tag>,
     },
     {
       title: "Members",
@@ -209,8 +210,8 @@ export default function ProjectManagement() {
               PROJECT MANAGEMENT
             </h3>
             <ButtonLocal
-              baseColor="red"
               handleOnClick={handleOpenCreateProject}
+              className="bg-science-blue-500 text-base border-none rounded-md hover:bg-[#0065ff] font-semibold py-1 px-3"
             >
               Create Project
             </ButtonLocal>
