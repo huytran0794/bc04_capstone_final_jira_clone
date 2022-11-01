@@ -12,3 +12,8 @@ export interface FormProps {
 export interface InterfaceFromEditComponent extends FormProps {
   project: InterfaceProject;
 }
+export interface InterfaceProjectFormComponent extends FormProps {
+  project?: InterfaceProject;
+  confirmText: string;
+  handleOnFinish: (value: any) => void;
+}

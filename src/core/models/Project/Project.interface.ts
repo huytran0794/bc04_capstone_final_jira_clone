@@ -5,12 +5,6 @@ export interface InterfaceCreator {
   id: number;
 }
 
-export interface InterfaceMember {
-  userId: number;
-  name: string;
-  avatar: number;
-}
-
 export interface InterfaceProject {
   id: number;
   alias: string;
@@ -19,7 +13,7 @@ export interface InterfaceProject {
   projectName: string;
   description: string;
   creator: InterfaceCreator;
-  members: InterfaceMember[];
+  members: Partial<User>[];
   deleted: boolean;
 }
 
@@ -37,20 +31,17 @@ export interface InterfaceProjectEditComponent {
 
 export interface InterfaceProjectActionButtonsComponent {
   project: InterfaceProject;
-  // setAllProjects: React.Dispatch<
-  //   React.SetStateAction<InterfaceProject[] | undefined>
-  // >;
 }
 
 export interface InterfaceProjectMembersComponent {
   projectID: number;
   projectName: string;
-  members: InterfaceMember[];
+  members: Partial<User>[];
 }
 
 export interface InterfaceProjectMembersShowAllComponent {
   projectID: number;
-  members: InterfaceMember[];
+  members: Partial<User>[];
 }
 
 export interface InterfaceProjectMembersAddNewComponent {

@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 // import redux
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
@@ -13,8 +12,11 @@ import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProject
 import PROJECT_SERVICE from "../../services/projectServ";
 
 /* import local interface */
-import { InterfaceFromEditComponent } from "../../models/common/FormProps.interface";
-import { InterfaceProjectUpdate } from "../../models/Project/Project.interface";
+import { InterfaceProjectFormComponent } from "../../models/common/FormProps.interface";
+import {
+  InterfaceProject,
+  InterfaceProjectUpdate,
+} from "../../models/Project/Project.interface";
 
 // import local component
 import Label from "./Label/Label";
@@ -30,9 +32,10 @@ const ProjectFormEdit = ({
   layout = "horizontal",
   size = "large",
   project,
-}: InterfaceFromEditComponent) => {
+  confirmText,
+  handleOnFinish,
+}: InterfaceProjectFormComponent) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const projectCategoryList = useAppSelector(
     (state) => state.projectCategoryReducer.projectCategoryArr
   );
@@ -42,11 +45,17 @@ const ProjectFormEdit = ({
 
   const [form] = Form.useForm();
   const { Option } = Select;
-  const initialValues = {
-    categoryId: project.categoryId,
-    projectName: project.projectName,
-    description: project.description,
+
+  const getInitialValue = () => {
+    if (project)
+      return {
+        categoryId: project!.categoryId,
+        projectName: project!.projectName,
+        description: project!.description,
+      };
+    return { categoryId: projectCategoryList[0]?.id || 1 };
   };
+  const initialValues = getInitialValue();
 
   useFetchProjectCatList(dispatch);
   useEffect(() => {
@@ -54,26 +63,8 @@ const ProjectFormEdit = ({
     form.setFieldsValue(initialValues);
   }, [form, initialValues]);
 
-  const onFinish = (values: InterfaceProjectUpdate) => {
-    dispatch(spinnerActions.setLoadingOn());
-    const updateProject = {
-      ...values,
-      id: project.id,
-      creator: project.creator.id,
-    };
-    PROJECT_SERVICE.update(project.id, updateProject)
-      .then((res) => {
-        toastify("success", "Updated project successfully !");
-        dispatch(generalActions.closeDrawer());
-        dispatch(PROJECT_SERVICE.getAllAndDispatch(null));
-        dispatch(spinnerActions.setLoadingOff());
-      })
-      .catch((err) => {
-        setTimeout(() => {
-          toastify("error", err.response.data.message);
-          dispatch(spinnerActions.setLoadingOff());
-        }, 2500);
-      });
+  const onFinish = (values: any) => {
+    handleOnFinish(values);
   };
 
   const onReset = () => {
@@ -128,7 +119,7 @@ const ProjectFormEdit = ({
           htmlType="submit"
           className="btn-login bg-science-blue-500 text-white border-none rounded-[4px] hover:bg-[#0065ff] font-semibold text-base transition-all duration-[400ms] order-2"
         >
-          Update project
+          {confirmText}
         </Button>
         <Button
           htmlType="button"
