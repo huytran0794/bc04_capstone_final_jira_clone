@@ -158,8 +158,15 @@ export default function ProjectManagement() {
       ...getColumnSearchProps("projectName"),
       sorter: (a, b) => b.projectName.localeCompare(a.projectName),
       sortDirections: ["descend", "ascend"],
-      render: (projectName) => (
-        <span className="text-lg font-semibold">{projectName}</span>
+      render: (projectName, project) => (
+        <span
+          className="text-lg font-semibold cursor-pointer"
+          onClick={() => {
+            window.location.href = `/project-details/${project.id}`;
+          }}
+        >
+          {projectName}
+        </span>
       ),
     },
     {

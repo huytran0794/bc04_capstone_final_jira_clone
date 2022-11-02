@@ -1,7 +1,7 @@
 import { FormInstance } from "antd";
 export interface BaseProps {
-  className?: string,
-  children?: React.ReactNode,
+  className?: string;
+  children?: React.ReactNode;
 }
 
 export interface FormComponentProps extends BaseProps {
@@ -11,7 +11,6 @@ export interface FormComponentProps extends BaseProps {
 export interface EditorProps extends FormComponentProps {
   formInstance?: FormInstance;
 }
-
 
 export interface ButtonLocalProps extends BaseProps {
   baseColor:
