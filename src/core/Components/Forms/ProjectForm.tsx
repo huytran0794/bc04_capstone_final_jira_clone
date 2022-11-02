@@ -2,25 +2,18 @@ import { useEffect } from "react";
 
 // import redux
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
-import { spinnerActions } from "../../redux/slice/spinnerSlice";
-import { generalActions } from "../../redux/slice/generalSlice";
 
 // import custom Hooks
 import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProjectCatList";
 
-// import local services
-import PROJECT_SERVICE from "../../services/projectServ";
 
 /* import local interface */
 import { InterfaceProjectFormComponent } from "../../models/common/FormProps.interface";
-import {
-  InterfaceProject,
-  InterfaceProjectUpdate,
-} from "../../models/Project/Project.interface";
+
 
 // import local component
 import Label from "./Label/Label";
-import toastify from "../../utils/toastify/toastifyUtils";
+
 
 /* import antd components */
 import { Button, Form, Input, Select } from "antd";
@@ -39,9 +32,6 @@ const ProjectForm = ({
   const projectCategoryList = useAppSelector(
     (state) => state.projectCategoryReducer.projectCategoryArr
   );
-  // let [initDescription, setInitDescription] = useState<string>(
-  //   project.description
-  // );
 
   const [form] = Form.useForm();
   const { Option } = Select;
