@@ -49,7 +49,7 @@ export default function ProjectMembersShowAll({
                 </span>
               }
               onConfirm={() => {
-                handleDeleteMember(projectID, member.userId);
+                handleDeleteMember(projectID, member.userId!);
               }}
               okText="Yes"
               cancelText="No"

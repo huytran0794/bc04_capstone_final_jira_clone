@@ -1,5 +1,8 @@
 import { message } from "antd";
-import { InterfaceProject } from "../models/Project/Project.interface";
+import {
+  InterfaceProject,
+  InterfaceProjectUpdate,
+} from "../models/Project/Project.interface";
 import { projectActions } from "../redux/slice/projectSlice";
 import { AppDispatch } from "../redux/store/store";
 import {
@@ -46,6 +49,13 @@ const PROJECT_SERVICE = {
   getDetails: async (projectID: number) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).get(
       `/getProjectDetail?id=${projectID}`
+    );
+    return data;
+  },
+  update: async (projectId: number, updatedProject: InterfaceProjectUpdate) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).put(
+      `/updateProject?projectId=${projectId}`,
+      updatedProject
     );
     return data;
   },

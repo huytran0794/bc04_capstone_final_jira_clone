@@ -22,7 +22,7 @@ export default function ProjectMembers({
     if (totalMembers === 0) return null;
     if (totalMembers <= 2) {
       return members.map((member, index) => (
-        <Avatar src={member.avatar} key={member.userId.toString() + index} />
+        <Avatar src={member.avatar} key={member.userId!.toString() + index} />
       ));
     }
     const membersExcludeLast = members.slice(0, 2);
@@ -30,7 +30,7 @@ export default function ProjectMembers({
     return (
       <>
         {membersExcludeLast.map((member, index) => (
-          <Avatar src={member.avatar} key={member.userId.toString() + index} />
+          <Avatar src={member.avatar} key={member.userId!.toString() + index} />
         ))}
 
         <Avatar className="bg-orange-100 text-orange-500 text-sm">

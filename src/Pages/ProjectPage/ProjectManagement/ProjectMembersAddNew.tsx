@@ -20,7 +20,7 @@ export default function ProjectMembersAddNew({
   projectName,
 }: InterfaceProjectMembersAddNewComponent) {
   let searchRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [userList, setUserList] = useState<User[] | null>(null);
+  const [userList, setUserList] = useState<Partial<User>[] | null>(null);
   const dispatch = useAppDispatch();
 
   const getUserList = (keyword: string) => {
@@ -48,7 +48,7 @@ export default function ProjectMembersAddNew({
       });
   };
 
-  let renderUsers = (userList: User[] | null) => {
+  let renderUsers = (userList: Partial<User>[] | null) => {
     if (!userList) return null;
     return userList.map((user, index) => (
       <Popconfirm
