@@ -14,7 +14,8 @@ export interface InterfaceProject {
   description: string;
   creator: InterfaceCreator;
   members: Partial<User>[];
-  deleted: boolean;
+  lstTask: ITaskDetailList[];
+  // deleted: boolean;
 }
 
 export interface InterfaceProjectUpdate {
@@ -47,4 +48,34 @@ export interface InterfaceProjectMembersShowAllComponent {
 export interface InterfaceProjectMembersAddNewComponent {
   projectID: number;
   projectName: string;
+}
+
+// project category interface
+export interface IProjectCategory {
+  id: number;
+  projectCategoryName: string;
+}
+
+export interface IProjectDetail {
+  projectDetail: InterfaceProject;
+}
+
+export interface ITaskDetailList {
+  statusId: number;
+  statusName: string;
+  alias: string;
+  lstTaskDeTail: ITask[];
+}
+export interface ITask {
+  listUserAsign: [];
+  taskId: string;
+  taskName: string;
+  description: string;
+  statusId: string;
+  originalEstimate: number;
+  timeTrackingSpent: number;
+  timeTrackingRemaining: number;
+  projectId: number;
+  typeId: number;
+  priorityId: number;
 }
