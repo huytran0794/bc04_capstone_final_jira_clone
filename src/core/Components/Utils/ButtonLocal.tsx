@@ -11,7 +11,7 @@ export default function ButtonLocal({
   baseColor,
   handleOnClick,
   className,
-}: ButtonLocalProps) {
+}: Partial<ButtonLocalProps>) {
   /* 
 
     bg-red-500 bg-red-600 
