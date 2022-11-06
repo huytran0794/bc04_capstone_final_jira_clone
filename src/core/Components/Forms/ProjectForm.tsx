@@ -2,25 +2,15 @@ import { useEffect } from "react";
 
 // import redux
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
-import { spinnerActions } from "../../redux/slice/spinnerSlice";
-import { generalActions } from "../../redux/slice/generalSlice";
 
 // import custom Hooks
 import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProjectCatList";
 
-// import local services
-import PROJECT_SERVICE from "../../services/projectServ";
-
 /* import local interface */
 import { InterfaceProjectFormComponent } from "../../models/common/FormProps.interface";
-import {
-  InterfaceProject,
-  InterfaceProjectUpdate,
-} from "../../models/Project/Project.interface";
 
 // import local component
 import Label from "./Label/Label";
-import toastify from "../../utils/toastify/toastifyUtils";
 
 /* import antd components */
 import { Button, Form, Input, Select } from "antd";
@@ -39,9 +29,6 @@ const ProjectForm = ({
   const projectCategoryList = useAppSelector(
     (state) => state.projectCategoryReducer.projectCategoryArr
   );
-  // let [initDescription, setInitDescription] = useState<string>(
-  //   project.description
-  // );
 
   const [form] = Form.useForm();
   const { Option } = Select;
@@ -59,7 +46,6 @@ const ProjectForm = ({
 
   useFetchProjectCatList(dispatch);
   useEffect(() => {
-    // console.log("Editor useEffect");
     form.setFieldsValue(initialValues);
   }, [form, initialValues]);
 
@@ -78,7 +64,7 @@ const ProjectForm = ({
     </Label>
   );
 
-  console.log("Edit Form Rendered");
+  // console.log("Project Form Rendered");
   return (
     <Form name="project_form" className="myform projectForm" {...formProps}>
       <Form.Item
@@ -101,7 +87,13 @@ const ProjectForm = ({
       <Form.Item name="description" label={labelItem("description")}>
         <CustomEditor formInstance={form} />
       </Form.Item>
-      <Form.Item name="categoryId" label={labelItem("Project Category")}>
+      <Form.Item
+        name="categoryId"
+        rules={[
+          { required: true, message: "Please do not leave Category empty" },
+        ]}
+        label={labelItem("Project Category")}
+      >
         <Select className="select-category">
           {/* map project category list */}
           {projectCategoryList.map((cat, idx) => {

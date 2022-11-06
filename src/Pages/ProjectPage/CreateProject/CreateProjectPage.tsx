@@ -5,6 +5,9 @@ import { useAppDispatch } from "../../../core/hooks/redux/useRedux";
 import { projectActions } from "../../../core/redux/slice/projectSlice";
 import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
 
+// import local Interface
+import { InterfaceProject } from "../../../core/models/Project/Project.interface";
+
 // import local component
 import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapper";
 import ProjectForm from "../../../core/Components/Forms/ProjectForm";
@@ -19,7 +22,7 @@ const CreateProjectPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleOnFinish = (values: any) => {
+  const handleOnFinish = (values: InterfaceProject) => {
     dispatch(spinnerActions.setLoadingOn());
     PROJECT_SERVICE.createProject(values)
       .then((res) => {
