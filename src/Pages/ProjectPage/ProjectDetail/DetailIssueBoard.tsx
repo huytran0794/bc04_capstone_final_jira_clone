@@ -1,8 +1,9 @@
 import { Avatar } from 'antd';
 import React from 'react'
 import SimpleMemberAvatar from '../../../core/Components/Avatar/SimpleMemberAvatar';
-import { InterfaceProject, IProjectDetail, ITask, ITaskDetailList } from '../../../core/models/Project/Project.interface';
+import { IProjectDetail } from '../../../core/models/Project/Project.interface';
 import { BsFillBookmarkFill } from "react-icons/bs"
+import { ITaskDetailList } from '../../../core/models/Task/Task.Interface';
 const DetailIssueBoard = ({ projectDetail }: Partial<IProjectDetail>) => {
     const projectBoard = (
         <div className="wrapper project__board flex items-center gap-5">

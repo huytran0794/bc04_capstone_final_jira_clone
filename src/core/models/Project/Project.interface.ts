@@ -1,3 +1,4 @@
+import { ITaskDetailList } from "../Task/Task.Interface";
 import { User } from "../User/User.interface";
 
 export interface InterfaceCreator {
@@ -60,22 +61,4 @@ export interface IProjectDetail {
   projectDetail: InterfaceProject;
 }
 
-export interface ITaskDetailList {
-  statusId: number;
-  statusName: string;
-  alias: string;
-  lstTaskDeTail: ITask[];
-}
-export interface ITask {
-  listUserAsign: [];
-  taskId: string;
-  taskName: string;
-  description: string;
-  statusId: string;
-  originalEstimate: number;
-  timeTrackingSpent: number;
-  timeTrackingRemaining: number;
-  projectId: number;
-  typeId: number;
-  priorityId: number;
-}
+
