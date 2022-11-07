@@ -23,7 +23,7 @@ const CreateProjectPage = () => {
     dispatch(spinnerActions.setLoadingOn());
     PROJECT_SERVICE.createProject(values)
       .then((res) => {
-        dispatch(projectActions.createProject(res.content));
+        // dispatch(projectActions.createProject(res.content));
         toastify("success", "Create project successfully !");
         setTimeout(() => {
           navigate("/", { replace: true });
@@ -56,6 +56,7 @@ const CreateProjectPage = () => {
         title="Add project-details"
         subTitle="You can change these details anytime in your project settings."
         content={pageContent}
+        sectionClass="create-project-section"
       />
     </div>
   );

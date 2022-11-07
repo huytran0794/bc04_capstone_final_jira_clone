@@ -1,11 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-type ProjectCategory = {
-  [name: string]: number;
-};
+import { IProjectCategory } from "../../models/Project/Project.interface";
 
 type InitialState = {
-  projectCategoryArr: ProjectCategory[];
+  projectCategoryArr: IProjectCategory[];
 };
 
 const initialState: InitialState = {
@@ -18,8 +15,10 @@ const projectCategorySlice = createSlice({
   reducers: {
     getAllProjectCategory: (
       state,
-      action: PayloadAction<ProjectCategory[]>
+      action: PayloadAction<IProjectCategory[]>
     ) => {
+      console.log(action.payload);
+
       state.projectCategoryArr = [...action.payload];
     },
   },

@@ -13,7 +13,7 @@ export interface EditorProps extends FormComponentProps {
 }
 
 export interface ButtonLocalProps extends BaseProps {
-  baseColor:
+  baseColor?:
     | "red"
     | "orange"
     | "yellow"

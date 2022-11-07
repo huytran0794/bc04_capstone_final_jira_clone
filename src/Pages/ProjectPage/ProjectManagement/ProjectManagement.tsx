@@ -160,9 +160,9 @@ export default function ProjectManagement() {
       sortDirections: ["descend", "ascend"],
       render: (projectName, project) => (
         <span
-          className="text-lg font-semibold cursor-pointer"
+          className="text-base font-medium cursor-pointer hover:text-science-blue-200/70 transtion-all duration-700"
           onClick={() => {
-            window.location.href = `/project-details/${project.id}`;
+            window.location.href = `/project-detail/${project.id}`;
           }}
         >
           {projectName}

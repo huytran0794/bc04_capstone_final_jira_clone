@@ -46,7 +46,7 @@ const PROJECT_SERVICE = {
     ).get("");
     return data;
   },
-  getDetails: async (projectID: number) => {
+  getDetails: async (projectID: any) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).get(
       `/getProjectDetail?id=${projectID}`
     );

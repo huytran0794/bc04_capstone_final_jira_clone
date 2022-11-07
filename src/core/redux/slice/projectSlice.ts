@@ -2,17 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InterfaceProject } from "../../models/Project/Project.interface";
 
 type InitialState = {
-  project: Partial<InterfaceProject>;
+  project: InterfaceProject | undefined;
   projectList: Array<InterfaceProject> | undefined;
 };
 
 const initialState: InitialState = {
-  project: {
-    projectName: "",
-    description: "",
-    categoryId: 1,
-    alias: "",
-  },
+  project: undefined,
   projectList: undefined,
 };
 
@@ -20,10 +15,13 @@ const projectSlice = createSlice({
   name: "projectSlice",
   initialState: initialState,
   reducers: {
-    createProject: (state, action: PayloadAction<InterfaceProject>) => {
+    putProjectDetail: (state, action: PayloadAction<InterfaceProject>) => {
       state.project = action.payload;
     },
-    updateProjectList: (state, action: PayloadAction<Array<InterfaceProject>>) => {
+    updateProjectList: (
+      state,
+      action: PayloadAction<Array<InterfaceProject>>
+    ) => {
       state.projectList = action.payload;
     },
   },
