@@ -48,3 +48,7 @@ export interface InterfaceProjectMembersAddNewComponent {
   projectID: number;
   projectName: string;
 }
+
+export interface InterfaceProjectMobileSetting {
+  project: InterfaceProject;
+}

@@ -1,4 +1,5 @@
 import { FormInstance } from "antd";
+import React from "react";
 export interface BaseProps {
   className?: string;
   children?: React.ReactNode;
@@ -24,4 +25,8 @@ export interface ButtonLocalProps extends BaseProps {
     | "purple"
     | "pink";
   handleOnClick: () => void;
+}
+
+export interface ResponsiveProps {
+  children: JSX.Element;
 }
