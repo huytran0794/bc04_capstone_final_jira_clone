@@ -35,8 +35,10 @@ export default function ProjectEdit({
       .then(() => {
         toastify("success", "Updated project successfully !");
         dispatch(generalActions.closeDrawer());
-        dispatch(PROJECT_SERVICE.getAllAndDispatch(null));
-        dispatch(spinnerActions.setLoadingOff());
+        setTimeout(() => {
+          dispatch(PROJECT_SERVICE.getAllAndDispatch(null));
+          dispatch(spinnerActions.setLoadingOff());
+        }, 2500);
       })
       .catch((err) => {
         setTimeout(() => {
