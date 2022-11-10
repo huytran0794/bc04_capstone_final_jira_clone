@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // import custom Hooks
@@ -10,13 +10,16 @@ import {
   useAppSelector,
 } from "../../../core/hooks/redux/useRedux";
 
+// import local Interface
+import { InterfaceProject } from "../../../core/models/Project/Project.interface";
+
 // import local components
 import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapper";
+import ProjectMobileSettting from "./ProjectMobileSettting";
 
 // import antd components
 import { SettingOutlined } from "@ant-design/icons";
 import { Modal } from "antd";
-import ProjectMobileSettting from "./ProjectMobileSettting";
 
 export default function ProjectManagementMobile() {
   const dispatch = useAppDispatch();
@@ -24,6 +27,7 @@ export default function ProjectManagementMobile() {
   const projectList = useAppSelector(
     (state) => state.projectReducer.projectList
   );
+  const [projectSettingID, setProjectSettingID] = useState<number>(0);
 
   projectHooks.useFetchProjectList(dispatch, null);
 
@@ -32,54 +36,43 @@ export default function ProjectManagementMobile() {
   };
 
   // ANTD Modal Control
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openModalSetting, setOpenModalSetting] = useState<boolean>(false);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
 
-  const showModal = () => {
-    setOpenModal(true);
+  const showModal = (projectID: number) => {
+    setProjectSettingID(projectID);
+    setOpenModalSetting(true);
   };
 
   const handleOk = () => {
     setConfirmLoading(true);
     setTimeout(() => {
-      setOpenModal(false);
+      setOpenModalSetting(false);
       setConfirmLoading(false);
     }, 2000);
   };
 
   const handleCancel = () => {
     console.log("Clicked cancel button");
-    setOpenModal(false);
+    setOpenModalSetting(false);
   };
 
   // Render function
   const renderProjectList = () => {
     return projectList?.map((project, index) => {
       return (
-        <>
-          <div
-            className="mb-3 flex justify-between items-center"
-            key={project.id.toString() + index}
-          >
-            <p className="mb-0 pr-4 text-xl">{project.projectName}</p>
-            <SettingOutlined
-              className="text-2xl cursor-pointer"
-              onClick={() => {
-                showModal();
-              }}
-            />
-          </div>
-          <Modal
-            title="Project Setting"
-            width={"100vw"}
-            open={openModal}
-            onOk={handleOk}
-            confirmLoading={confirmLoading}
-            onCancel={handleCancel}
-          >
-            <ProjectMobileSettting project={project} />
-          </Modal>
-        </>
+        <div
+          className="mb-3 flex justify-between items-center"
+          key={project.id.toString() + index}
+        >
+          <p className="mb-0 pr-4 text-xl">{project.projectName}</p>
+          <SettingOutlined
+            className="text-2xl cursor-pointer"
+            onClick={() => {
+              showModal(project.id);
+            }}
+          />
+        </div>
       );
     });
   };
@@ -98,6 +91,17 @@ export default function ProjectManagementMobile() {
               +
             </span>
           </div>
+          <Modal
+            title="Project Setting"
+            width={"100vw"}
+            destroyOnClose={true}
+            open={openModalSetting}
+            onOk={handleOk}
+            confirmLoading={confirmLoading}
+            onCancel={handleCancel}
+          >
+            <ProjectMobileSettting projectID={projectSettingID} />
+          </Modal>
         </div>
       }
     />

@@ -55,7 +55,10 @@ export default function ProjectMembersAddNew({
         title={
           <span className="text-lg pl-1">
             Adding <span className="font-semibold">{user.name}</span> to{" "}
-            <span className="font-semibold">{projectName}</span>?
+            <span className="font-semibold">
+              {projectName ? projectName : "Project"}
+            </span>
+            ?
           </span>
         }
         onConfirm={() => {

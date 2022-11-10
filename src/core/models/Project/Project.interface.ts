@@ -40,15 +40,17 @@ export interface InterfaceProjectMembersComponent {
 }
 
 export interface InterfaceProjectMembersShowAllComponent {
-  projectID: number;
   members: Partial<User>[];
+  handleDeleteMember: (memberID: number) => void;
+  containerStyle?: string;
+  title?: string;
 }
 
 export interface InterfaceProjectMembersAddNewComponent {
   projectID: number;
-  projectName: string;
+  projectName?: string;
 }
 
 export interface InterfaceProjectMobileSetting {
-  project: InterfaceProject;
+  projectID: number;
 }

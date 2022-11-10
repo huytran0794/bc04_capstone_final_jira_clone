@@ -64,3 +64,16 @@ h6 {
 
 /* form button group styling */
 /* ================================== form item styling */
+
+/* START ================================== ANT Design component styling */
+/* START Project Management */
+/* Start Project Setting  */
+.projectSetting_members_showAll
+  .ant-collapse-item
+  .ant-collapse-content
+  .ant-collapse-content-box {
+  padding: 0;
+}
+/* End Project Setting */
+/* END Project Management */
+/* END ================================== ANT Design component styling */

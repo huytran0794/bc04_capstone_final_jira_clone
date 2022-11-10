@@ -1,35 +1,22 @@
 import React from "react";
 
 // import ant component
-import { Avatar, message, Popconfirm } from "antd";
+import { Avatar, Popconfirm } from "antd";
 import { CloseCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 // import local component Interface
 import { InterfaceProjectMembersShowAllComponent } from "../../../core/models/Project/Project.interface";
-import PROJECT_SERVICE from "../../../core/services/projectServ";
-import { useAppDispatch } from "../../../core/hooks/redux/useRedux";
 
 export default function ProjectMembersShowAll({
-  projectID,
   members,
+  handleDeleteMember,
+  containerStyle = "w-64",
+  title = "ALL MEMBERS",
 }: InterfaceProjectMembersShowAllComponent) {
-  const dispatch = useAppDispatch();
-
-  const handleDeleteMember = (projectID: number, memberID: number) => {
-    PROJECT_SERVICE.deleteMember(projectID, memberID)
-      .then((res) => {
-        console.log(res);
-        dispatch(PROJECT_SERVICE.getAllAndDispatch("Member deleted"));
-      })
-      .catch((err) => {
-        console.log(err);
-        message.error(err.response.data.content);
-      });
-  };
   return (
-    <div className="w-64">
+    <div className={containerStyle}>
       <p className="w-full mb-0 px-2 bg-gray-200 text-sm text-gray-500 font-bold">
-        ALL MEMBERS
+        {title}
       </p>
       <div className="w-full max-h-96 overflow-y-auto">
         {members.map((member, index) => (
@@ -49,7 +36,7 @@ export default function ProjectMembersShowAll({
                 </span>
               }
               onConfirm={() => {
-                handleDeleteMember(projectID, member.userId!);
+                handleDeleteMember(member.userId!);
               }}
               okText="Yes"
               cancelText="No"

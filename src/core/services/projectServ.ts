@@ -52,6 +52,24 @@ const PROJECT_SERVICE = {
     );
     return data;
   },
+  getDetailsAndSetProject: (
+    projectID: number,
+    setProject: React.Dispatch<React.SetStateAction<InterfaceProject | null>>,
+    successMessage?: string
+  ) => {
+    AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
+      .get(`/getProjectDetail?id=${projectID}`)
+      .then((res) => {
+        setProject(res.data.content);
+        if (successMessage) {
+          message.success(successMessage);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error(err.response.data.content);
+      });
+  },
   update: async (projectId: number, updatedProject: InterfaceProjectUpdate) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).put(
       `/updateProject?projectId=${projectId}`,
