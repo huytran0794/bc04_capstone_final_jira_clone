@@ -48,6 +48,20 @@ export default function ProjectMembers({
 }: InterfaceProjectMembersComponent) {
   const dispatch = useAppDispatch();
 
+  const handleAssignUser = (userId: number) => {
+    PROJECT_SERVICE.assignUser(projectID, userId)
+      .then((res) => {
+        // console.log(res);
+        dispatch(
+          PROJECT_SERVICE.getAllAndDispatch("Member added successfully")
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error(err.response.data.content);
+      });
+  };
+
   const handleDeleteMember = (memberID: number) => {
     PROJECT_SERVICE.deleteMember(projectID, memberID)
       .then((res) => {
@@ -81,11 +95,12 @@ export default function ProjectMembers({
         placement="bottom"
         content={
           <ProjectMembersAddNew
-            projectID={projectID}
             projectName={projectName}
+            handleAssignUser={handleAssignUser}
           />
         }
         trigger="click"
+        destroyTooltipOnHide={true}
       >
         <div className="w-10 h-10 ml-2 flex justify-center items-center bg-orange-400 rounded-full text-white cursor-pointer">
           <span className="text-xl font-semibold">+</span>

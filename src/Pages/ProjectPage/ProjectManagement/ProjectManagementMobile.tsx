@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // import custom Hooks
@@ -10,8 +10,8 @@ import {
   useAppSelector,
 } from "../../../core/hooks/redux/useRedux";
 
-// import local Interface
-import { InterfaceProject } from "../../../core/models/Project/Project.interface";
+// import local services
+import PROJECT_SERVICE from "../../../core/services/projectServ";
 
 // import local components
 import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapper";
@@ -53,7 +53,7 @@ export default function ProjectManagementMobile() {
   };
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
+    dispatch(PROJECT_SERVICE.getAllAndDispatch(null));
     setOpenModalSetting(false);
   };
 
@@ -92,8 +92,16 @@ export default function ProjectManagementMobile() {
             </span>
           </div>
           <Modal
-            title="Project Setting"
-            width={"100vw"}
+            title="PROJECT SETTING"
+            style={{
+              top: 0,
+              left: 0,
+              maxWidth: "100%",
+              margin: 0,
+              padding: 0,
+            }}
+            width={"100%"}
+            footer={null}
             destroyOnClose={true}
             open={openModalSetting}
             onOk={handleOk}

@@ -60,6 +60,7 @@ const PROJECT_SERVICE = {
     AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
       .get(`/getProjectDetail?id=${projectID}`)
       .then((res) => {
+        console.log(res);
         setProject(res.data.content);
         if (successMessage) {
           message.success(successMessage);

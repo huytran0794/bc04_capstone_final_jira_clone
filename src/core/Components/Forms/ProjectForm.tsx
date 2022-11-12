@@ -34,12 +34,16 @@ const ProjectForm = ({
   const { Option } = Select;
 
   const getInitialValue = () => {
-    if (project)
+    if (project) {
+      const categoryId = project.categoryId
+        ? project.categoryId
+        : project.projectCategory.id;
       return {
-        categoryId: project!.categoryId,
-        projectName: project!.projectName,
-        description: project!.description,
+        categoryId,
+        projectName: project.projectName,
+        description: project.description,
       };
+    }
     return { categoryId: projectCategoryList[0]?.id || 1 };
   };
   const initialValues = getInitialValue();

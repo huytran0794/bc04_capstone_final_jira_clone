@@ -5,11 +5,17 @@ export interface InterfaceCreator {
   id: number;
 }
 
+interface InterfaceProjectCategory {
+  name: string;
+  id: number;
+}
+
 export interface InterfaceProject {
   id: number;
   alias: string;
   categoryId: number;
   categoryName: string;
+  projectCategory: InterfaceProjectCategory;
   projectName: string;
   description: string;
   creator: InterfaceCreator;
@@ -47,8 +53,9 @@ export interface InterfaceProjectMembersShowAllComponent {
 }
 
 export interface InterfaceProjectMembersAddNewComponent {
-  projectID: number;
   projectName?: string;
+  handleAssignUser: (userID: number) => void;
+  containerStyle?: string;
 }
 
 export interface InterfaceProjectMobileSetting {

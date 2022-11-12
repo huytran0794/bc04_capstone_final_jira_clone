@@ -9,15 +9,15 @@ import { InterfaceProjectMembersAddNewComponent } from "../../../core/models/Pro
 
 // import local service
 import USER_SERVICE from "../../../core/services/userServ";
-import PROJECT_SERVICE from "../../../core/services/projectServ";
 
 // import antd components
-import { Avatar, message, Popconfirm } from "antd";
+import { Avatar, Popconfirm } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 
 export default function ProjectMembersAddNew({
-  projectID,
   projectName,
+  handleAssignUser,
+  containerStyle = "w-64",
 }: InterfaceProjectMembersAddNewComponent) {
   let searchRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [userList, setUserList] = useState<Partial<User>[] | null>(null);
@@ -31,20 +31,6 @@ export default function ProjectMembersAddNew({
       })
       .catch((err) => {
         console.log(err);
-      });
-  };
-
-  const handleAssignUser = (projectId: number, userId: number) => {
-    PROJECT_SERVICE.assignUser(projectId, userId)
-      .then((res) => {
-        console.log(res);
-        dispatch(
-          PROJECT_SERVICE.getAllAndDispatch("Member added successfully")
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-        message.error(err.response.data.content);
       });
   };
 
@@ -62,7 +48,7 @@ export default function ProjectMembersAddNew({
           </span>
         }
         onConfirm={() => {
-          handleAssignUser(projectID, user.userId!);
+          handleAssignUser(user.userId!);
         }}
         okText="Yes"
         cancelText="No"
@@ -82,7 +68,7 @@ export default function ProjectMembersAddNew({
   };
 
   return (
-    <div className="w-64">
+    <div className={containerStyle}>
       <input
         type="search"
         placeholder="Search users"
