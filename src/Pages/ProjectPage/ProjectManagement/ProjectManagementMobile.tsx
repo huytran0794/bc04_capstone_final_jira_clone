@@ -37,19 +37,10 @@ export default function ProjectManagementMobile() {
 
   // ANTD Modal Control
   const [openModalSetting, setOpenModalSetting] = useState<boolean>(false);
-  const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
 
   const showModal = (projectID: number) => {
     setProjectSettingID(projectID);
     setOpenModalSetting(true);
-  };
-
-  const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setOpenModalSetting(false);
-      setConfirmLoading(false);
-    }, 2000);
   };
 
   const handleCancel = () => {
@@ -104,8 +95,6 @@ export default function ProjectManagementMobile() {
             footer={null}
             destroyOnClose={true}
             open={openModalSetting}
-            onOk={handleOk}
-            confirmLoading={confirmLoading}
             onCancel={handleCancel}
           >
             <ProjectMobileSettting projectID={projectSettingID} />

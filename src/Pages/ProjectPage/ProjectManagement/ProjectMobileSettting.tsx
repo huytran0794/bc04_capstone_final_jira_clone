@@ -59,8 +59,7 @@ export default function ProjectMobileSettting({
 
   const handleAssignUser = (userId: number) => {
     PROJECT_SERVICE.assignUser(projectID, userId)
-      .then((res) => {
-        // console.log(res);
+      .then(() => {
         PROJECT_SERVICE.getDetailsAndSetProject(
           projectID,
           setProject,
@@ -75,8 +74,7 @@ export default function ProjectMobileSettting({
 
   const handleDeleteMember = (memberID: number) => {
     PROJECT_SERVICE.deleteMember(projectID, memberID)
-      .then((res) => {
-        // console.log(res);
+      .then(() => {
         PROJECT_SERVICE.getDetailsAndSetProject(
           projectID,
           setProject,
@@ -103,7 +101,6 @@ export default function ProjectMobileSettting({
   };
 
   const handleCloseModalAddMember = () => {
-    // console.log("Clicked cancel button");
     setOpenModalAddMember(false);
   };
 
