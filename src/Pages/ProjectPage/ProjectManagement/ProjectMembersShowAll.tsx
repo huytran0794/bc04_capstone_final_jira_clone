@@ -1,11 +1,23 @@
 import React from "react";
 
-// import ant component
-import { Avatar, Popconfirm } from "antd";
-import { CloseCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+// import local components
+import {
+  DesktopView,
+  MobileView,
+  TabletView,
+} from "../../../core/HOC/Responsive";
 
-// import local component Interface
+// import local Interface
 import { InterfaceProjectMembersShowAllComponent } from "../../../core/models/Project/Project.interface";
+import { User } from "../../../core/models/User/User.interface";
+
+// import ant component
+import { Avatar, Modal, Popconfirm } from "antd";
+import {
+  CloseCircleOutlined,
+  ExclamationCircleOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 
 export default function ProjectMembersShowAll({
   members,
@@ -13,6 +25,55 @@ export default function ProjectMembersShowAll({
   containerStyle = "w-64",
   title = "ALL MEMBERS",
 }: InterfaceProjectMembersShowAllComponent) {
+  // ANTD Modal Control
+  const { confirm } = Modal;
+  const showDeleteMemberConfirm = (member: Partial<User>) => {
+    confirm({
+      title: "Are you sure delete this Member?",
+      icon: <ExclamationCircleOutlined />,
+      content: `${member.name}`,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk() {
+        handleDeleteMember(member.userId!);
+      },
+    });
+  };
+
+  // render function
+  const renderDeleteButtonDesktop = (member: Partial<User>) => (
+    <Popconfirm
+      title={
+        <span className="text-lg pl-1">
+          Are you sure to delete{" "}
+          <span className="font-semibold">{member.name}</span>?
+        </span>
+      }
+      onConfirm={() => {
+        handleDeleteMember(member.userId!);
+      }}
+      okText="Yes"
+      cancelText="No"
+      icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
+    >
+      <CloseCircleOutlined
+        style={{ fontSize: 20 }}
+        className="text-red-500 cursor-pointer"
+      />
+    </Popconfirm>
+  );
+
+  const renderDeleteButtonMobile = (member: Partial<User>) => (
+    <CloseCircleOutlined
+      style={{ fontSize: 20 }}
+      className="text-red-500 cursor-pointer"
+      onClick={() => {
+        showDeleteMemberConfirm(member);
+      }}
+    />
+  );
+
   return (
     <div className={containerStyle}>
       <p className="w-full mb-0 px-2 bg-gray-200 text-sm text-gray-500 font-bold">
@@ -28,27 +89,9 @@ export default function ProjectMembersShowAll({
               <Avatar src={member.avatar} />
               <span className="ml-2 align-middle text-lg">{member.name}</span>
             </div>
-            <Popconfirm
-              title={
-                <span className="text-lg pl-1">
-                  Are you sure to delete{" "}
-                  <span className="font-semibold">{member.name}</span>?
-                </span>
-              }
-              onConfirm={() => {
-                handleDeleteMember(member.userId!);
-              }}
-              okText="Yes"
-              cancelText="No"
-              icon={
-                <QuestionCircleOutlined className="top-1 text-red-500 text-xl" />
-              }
-            >
-              <CloseCircleOutlined
-                style={{ fontSize: 20 }}
-                className="text-red-500 cursor-pointer"
-              />
-            </Popconfirm>
+            <DesktopView>{renderDeleteButtonDesktop(member)}</DesktopView>
+            <TabletView>{renderDeleteButtonMobile(member)}</TabletView>
+            <MobileView>{renderDeleteButtonMobile(member)}</MobileView>
           </div>
         ))}
       </div>

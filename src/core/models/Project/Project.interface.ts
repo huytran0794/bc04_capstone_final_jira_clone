@@ -60,4 +60,10 @@ export interface InterfaceProjectMembersAddNewComponent {
 
 export interface InterfaceProjectMobileSetting {
   projectID: number;
+  setOpenModalSetting: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface InterfaceProjectMobileMembers {
+  project: InterfaceProject;
+  setProject: React.Dispatch<React.SetStateAction<InterfaceProject | null>>;
 }

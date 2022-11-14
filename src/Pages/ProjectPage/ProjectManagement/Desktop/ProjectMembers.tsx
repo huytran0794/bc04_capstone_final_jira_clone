@@ -1,18 +1,18 @@
 import React from "react";
 
 // import redux
-import { useAppDispatch } from "../../../core/hooks/redux/useRedux";
+import { useAppDispatch } from "../../../../core/hooks/redux/useRedux";
 
 // import local services
-import PROJECT_SERVICE from "../../../core/services/projectServ";
+import PROJECT_SERVICE from "../../../../core/services/projectServ";
 
 // import local component interface
-import { InterfaceProjectMembersComponent } from "../../../core/models/Project/Project.interface";
-import { User } from "../../../core/models/User/User.interface";
+import { InterfaceProjectMembersComponent } from "../../../../core/models/Project/Project.interface";
+import { User } from "../../../../core/models/User/User.interface";
 
 // import local compoment
-import ProjectMembersAddNew from "./ProjectMembersAddNew";
-import ProjectMembersShowAll from "./ProjectMembersShowAll";
+import ProjectMembersAddNew from "../ProjectMembersAddNew";
+import ProjectMembersShowAll from "../ProjectMembersShowAll";
 
 // import antd component
 import { Avatar, message, Popover } from "antd";

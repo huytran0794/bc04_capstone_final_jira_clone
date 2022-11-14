@@ -2,21 +2,22 @@
 import {
   InterfaceProjectEditComponent,
   InterfaceProjectUpdate,
-} from "../../../core/models/Project/Project.interface";
+} from "../../../../core/models/Project/Project.interface";
 
 // import redux
-import { useAppDispatch } from "../../../core/hooks/redux/useRedux";
-import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
-import { generalActions } from "../../../core/redux/slice/generalSlice";
+import { useAppDispatch } from "../../../../core/hooks/redux/useRedux";
+import { spinnerActions } from "../../../../core/redux/slice/spinnerSlice";
+import { generalActions } from "../../../../core/redux/slice/generalSlice";
 
 // import local Services
-import PROJECT_SERVICE from "../../../core/services/projectServ";
+import PROJECT_SERVICE from "../../../../core/services/projectServ";
 
 // import local component
-import ProjectForm from "../../../core/Components/Forms/ProjectForm";
+import ProjectForm from "../../../../core/Components/Forms/ProjectForm";
 
 // import utils
-import toastify from "../../../core/utils/toastify/toastifyUtils";
+import toastify from "../../../../core/utils/toastify/toastifyUtils";
+import SectionWrapper from "../../../../core/Components/SectionWrapper/SectionWrapper";
 
 export default function ProjectEdit({
   project,
@@ -49,16 +50,21 @@ export default function ProjectEdit({
   };
 
   return (
-    <div className="form-wrapper">
-      <div className="form-body">
-        <ProjectForm
-          layout="vertical"
-          size="large"
-          project={project}
-          confirmText="Update Project"
-          handleOnFinish={handleOnFinish}
-        />
-      </div>
-    </div>
+    <SectionWrapper
+      title="Edit Project"
+      content={
+        <div className="form-wrapper">
+          <div className="form-body">
+            <ProjectForm
+              layout="vertical"
+              size="large"
+              project={project}
+              confirmText="Update Project"
+              handleOnFinish={handleOnFinish}
+            />
+          </div>
+        </div>
+      }
+    />
   );
 }

@@ -24,7 +24,7 @@ export interface ButtonLocalProps extends BaseProps {
     | "indigo"
     | "purple"
     | "pink";
-  handleOnClick: () => void;
+  handleOnClick?: () => void;
 }
 
 export interface ResponsiveProps {

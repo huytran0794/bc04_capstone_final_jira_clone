@@ -4,20 +4,20 @@ import React, { useState, useRef } from "react";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../../core/hooks/redux/useRedux";
+} from "../../../../core/hooks/redux/useRedux";
 import { useNavigate } from "react-router-dom";
 
 // import custom Hooks
-import projectHooks from "../../../core/hooks/ProjectHooks/projectHooks";
+import projectHooks from "../../../../core/hooks/ProjectHooks/projectHooks";
 
 // import local interface
-import { InterfaceProject } from "../../../core/models/Project/Project.interface";
+import { InterfaceProject } from "../../../../core/models/Project/Project.interface";
 
 // import local components
-import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapper";
+import SectionWrapper from "../../../../core/Components/SectionWrapper/SectionWrapper";
 import ProjectActionButtons from "./ProjectActionButtons";
 import ProjectMembers from "./ProjectMembers";
-import ButtonLocal from "../../../core/Components/Utils/ButtonLocal";
+import ButtonLocal from "../../../../core/Components/Utils/ButtonLocal";
 
 // import antd type
 import type { ColumnsType, ColumnType } from "antd/es/table";

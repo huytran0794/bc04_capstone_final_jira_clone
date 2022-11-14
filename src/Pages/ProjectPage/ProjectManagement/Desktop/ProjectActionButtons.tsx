@@ -4,17 +4,17 @@ import React from "react";
 import {
   InterfaceProject,
   InterfaceProjectActionButtonsComponent,
-} from "../../../core/models/Project/Project.interface";
+} from "../../../../core/models/Project/Project.interface";
 
 // import redux
-import { useAppDispatch } from "../../../core/hooks/redux/useRedux";
-import { generalActions } from "../../../core/redux/slice/generalSlice";
+import { useAppDispatch } from "../../../../core/hooks/redux/useRedux";
+import { generalActions } from "../../../../core/redux/slice/generalSlice";
 
 // import local component
 import ProjectEdit from "./ProjectEdit";
 
 // import local Service
-import PROJECT_SERVICE from "../../../core/services/projectServ";
+import PROJECT_SERVICE from "../../../../core/services/projectServ";
 
 // import antd components
 import {

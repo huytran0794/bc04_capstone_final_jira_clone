@@ -23,7 +23,10 @@ const projectSlice = createSlice({
     createProject: (state, action: PayloadAction<InterfaceProject>) => {
       state.project = action.payload;
     },
-    updateProjectList: (state, action: PayloadAction<Array<InterfaceProject>>) => {
+    updateProjectList: (
+      state,
+      action: PayloadAction<Array<InterfaceProject>>
+    ) => {
       state.projectList = action.payload;
     },
   },
