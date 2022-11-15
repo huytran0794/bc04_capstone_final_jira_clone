@@ -92,7 +92,7 @@ export default function ProjectMobileSettting({
   };
 
   return !project ? null : (
-    <div>
+    <div id="projectMobileSetting">
       <div className="mb-3">
         <p className="mb-2 text-xl font-semibold">{project.projectName}</p>
         <Tag color="lime" className="text-lg">
@@ -128,7 +128,7 @@ export default function ProjectMobileSettting({
                 DANGER ZONE
               </span>
             }
-            key="edit1"
+            key="dangerZone"
           >
             <ButtonLocal
               baseColor="red"

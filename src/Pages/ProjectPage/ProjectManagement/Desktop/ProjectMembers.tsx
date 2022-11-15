@@ -16,6 +16,7 @@ import ProjectMembersShowAll from "../ProjectMembersShowAll";
 
 // import antd component
 import { Avatar, message, Popover } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
 // local Render
 export const renderMembers = (members: Partial<User>[]) => {
@@ -34,7 +35,7 @@ export const renderMembers = (members: Partial<User>[]) => {
         <Avatar src={member.avatar} key={member.userId!.toString() + index} />
       ))}
 
-      <Avatar className="bg-orange-100 text-orange-500 text-sm">
+      <Avatar className="inline-flex justify-center items-center bg-orange-100 text-orange-500 text-base">
         +{totalMembers - 2}
       </Avatar>
     </>
@@ -102,8 +103,8 @@ export default function ProjectMembers({
         trigger="click"
         destroyTooltipOnHide={true}
       >
-        <div className="w-10 h-10 ml-2 flex justify-center items-center bg-orange-400 rounded-full text-white cursor-pointer">
-          <span className="text-xl font-semibold">+</span>
+        <div className="w-10 h-10 ml-2 flex justify-center items-center bg-orange-400 hover:bg-orange-500 rounded-full text-white cursor-pointer transition duration-300">
+          <PlusOutlined style={{ fontSize: "1rem" }} />
         </div>
       </Popover>
     </div>

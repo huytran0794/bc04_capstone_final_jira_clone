@@ -64,11 +64,11 @@ export default function ProjectManagementMobile() {
     return projectList?.map((project, index) => {
       return (
         <div
-          className="flex justify-between items-center border-t border-gray-300 hover:bg-gray-100"
+          className="flex justify-between items-center border-t border-gray-300 hover:bg-gray-50"
           key={project.id.toString() + index}
         >
           <p
-            className="pl-3 py-3 mb-0 flex-grow text-xl font-semibold cursor-pointer"
+            className="p-3 mb-0 flex-grow text-xl font-semibold cursor-pointer"
             onClick={() => {
               window.location.href = `/project-details/${project.id}`;
             }}

@@ -67,7 +67,22 @@ h6 {
 
 /* START ================================== ANT Design component styling */
 /* START Project Management */
-/* Start Project Setting  */
+/* Start DESKTOP */
+.projectManagement
+  .projectManagement__content
+  .ant-table-row:hover
+  .ant-table-cell
+  .projectName {
+  color: #f56565;
+}
+/* End DESKTOP */
+/* Start MOBILE: Project Setting  */
+.projectSetting_members_showAll
+  .ant-collapse-item
+  .ant-collapse-header
+  .ant-collapse-header-text {
+  display: flex;
+}
 .projectSetting_members_showAll
   .ant-collapse-item
   .ant-collapse-content

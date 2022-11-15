@@ -80,7 +80,9 @@ export default function ProjectManagementDesktop() {
       <div style={{ padding: 8 }}>
         <Input
           ref={searchInput}
-          placeholder={`Search ${projectIndex}`}
+          placeholder={`Search ${
+            projectIndex === "projectName" ? "Project" : projectIndex
+          }`}
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -97,21 +99,18 @@ export default function ProjectManagementDesktop() {
               handleSearch(selectedKeys as string[], confirm, projectIndex)
             }
             icon={<SearchOutlined />}
-            size="small"
             style={{ width: 90 }}
           >
             Search
           </Button>
           <Button
             onClick={() => clearFilters && handleReset(clearFilters)}
-            size="small"
             style={{ width: 90 }}
           >
             Reset
           </Button>
           <Button
             type="link"
-            size="small"
             onClick={() => {
               confirm({ closeDropdown: false });
               setSearchText((selectedKeys as string[])[0]);
@@ -124,7 +123,12 @@ export default function ProjectManagementDesktop() {
       </div>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      <div className="flex justify-center items-center">
+        <SearchOutlined
+          style={{ color: filtered ? "#1890ff" : undefined }}
+          className="text-base"
+        />
+      </div>
     ),
     onFilter: (value, record) =>
       record[projectIndex]
@@ -151,7 +155,7 @@ export default function ProjectManagementDesktop() {
 
   const columns: ColumnsType<InterfaceProject> = [
     {
-      title: "Name",
+      title: <span className="text-lg">Name</span>,
       dataIndex: "projectName",
       key: "projectName",
       width: "20%",
@@ -160,7 +164,7 @@ export default function ProjectManagementDesktop() {
       sortDirections: ["descend", "ascend"],
       render: (projectName, project) => (
         <span
-          className="text-lg font-semibold cursor-pointer"
+          className="projectName text-lg font-semibold cursor-pointer transition-colors duration-300"
           onClick={() => {
             window.location.href = `/project-details/${project.id}`;
           }}
@@ -170,20 +174,25 @@ export default function ProjectManagementDesktop() {
       ),
     },
     {
-      title: "Category",
+      title: <span className="text-lg">Category</span>,
       dataIndex: "categoryName",
       key: "categoryName",
       width: "20%",
+      render: (category) => <span className="text-base">{category}</span>,
     },
     {
-      title: "Creator",
+      title: <span className="text-lg">Creator</span>,
       dataIndex: "creator",
       key: "creator",
       width: "20%",
-      render: (creator) => <Tag color="lime">{creator.name}</Tag>,
+      render: (creator) => (
+        <Tag color="lime" className="text-base">
+          {creator.name}
+        </Tag>
+      ),
     },
     {
-      title: "Members",
+      title: <span className="text-lg">Members</span>,
       dataIndex: "members",
       key: "members",
       width: "20%",
@@ -196,7 +205,7 @@ export default function ProjectManagementDesktop() {
       ),
     },
     {
-      title: "Edit",
+      title: <span className="text-lg">Edit</span>,
       key: "edit",
       render: (_, project) => <ProjectActionButtons project={project} />,
     },
@@ -229,6 +238,8 @@ export default function ProjectManagementDesktop() {
           />
         </>
       }
+      sectionClass="projectManagement"
+      contentClass="projectManagement__content"
     />
   );
 }

@@ -61,13 +61,15 @@ export default function ProjectMembersAddNew({
     isMobile: boolean
   ) => (
     <div
-      className="px-3 py-2 flex justify-between items-center hover:bg-orange-100 cursor-pointer"
+      className="px-3 py-2 flex justify-between items-center hover:bg-slate-100 cursor-pointer"
       key={user.userId!.toString() + index}
       onClick={() => {
         if (isMobile) showAssignUserConfirm(user);
       }}
     >
-      <Avatar src={user.avatar} />
+      <div>
+        <Avatar src={user.avatar} />
+      </div>
       <span className="ml-2 align-middle text-lg">{user.name}</span>
     </div>
   );
@@ -113,7 +115,7 @@ export default function ProjectMembersAddNew({
         type="search"
         placeholder="Search users"
         className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 focus:border-orange-500 focus-visible:outline-none"
-        // value={searchValue}
+        autoFocus
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           if (searchRef.current) {
             clearTimeout(searchRef.current);

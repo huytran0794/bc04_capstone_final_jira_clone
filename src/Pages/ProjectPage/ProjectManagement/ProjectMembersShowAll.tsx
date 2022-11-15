@@ -82,12 +82,16 @@ export default function ProjectMembersShowAll({
       <div className="w-full max-h-96 overflow-y-auto">
         {members.map((member, index) => (
           <div
-            className="px-3 py-2 flex justify-between items-center hover:bg-orange-100"
+            className="px-3 py-2 flex justify-between items-center hover:bg-slate-100"
             key={member.userId!.toString() + index}
           >
-            <div>
-              <Avatar src={member.avatar} />
-              <span className="ml-2 align-middle text-lg">{member.name}</span>
+            <div className="flex items-center">
+              <div>
+                <Avatar src={member.avatar} />
+              </div>
+              <p className="ml-2 mb-0 pr-2 align-middle text-lg">
+                {member.name}
+              </p>
             </div>
             <DesktopView>{renderDeleteButtonDesktop(member)}</DesktopView>
             <TabletView>{renderDeleteButtonMobile(member)}</TabletView>
