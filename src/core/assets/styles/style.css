@@ -84,17 +84,20 @@ h6 {
   flex-direction: column;
 }
 
-.projectSetting_members_showAll
+.projectSetting__members__showAll
   .ant-collapse-item
   .ant-collapse-header
   .ant-collapse-header-text {
   display: flex;
 }
-.projectSetting_members_showAll
+.projectSetting__members__showAll
   .ant-collapse-item
   .ant-collapse-content
   .ant-collapse-content-box {
   padding: 0;
+}
+.projectSetting__members__addNew .ant-modal-content {
+  height: 100%;
 }
 /* End MOBILE: Project Setting */
 /* END Project Management */

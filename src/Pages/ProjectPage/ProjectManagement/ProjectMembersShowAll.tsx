@@ -57,9 +57,9 @@ export default function ProjectMembersShowAll({
         handleDeleteMember(member.userId!);
       }}
       okText="Yes"
-      okButtonProps={{ size: "middle" }}
+      okButtonProps={{ type: "default", danger: true, size: "middle" }}
       cancelText="No"
-      cancelButtonProps={{ size: "middle" }}
+      cancelButtonProps={{ type: "primary", size: "middle" }}
       icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
     >
       <CloseCircleOutlined

@@ -9,10 +9,9 @@ import clsx from "clsx";
 
 export default function InnerSpinner({
   isLoading = true,
-  additionalClass,
+  spinnerClass = "absolute w-full h-full",
+  spinnerType = <MoonLoader />,
 }: InterfaceSpinner) {
-  console.log("Sppiner is loading");
-
   const loadingClass = isLoading
     ? "opacity-100 visible "
     : "opacity-0 invisible";
@@ -20,14 +19,13 @@ export default function InnerSpinner({
     <div
       className={clsx(
         "innerSpinner",
-        "absolute left-0 top-0 flex justify-center items-center z-50",
-        "h-full w-full",
         loadingClass,
-        additionalClass,
-        "transition-all duration-500"
+        spinnerClass,
+        "left-0 top-0 flex justify-center items-center z-50",
+        "transition-all duration-300"
       )}
     >
-      <MoonLoader />
+      {spinnerType}
     </div>
   );
 }

@@ -3,13 +3,13 @@ import { useEffect } from "react";
 // import redux
 import { projectActions } from "../../redux/slice/projectSlice";
 import { AppDispatch } from "../../redux/store/store";
+import { spinnerActions } from "../../redux/slice/spinnerSlice";
 
 // import local services
 import PROJECT_SERVICE from "../../services/projectServ";
 
 // import antd component
 import { message } from "antd";
-import { spinnerActions } from "../../redux/slice/spinnerSlice";
 
 const projectHooks = {
   useFetchProjectList: (

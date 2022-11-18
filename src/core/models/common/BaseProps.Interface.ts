@@ -33,5 +33,6 @@ export interface ResponsiveProps {
 
 export interface InterfaceSpinner {
   isLoading?: boolean;
-  additionalClass?: string;
+  spinnerClass?: string;
+  spinnerType?: JSX.Element;
 }

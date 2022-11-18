@@ -18,15 +18,22 @@ import {
   MobileView,
   TabletView,
 } from "../../../core/HOC/Responsive";
+import InnerSpinner from "../../../core/Components/Spinner/InnerSpinner";
+import clsx from "clsx";
 
 export default function ProjectMembersAddNew({
+  isMobile = false,
+  title,
   projectName,
   handleAssignUser,
-  containerStyle = "w-64",
+  containerClassName = "w-64",
+  userListClassName = "max-h-96",
 }: InterfaceProjectMembersAddNewComponent) {
   const searchRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
   const [userList, setUserList] = useState<Partial<User>[] | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -35,13 +42,16 @@ export default function ProjectMembersAddNew({
   }, []);
 
   const getUserList = (keyword: string) => {
+    setIsLoading(true);
     USER_SERVICE.getUserByKeyword(keyword)
       .then((res) => {
         // console.log(res);
         setUserList(res.content);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
       });
   };
 
@@ -69,19 +79,19 @@ export default function ProjectMembersAddNew({
   const renderUser = (
     user: Partial<User>,
     index: number,
-    isMobile: boolean
+    isMobileRendering: boolean
   ) => (
     <div
-      className="px-3 py-2 flex justify-between items-center hover:bg-slate-100 cursor-pointer"
+      className="w-full px-3 py-2 flex justify-between items-center hover:bg-slate-100 cursor-pointer"
       key={user.userId!.toString() + index}
       onClick={() => {
-        if (isMobile) showAssignUserConfirm(user);
+        if (isMobileRendering) showAssignUserConfirm(user);
       }}
     >
-      <div>
+      <div className="flex-shrink-0">
         <Avatar src={user.avatar} />
       </div>
-      <span className="ml-2 align-middle text-lg">{user.name}</span>
+      <p className="ml-2 mb-0 align-middle text-lg break-all">{user.name}</p>
     </div>
   );
 
@@ -114,21 +124,34 @@ export default function ProjectMembersAddNew({
 
   const renderUsersList = (userList: Partial<User>[] | null) => {
     if (!userList) return null;
-    return userList.map((user, index) => (
-      <>
-        <DesktopView>{renderUserDesktop(user, index)}</DesktopView>
-        <TabletView>{renderUser(user, index, true)}</TabletView>
-        <MobileView>{renderUser(user, index, true)}</MobileView>
-      </>
-    ));
+    return (
+      <div
+        className={clsx(
+          userListClassName,
+          "flex-grow w-full overflow-y-auto",
+          "scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 scrollbar-thumb-rounded-full"
+        )}
+      >
+        {userList.map((user, index) => (
+          <>
+            <DesktopView>{renderUserDesktop(user, index)}</DesktopView>
+            <TabletView>{renderUser(user, index, true)}</TabletView>
+            <MobileView>{renderUser(user, index, true)}</MobileView>
+          </>
+        ))}
+      </div>
+    );
   };
 
   return (
-    <div className={containerStyle}>
+    <div className={clsx(containerClassName, "flex flex-col")}>
+      {!title ? null : (
+        <h4 className="flex-shrink-0 pb-2 text-base">{title}</h4>
+      )}
       <input
         type="search"
         placeholder="Search users"
-        className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 focus:border-orange-500 focus-visible:outline-none"
+        className="block flex-shrink-0 p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 focus:border-orange-500 focus-visible:outline-none"
         ref={inputRef}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           if (searchRef.current) {
@@ -140,9 +163,15 @@ export default function ProjectMembersAddNew({
           }, 300);
         }}
       />
-      <div className="w-full max-h-96 overflow-y-auto">
-        {renderUsersList(userList)}
-      </div>
+      {isLoading ? (
+        <div className="flex-grow w-full">
+          <InnerSpinner
+            spinnerClass={isMobile ? "w-full h-full" : "w-full aspect-square"}
+          />
+        </div>
+      ) : (
+        renderUsersList(userList)
+      )}
     </div>
   );
 }

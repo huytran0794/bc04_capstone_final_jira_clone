@@ -33,7 +33,7 @@ export default function ProjectMobileSettting({
   const [project, setProject] = useState<InterfaceProject | null>(null);
 
   useEffect(() => {
-    PROJECT_SERVICE.getDetailsAndSetProject(projectID, setProject);
+    dispatch(PROJECT_SERVICE.getDetailsAndSetProject(projectID, setProject));
   }, []);
 
   const handleUpdateProject = (values: InterfaceProjectUpdate) => {
@@ -45,10 +45,11 @@ export default function ProjectMobileSettting({
     };
     PROJECT_SERVICE.update(project!.id, updateProject)
       .then(() => {
-        toastify("success", "Updated project successfully !");
         setTimeout(() => {
-          PROJECT_SERVICE.getDetailsAndSetProject(projectID, setProject);
-          dispatch(spinnerActions.setLoadingOff());
+          dispatch(
+            PROJECT_SERVICE.getDetailsAndSetProject(projectID, setProject)
+          );
+          toastify("success", "Updated project successfully !");
         }, 2500);
       })
       .catch((err) => {
@@ -60,6 +61,7 @@ export default function ProjectMobileSettting({
   };
 
   const handleDeleteProject = () => {
+    dispatch(spinnerActions.setLoadingOn());
     PROJECT_SERVICE.delete(project!.id)
       .then((res) => {
         // console.log(res);
@@ -69,6 +71,7 @@ export default function ProjectMobileSettting({
       .catch((err) => {
         console.log(err);
         message.error(err.response.data.content);
+        dispatch(spinnerActions.setLoadingOff());
       });
   };
 
@@ -80,7 +83,11 @@ export default function ProjectMobileSettting({
 
   const showDeleteProjectConfirm = () => {
     confirm({
-      title: <span className="text-lg">Are you sure delete this Project?</span>,
+      title: (
+        <span className="text-lg">
+          Are you sure you want to delete this Project?
+        </span>
+      ),
       icon: <ExclamationCircleOutlined className="text-2xl" />,
       content: (
         <span className="text-lg text-red-500 font-semibold">

@@ -1,45 +1,62 @@
 import React, { useState } from "react";
 
+// import redux
+import { useAppDispatch } from "../../../../core/hooks/redux/useRedux";
+import { spinnerActions } from "../../../../core/redux/slice/spinnerSlice";
+
+// import local interface
+import { InterfaceProjectMobileMembers } from "../../../../core/models/Project/Project.interface";
+
 // import local components
 import ProjectMembersShowAll from "../ProjectMembersShowAll";
+import ProjectMembersAddNew from "../ProjectMembersAddNew";
 import { renderMembers } from "../Desktop/ProjectMembers";
+
+// import local services
+import PROJECT_SERVICE from "../../../../core/services/projectServ";
 
 // import ANTD components
 import { Avatar, Collapse, message, Modal } from "antd";
-import PROJECT_SERVICE from "../../../../core/services/projectServ";
-import { InterfaceProjectMobileMembers } from "../../../../core/models/Project/Project.interface";
-import ProjectMembersAddNew from "../ProjectMembersAddNew";
 
 export default function ProjectMobileMembers({
   project,
   setProject,
 }: InterfaceProjectMobileMembers) {
+  const dispatch = useAppDispatch();
   const handleAssignUser = (userId: number) => {
+    dispatch(spinnerActions.setLoadingOn());
     PROJECT_SERVICE.assignUser(project.id, userId)
       .then(() => {
-        PROJECT_SERVICE.getDetailsAndSetProject(
-          project.id,
-          setProject,
-          "Member added successfully"
+        dispatch(
+          PROJECT_SERVICE.getDetailsAndSetProject(
+            project.id,
+            setProject,
+            "Member added successfully"
+          )
         );
       })
       .catch((err) => {
         console.log(err);
         message.error(err.response.data.content);
+        dispatch(spinnerActions.setLoadingOff());
       });
   };
   const handleDeleteMember = (memberID: number) => {
+    dispatch(spinnerActions.setLoadingOn());
     PROJECT_SERVICE.deleteMember(project.id, memberID)
       .then(() => {
-        PROJECT_SERVICE.getDetailsAndSetProject(
-          project.id,
-          setProject,
-          "Member deleted successfully"
+        dispatch(
+          PROJECT_SERVICE.getDetailsAndSetProject(
+            project.id,
+            setProject,
+            "Member deleted successfully"
+          )
         );
       })
       .catch((err) => {
         console.log(err);
         message.error(err.response.data.content);
+        dispatch(spinnerActions.setLoadingOff());
       });
   };
 
@@ -66,7 +83,7 @@ export default function ProjectMobileMembers({
         </div>
         <Collapse
           expandIconPosition="end"
-          className="projectSetting_members_showAll"
+          className="projectSetting__members__showAll"
         >
           <Panel
             header={
@@ -90,17 +107,28 @@ export default function ProjectMobileMembers({
         </Collapse>
       </div>
       <Modal
-        title="ADD MEMBERS"
-        style={{ top: 0, left: 0 }}
-        width={"100vw"}
+        wrapClassName="projectSetting__members__addNew"
+        style={{
+          top: 0,
+          left: 0,
+          maxWidth: "100%",
+          height: "100vh",
+          margin: 0,
+          padding: "8px",
+        }}
+        bodyStyle={{ height: "100%" }}
+        width={"100%"}
         destroyOnClose={true}
         footer={null}
         open={openModalAddMember}
         onCancel={handleCloseModalAddMember}
       >
         <ProjectMembersAddNew
+          isMobile={true}
           handleAssignUser={handleAssignUser}
-          containerStyle="w-full"
+          containerClassName="w-full h-full"
+          userListClassName="max-h-full"
+          title="ADD MEMBERS"
         />
       </Modal>
     </>

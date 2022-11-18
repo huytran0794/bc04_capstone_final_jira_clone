@@ -15,16 +15,21 @@ export default function Spinner() {
     : "opacity-0 invisible";
   return (
     <div
+      style={{ zIndex: 9999 }}
       className={clsx(
         "spinner",
-        "fixed left-0 top-0 bg-[#282c34] flex justify-center items-center z-50",
+        "fixed left-0 top-0 bg-[#282c34] flex justify-center items-center",
         "h-screen w-screen",
         loadingClass,
         "transition-all duration-[1200ms]"
       )}
     >
-
-      <ClimbingBoxLoader color="#ebbd60" loading size={80} speedMultiplier={0.7} />
+      <ClimbingBoxLoader
+        color="#ebbd60"
+        loading
+        size={80}
+        speedMultiplier={0.7}
+      />
     </div>
   );
 }

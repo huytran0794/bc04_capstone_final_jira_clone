@@ -9,6 +9,7 @@ import {
 // import redux
 import { useAppDispatch } from "../../../../core/hooks/redux/useRedux";
 import { generalActions } from "../../../../core/redux/slice/generalSlice";
+import { spinnerActions } from "../../../../core/redux/slice/spinnerSlice";
 
 // import local component
 import ProjectEdit from "./ProjectEdit";
@@ -35,6 +36,7 @@ export default function ProjectActionButtons({
     );
   };
   const handleDeleteProject = () => {
+    dispatch(spinnerActions.setLoadingOn());
     PROJECT_SERVICE.delete(project.id)
       .then((res) => {
         console.log(res);
@@ -43,6 +45,7 @@ export default function ProjectActionButtons({
       .catch((err) => {
         console.log(err);
         message.error(err.response.data.content);
+        dispatch(spinnerActions.setLoadingOff());
       });
   };
 

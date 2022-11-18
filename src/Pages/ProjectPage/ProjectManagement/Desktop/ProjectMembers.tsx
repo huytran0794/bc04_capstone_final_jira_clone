@@ -2,6 +2,7 @@ import React from "react";
 
 // import redux
 import { useAppDispatch } from "../../../../core/hooks/redux/useRedux";
+import { spinnerActions } from "../../../../core/redux/slice/spinnerSlice";
 
 // import local services
 import PROJECT_SERVICE from "../../../../core/services/projectServ";
@@ -50,6 +51,7 @@ export default function ProjectMembers({
   const dispatch = useAppDispatch();
 
   const handleAssignUser = (userId: number) => {
+    dispatch(spinnerActions.setLoadingOn());
     PROJECT_SERVICE.assignUser(projectID, userId)
       .then((res) => {
         // console.log(res);
@@ -60,10 +62,12 @@ export default function ProjectMembers({
       .catch((err) => {
         console.log(err);
         message.error(err.response.data.content);
+        dispatch(spinnerActions.setLoadingOff());
       });
   };
 
   const handleDeleteMember = (memberID: number) => {
+    dispatch(spinnerActions.setLoadingOn());
     PROJECT_SERVICE.deleteMember(projectID, memberID)
       .then((res) => {
         // console.log(res);
@@ -72,6 +76,7 @@ export default function ProjectMembers({
       .catch((err) => {
         console.log(err);
         message.error(err.response.data.content);
+        dispatch(spinnerActions.setLoadingOff());
       });
   };
 

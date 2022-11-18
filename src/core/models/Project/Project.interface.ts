@@ -53,9 +53,12 @@ export interface InterfaceProjectMembersShowAllComponent {
 }
 
 export interface InterfaceProjectMembersAddNewComponent {
+  isMobile?: boolean;
+  title?: string;
   projectName?: string;
+  containerClassName?: string;
+  userListClassName?: string;
   handleAssignUser: (userID: number) => void;
-  containerStyle?: string;
 }
 
 export interface InterfaceProjectMobileSetting {

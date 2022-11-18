@@ -9,6 +9,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../core/hooks/redux/useRedux";
+import { spinnerActions } from "../../../../core/redux/slice/spinnerSlice";
 
 // import local services
 import PROJECT_SERVICE from "../../../../core/services/projectServ";
@@ -16,12 +17,11 @@ import PROJECT_SERVICE from "../../../../core/services/projectServ";
 // import local components
 import SectionWrapper from "../../../../core/Components/SectionWrapper/SectionWrapper";
 import ProjectMobileSettting from "./ProjectMobileSettting";
+import ProjectMobileSearch from "./ProjectMobileSearch";
 
 // import antd components
 import { PlusOutlined, SettingOutlined } from "@ant-design/icons";
 import { Modal, Tooltip } from "antd";
-import ProjectMobileSearch from "./ProjectMobileSearch";
-import { spinnerActions } from "../../../../core/redux/slice/spinnerSlice";
 
 export default function ProjectManagementMobile() {
   const dispatch = useAppDispatch();
@@ -46,6 +46,7 @@ export default function ProjectManagementMobile() {
   };
 
   const handleCancel = () => {
+    dispatch(spinnerActions.setLoadingOn());
     dispatch(PROJECT_SERVICE.getAllAndDispatch(null));
     setOpenModalSetting(false);
   };

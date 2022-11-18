@@ -31,10 +31,10 @@ const CreateProjectPage = () => {
     PROJECT_SERVICE.createProject(newProject)
       .then((res) => {
         dispatch(projectActions.createProject(res.content));
-        toastify("success", "Create project successfully !");
         setTimeout(() => {
           navigate("/", { replace: true });
           dispatch(spinnerActions.setLoadingOff());
+          toastify("success", "Create project successfully !");
         }, 2500);
       })
       .catch((err) => {
