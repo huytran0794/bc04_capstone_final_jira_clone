@@ -30,3 +30,8 @@ export interface ButtonLocalProps extends BaseProps {
 export interface ResponsiveProps {
   children: JSX.Element;
 }
+
+export interface InterfaceSpinner {
+  isLoading?: boolean;
+  additionalClass?: string;
+}

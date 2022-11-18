@@ -63,7 +63,7 @@ const ProjectForm = ({
 
   const formProps = { form, onFinish, layout, size };
   const labelItem = (labelText: string) => (
-    <Label className="text-sm font-medium text-pickled-bluewood-400 capitalize">
+    <Label className="text-lg font-medium text-pickled-bluewood-400 capitalize">
       {labelText}
     </Label>
   );

@@ -23,6 +23,7 @@ import PROJECT_SERVICE from "../../../../core/services/projectServ";
 import { Collapse, message, Modal, Tag } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import ProjectMobileMembers from "./ProjectMobileMembers";
+import InnerSpinner from "../../../../core/Components/Spinner/InnerSpinner";
 
 export default function ProjectMobileSettting({
   projectID,
@@ -79,11 +80,18 @@ export default function ProjectMobileSettting({
 
   const showDeleteProjectConfirm = () => {
     confirm({
-      title: "Are you sure delete this Project?",
-      icon: <ExclamationCircleOutlined />,
-      content: `${project?.projectName}`,
+      title: <span className="text-lg">Are you sure delete this Project?</span>,
+      icon: <ExclamationCircleOutlined className="text-2xl" />,
+      content: (
+        <span className="text-lg text-red-500 font-semibold">
+          {project?.projectName}
+        </span>
+      ),
       okText: "Yes",
       okType: "danger",
+      okButtonProps: {
+        type: "primary",
+      },
       cancelText: "No",
       onOk() {
         handleDeleteProject();
@@ -91,8 +99,10 @@ export default function ProjectMobileSettting({
     });
   };
 
-  return !project ? null : (
-    <div id="projectMobileSetting">
+  return !project ? (
+    <InnerSpinner />
+  ) : (
+    <div className="projectSetting">
       <div className="mb-3">
         <p className="mb-2 text-xl font-semibold">{project.projectName}</p>
         <Tag color="lime" className="text-lg">

@@ -76,7 +76,14 @@ h6 {
   color: #f56565;
 }
 /* End DESKTOP */
+
 /* Start MOBILE: Project Setting  */
+.projectManagement__setting .ant-modal-content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .projectSetting_members_showAll
   .ant-collapse-item
   .ant-collapse-header
@@ -89,6 +96,12 @@ h6 {
   .ant-collapse-content-box {
   padding: 0;
 }
-/* End Project Setting */
+/* End MOBILE: Project Setting */
 /* END Project Management */
 /* END ================================== ANT Design component styling */
+
+/* START TinyMCE Component styling */
+.tox-notification.tox-notification--in {
+  display: none !important;
+}
+/* END TinyMCE Component styling */

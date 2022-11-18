@@ -24,7 +24,11 @@ const CreateProjectPage = () => {
 
   const handleOnFinish = (values: InterfaceProject) => {
     dispatch(spinnerActions.setLoadingOn());
-    PROJECT_SERVICE.createProject(values)
+    const newProject = { ...values };
+    if (!values.description) {
+      newProject.description = "";
+    }
+    PROJECT_SERVICE.createProject(newProject)
       .then((res) => {
         dispatch(projectActions.createProject(res.content));
         toastify("success", "Create project successfully !");

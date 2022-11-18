@@ -9,6 +9,7 @@ import PROJECT_SERVICE from "../../services/projectServ";
 
 // import antd component
 import { message } from "antd";
+import { spinnerActions } from "../../redux/slice/spinnerSlice";
 
 const projectHooks = {
   useFetchProjectList: (
@@ -16,16 +17,19 @@ const projectHooks = {
     successMessage: string | null
   ) => {
     useEffect(() => {
+      dispatch(spinnerActions.setLoadingOn());
       PROJECT_SERVICE.getAll()
         .then((res) => {
           dispatch(projectActions.updateProjectList(res.content));
           if (successMessage) {
             message.success(successMessage);
           }
+          dispatch(spinnerActions.setLoadingOff());
         })
         .catch((err) => {
           console.log(err);
           message.error(err.response.data.content);
+          dispatch(spinnerActions.setLoadingOff());
         });
     }, []);
   },

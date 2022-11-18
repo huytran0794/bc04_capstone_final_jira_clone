@@ -93,7 +93,7 @@ export default function ProjectMembers({
         </div>
       </Popover>
       <Popover
-        placement="bottom"
+        placement="top"
         content={
           <ProjectMembersAddNew
             projectName={projectName}

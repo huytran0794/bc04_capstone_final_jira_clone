@@ -29,11 +29,14 @@ export default function ProjectMembersShowAll({
   const { confirm } = Modal;
   const showDeleteMemberConfirm = (member: Partial<User>) => {
     confirm({
-      title: "Are you sure delete this Member?",
-      icon: <ExclamationCircleOutlined />,
-      content: `${member.name}`,
+      title: <span className="text-lg">Are you sure delete this Member?</span>,
+      icon: <ExclamationCircleOutlined className="text-2xl" />,
+      content: <span className="text-lg">{member.name}</span>,
       okText: "Yes",
       okType: "danger",
+      okButtonProps: {
+        type: "primary",
+      },
       cancelText: "No",
       onOk() {
         handleDeleteMember(member.userId!);
@@ -54,7 +57,9 @@ export default function ProjectMembersShowAll({
         handleDeleteMember(member.userId!);
       }}
       okText="Yes"
+      okButtonProps={{ size: "middle" }}
       cancelText="No"
+      cancelButtonProps={{ size: "middle" }}
       icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
     >
       <CloseCircleOutlined

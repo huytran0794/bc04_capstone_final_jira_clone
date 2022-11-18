@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 // import local Interface
 import { User } from "../../../core/models/User/User.interface";
@@ -24,8 +24,15 @@ export default function ProjectMembersAddNew({
   handleAssignUser,
   containerStyle = "w-64",
 }: InterfaceProjectMembersAddNewComponent) {
-  let searchRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const searchRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [userList, setUserList] = useState<Partial<User>[] | null>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef.current!.focus();
+    }, 100);
+  }, []);
 
   const getUserList = (keyword: string) => {
     USER_SERVICE.getUserByKeyword(keyword)
@@ -42,11 +49,15 @@ export default function ProjectMembersAddNew({
   const { confirm } = Modal;
   const showAssignUserConfirm = (user: Partial<User>) => {
     confirm({
-      title: "Are you sure you want to assign this member?",
-      icon: <ExclamationCircleOutlined />,
-      content: `${user.name}`,
+      title: (
+        <span className="text-lg">
+          Are you sure you want to assign this member?
+        </span>
+      ),
+      icon: <ExclamationCircleOutlined className="text-2xl" />,
+      content: <span className="text-lg">{user.name}</span>,
       okText: "Yes",
-      okType: "danger",
+      okType: "primary",
       cancelText: "No",
       onOk() {
         handleAssignUser(user.userId!);
@@ -87,9 +98,12 @@ export default function ProjectMembersAddNew({
       }
       onConfirm={() => {
         handleAssignUser(user.userId!);
+        inputRef.current!.focus();
       }}
       okText="Yes"
+      okButtonProps={{ size: "middle" }}
       cancelText="No"
+      cancelButtonProps={{ size: "middle" }}
       icon={
         <QuestionCircleOutlined className="top-1 text-yellow-500 text-xl" />
       }
@@ -115,7 +129,7 @@ export default function ProjectMembersAddNew({
         type="search"
         placeholder="Search users"
         className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 focus:border-orange-500 focus-visible:outline-none"
-        autoFocus
+        ref={inputRef}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           if (searchRef.current) {
             clearTimeout(searchRef.current);

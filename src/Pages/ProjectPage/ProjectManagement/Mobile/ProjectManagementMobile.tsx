@@ -19,8 +19,9 @@ import ProjectMobileSettting from "./ProjectMobileSettting";
 
 // import antd components
 import { PlusOutlined, SettingOutlined } from "@ant-design/icons";
-import { Modal } from "antd";
+import { Modal, Tooltip } from "antd";
 import ProjectMobileSearch from "./ProjectMobileSearch";
+import { spinnerActions } from "../../../../core/redux/slice/spinnerSlice";
 
 export default function ProjectManagementMobile() {
   const dispatch = useAppDispatch();
@@ -64,7 +65,7 @@ export default function ProjectManagementMobile() {
     return projectList?.map((project, index) => {
       return (
         <div
-          className="flex justify-between items-center border-t border-gray-300 hover:bg-gray-50"
+          className="projectManagement__item flex justify-between items-center border-t border-gray-300 hover:bg-gray-100 transition duration-300"
           key={project.id.toString() + index}
         >
           <p
@@ -76,7 +77,7 @@ export default function ProjectManagementMobile() {
             {project.projectName}
           </p>
           <div
-            className="pl-3 py-3 pr-4 flex-shrink-0 border-l border-r border-gray-300 cursor-pointer"
+            className="projectItem__setting pl-3 py-3 pr-4 flex-shrink-0 border-l border-r border-gray-300 text-slate-500 hover:text-black cursor-pointer transtion duration-300"
             onClick={() => {
               showModal(project.id);
             }}
@@ -92,20 +93,23 @@ export default function ProjectManagementMobile() {
     <SectionWrapper
       title="Project Management"
       content={
-        <div>
+        <div className="projectManagement">
           <ProjectMobileSearch />
           <div className="w-full max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 scrollbar-thumb-rounded-full">
             {renderProjectList()}
           </div>
           <div className="py-3 border-t border-gray-300">
-            <div
-              className="w-12 h-12 mx-auto flex justify-center items-center bg-orange-400 rounded-full text-white cursor-pointer"
-              onClick={handleOpenCreateProject}
-            >
-              <PlusOutlined style={{ fontSize: "1.2rem" }} />
-            </div>
+            <Tooltip title="Create New Project">
+              <div
+                className="w-12 h-12 mx-auto flex justify-center items-center bg-orange-400 hover:bg-orange-500 rounded-full text-white cursor-pointer transition duration-300"
+                onClick={handleOpenCreateProject}
+              >
+                <PlusOutlined style={{ fontSize: "1.2rem" }} />
+              </div>
+            </Tooltip>
           </div>
           <Modal
+            wrapClassName="projectManagement__setting"
             title={
               <span className="text-xl font-semibold">PROJECT SETTING</span>
             }
@@ -115,6 +119,10 @@ export default function ProjectManagementMobile() {
               maxWidth: "100%",
               margin: 0,
               padding: 0,
+            }}
+            bodyStyle={{
+              position: "relative",
+              flexGrow: 1,
             }}
             width={"100%"}
             footer={null}

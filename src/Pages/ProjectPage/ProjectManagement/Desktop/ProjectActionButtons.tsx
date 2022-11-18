@@ -22,7 +22,7 @@ import {
   FormOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons";
-import { message, Popconfirm } from "antd";
+import { message, Popconfirm, Tooltip } from "antd";
 
 export default function ProjectActionButtons({
   project,
@@ -48,13 +48,17 @@ export default function ProjectActionButtons({
 
   return (
     <div className="space-x-2">
-      <button
-        onClick={() => {
-          handleEditProject(project);
-        }}
-      >
-        <FormOutlined className="text-yellow-500 text-xl" />
-      </button>
+      <Tooltip title="Edit Project">
+        <button
+          onClick={() => {
+            handleEditProject(project);
+          }}
+        >
+          <span className="p-2 rounded inline-flex justify-center items-center bg-amber-500 hover:bg-amber-400 text-xl text-white transition duration-300 cursor-pointer">
+            <FormOutlined />
+          </span>
+        </button>
+      </Tooltip>
       <Popconfirm
         title={
           <span className="text-lg pl-1">
@@ -64,10 +68,16 @@ export default function ProjectActionButtons({
         }
         onConfirm={handleDeleteProject}
         okText="Yes"
+        okButtonProps={{ danger: true, type: "default", size: "middle" }}
         cancelText="No"
+        cancelButtonProps={{ type: "primary", size: "middle" }}
         icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
       >
-        <DeleteOutlined className="text-red-500 text-xl" />
+        <Tooltip title="Delete Project">
+          <span className="p-2 rounded inline-flex justify-center items-center bg-red-500 hover:bg-red-600 text-xl text-white transition duration-300 cursor-pointer">
+            <DeleteOutlined />
+          </span>
+        </Tooltip>
       </Popconfirm>
     </div>
   );
