@@ -74,10 +74,13 @@ export default function ProjectMobileMembers({
 
   return (
     <>
-      <div className="mb-3">
-        <div className="flex justify-between items-center">
+      <div className="projectSetting__members mb-3">
+        <div className="projectSetting__members__title mb-1 flex justify-between items-center">
           <h4 className="mb-0 text-lg">Members</h4>
-          <span className="cursor-pointer" onClick={showModalAddMember}>
+          <span
+            className="projectMembers__title__addButton inline-block py-1 px-2 border border-orange-400 text-orange-400 hover:border-orange-600 hover:text-orange-600 text-base font-semibold transition duration-300 cursor-pointer"
+            onClick={showModalAddMember}
+          >
             ADD
           </span>
         </div>
