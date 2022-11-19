@@ -18,10 +18,12 @@ const Layout = () => {
   /* write more conditions here if you like */
   return (
     <>
-      <Header />
+      <div className='mx-auto container mb-10'><Header/></div>
+
       <main>
         <Outlet />
       </main>
+
       <Footer />
     </>
   );
