@@ -93,7 +93,7 @@ const TASK_SERVICE = {
     AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
       .post(`updateTask`, task)
       .then((res) => {
-        PROJECT_SERVICE.getDetailsThunk(task.projectId);
+        dispatch(PROJECT_SERVICE.getDetailsThunk(task.projectId));
       })
       .catch((error) => {
         console.log(error);

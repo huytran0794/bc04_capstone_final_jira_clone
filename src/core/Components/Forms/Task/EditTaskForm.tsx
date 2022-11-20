@@ -8,7 +8,7 @@ import { getAllInfoThunk, getTaskDetailThunk, getTaskUsersThunk, taskActions } f
 
 /* import local interfaces */
 import { ITaskForm } from "../../../models/common/FormProps.interface";
-import { ITask, ITaskPriority } from "../../../models/Task/Task.Interface";
+import { ITask, } from "../../../models/Task/Task.Interface";
 
 
 /* import local components */
@@ -39,15 +39,13 @@ const EditTaskForm = ({
         handleOnFinish(values);
     };
 
-    const { taskStatusList, taskPriorityList, taskUserList, taskDetail } = useAppSelector(
-        (state) => state.taskReducer
-    );
+    const { taskStatusList, taskPriorityList, taskUserList, taskDetail } = useAppSelector((state) => state.taskReducer);
 
     let clonedTask = taskDetail ? JSON.parse(JSON.stringify(taskDetail)) : "";
 
     const componentMounted = useRef<boolean>(true);
     const [visibleEditor, setVisibleEditor] = useState<boolean>(false);
-    console.log('Kiểm tra useRef mounted', componentMounted.current);
+
     useEffect(() => {
         if (componentMounted.current) {
             dispatch(getAllInfoThunk());
@@ -76,15 +74,20 @@ const EditTaskForm = ({
         };
 
         if (taskDetail) {
-            console.log('co task detail');
+            console.log("taskDetail before");
             console.log(taskDetail);
-
+            
+            console.log("taskDetail after");
+            console.log(taskDetail);
             returnedValue = {
                 ...returnedValue,
                 ...taskDetail,
                 listUserAsign: taskDetail.assigness.map(assignee => assignee.id),
             }
         }
+
+        console.log("returnedValue");
+        console.log(returnedValue);
         return { ...returnedValue, timeTracking: 0, };
     };
 
@@ -92,9 +95,10 @@ const EditTaskForm = ({
 
     useEffect(() => {
         if (componentMounted.current) {
+            console.log("initialValues");
+            console.log(initialValues);
             form.setFieldsValue(initialValues);
         }
-
     }, [form, initialValues]);
 
 
@@ -117,13 +121,11 @@ const EditTaskForm = ({
         }
     }
 
-
     const renderTaskStatusOptions = () => {
         return taskStatusList?.map((taskStatus, idx) => {
             return <Option key={taskStatus.statusId.toString() + idx} value={taskStatus.statusId}>{taskStatus.statusName}</Option>
         })
     }
-
 
     let assigneesOptions: SelectProps['options'] = [];
     const renderTaskAssigneesOptions = () => {
@@ -158,7 +160,7 @@ const EditTaskForm = ({
         }, [form, prevOpen, open]);
     };
 
-    let isOpenModal = useAppSelector(state => state.modalReducer.modalProps.open);
+    let isOpenModal = useAppSelector((state) => state.modalReducer.modalProps.open);
     useResetFormOnCloseModal({ form, open: isOpenModal });
 
     assigneesOptions = renderTaskAssigneesOptions();
@@ -167,14 +169,31 @@ const EditTaskForm = ({
         let fieldChangedName = Object.keys(changedValues)[0];
         let fieldChangedValue: string | number = form.getFieldValue(fieldChangedName);
         let formAllTaskValue = form.getFieldsValue();
+        componentMounted.current = true;
         console.log('All edit task form value on change');
         console.log(formAllTaskValue);
-        // clonedTask = { ...clonedTask, [fieldChangedName]: fieldChangedValue };
-        clonedTask[fieldChangedName] = fieldChangedValue;
-        console.log('clonedTask')
-        console.log(clonedTask)
-        // dispatch(taskActions.updateTask(clonedTask));
+        Object.entries(formAllTaskValue).map((item, idx) => {
+            clonedTask[item[0]] = item[1];
+        });
+        console.log("clonedTask");
+        console.log(clonedTask.listUserAsign);
+        let assignees = taskUserList.filter(user => {
+            let foundIdx = clonedTask.listUserAsign.findIndex((userAsignId: number) => userAsignId === user.userId);
+            if (foundIdx > -1) {
+                return true;
+            }
+            return false;
+        })
+        clonedTask.assigness = assignees.map(assign => {
+            let clonedObj = JSON.parse(JSON.stringify(assign));
+            clonedObj.id = assign.userId;
+            delete clonedObj.userId
 
+            return clonedObj;
+        });
+        console.log("clonedTask.assigness ");
+        console.log(clonedTask.assigness);
+        dispatch(taskActions.updateTask(clonedTask));
     }
 
     const formProps = { form, layout, size, onFinish, onValuesChange };
@@ -203,7 +222,7 @@ const EditTaskForm = ({
                                         className="btn-save bg-science-blue-500 text-white border-none rounded-[4px] hover:bg-[#0065ff] font-semibold text-base transition-all duration-[400ms] order-2"
                                         handleOnClick={() => {
                                             setVisibleEditor(false);
-                                            componentMounted.current = false;
+                                            componentMounted.current = true;
                                             if (taskDetail) {
                                                 clonedTask.description = form.getFieldValue('description');
                                                 dispatch(taskActions.updateTask(clonedTask));
@@ -216,7 +235,7 @@ const EditTaskForm = ({
                                         className="btn-cancel btn-txt--underlined border-none text-[#6B778C] text-base order-1"
                                         handleOnClick={() => {
                                             setVisibleEditor(false);
-                                            componentMounted.current = false;
+                                            componentMounted.current = true;
                                             form.setFieldValue('description', taskDetail?.description);
                                         }}
                                     >
@@ -329,14 +348,6 @@ const EditTaskForm = ({
                                 validator(_, value) {
                                     let timeSpent = getFieldValue('timeTrackingSpent');
                                     let condition = value >= 0 && timeSpent >= 0 && getFieldValue('timeTrackingSpent') <= value;
-                                    // console.log("*******************************");
-                                    // console.log("value");
-                                    // console.log(value);
-                                    // console.log("getFieldValue('timeTrackingSpent')");
-                                    // console.log(getFieldValue('timeTrackingSpent'));
-                                    // console.log('condition');
-                                    // console.log(condition);
-                                    // console.log("*******************************");
                                     if (condition) {
                                         return Promise.resolve();
                                     }

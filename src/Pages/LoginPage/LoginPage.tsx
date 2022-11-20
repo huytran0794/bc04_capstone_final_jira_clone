@@ -42,7 +42,7 @@ const LoginPage = () => {
                   Don't have account ?
                   <Link
                     className="link text-indigo-400 hover:text-red-500 ml-2 hover:underline transition-all duration-500"
-                    to="register"
+                    to="/register"
                   >
                     Sign up
                   </Link>

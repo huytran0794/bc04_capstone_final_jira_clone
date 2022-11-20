@@ -17,13 +17,6 @@ const EditTaskHeader = () => {
   );
   const dispatch = useAppDispatch();
   let clonedTask = task ? JSON.parse(JSON.stringify(task)) : "";
-
-  console.log("task");
-  console.log(task);
-
-  console.log("taskTypeList");
-  console.log(taskTypeList);
-
   const { Option } = Select;
 
   // class flex between
@@ -33,12 +26,14 @@ const EditTaskHeader = () => {
 
 
   const handleSelect = (value: number | string) => {
-    console.log("value");
+    console.log('choose value');
     console.log(value);
     clonedTask = { ...clonedTask, typeId: value };
     dispatch(taskActions.updateTask(clonedTask));
   }
-
+  const defaultOption = task && task.typeId;
+  console.log("defaultOption");
+  console.log(defaultOption);
   return (
     <div className="content">
       <div className={clsx("content-wrapper", flexBetweenClass)}>
@@ -47,6 +42,7 @@ const EditTaskHeader = () => {
             <div className="wrapper flex items-center gap-1">
               <Select
                 className="select-task-type w-[200px]"
+                defaultValue={defaultOption}
                 optionLabelProp="label"
                 onSelect={handleSelect}
               >
@@ -54,19 +50,19 @@ const EditTaskHeader = () => {
                   let optionLabel = (
                     <div className="task-type-label flex items-center gap-3 w-full h-full">
                       <span className="icon">
-                        {task
-                          ? taskTypeIcons[task.taskTypeDetail.taskType]
-                          : ""}
+                        {taskTypeIcons[type.taskType]}
                       </span>
                       <p className="title flex items-center mb-0">
                         <span className="txt uppercase">
-                          {task?.taskTypeDetail.taskType}
+                          {type.taskType}
                         </span>
                         <span className="char mx-2">-</span>
                         <span className="task-id">{task?.taskId}</span>
                       </p>
                     </div>
                   );
+                  console.log("type")
+                  console.log(type)
                   return (
                     <Option
                       key={type.id.toString() + idx}

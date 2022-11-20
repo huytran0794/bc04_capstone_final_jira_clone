@@ -145,6 +145,13 @@ export const getAllInfoThunk = () => async (dispatch: AppDispatch) => {
   return promiseData;
 };
 
+export const sendTaskData = createAsyncThunk(
+  "taskSlice/getTaskDetail",
+  (_,  {getState, dispatch:AppDispatch}) => {
+    getState();
+  }
+);
+
 const initialState: InitialState = {
   taskTypeList: [
     {
@@ -179,19 +186,16 @@ const taskSlice = createSlice({
   reducers: {
     updateTask: (state, action: PayloadAction<ITask>) => {
       let currentTask = action.payload;
-      let taskMembers: (number | undefined)[] = [];
-      if (currentTask && currentTask.assigness.length > 0) {
-        taskMembers = currentTask.assigness.map((member, idx) => member.id);
-      }
-      if (currentTask && currentTask.priorityId === 0) {
+      if (currentTask.priorityId === 0) {
         currentTask.priorityId = currentTask.priorityTask!.priorityId!;
       }
 
-      if (currentTask && currentTask.typeId === 0) {
+      if (currentTask.typeId === 0) {
         currentTask.typeId = currentTask.taskTypeDetail.id;
       }
 
-      currentTask.listUserAsign = taskMembers as Partial<User>[];
+      console.log("taskSlice update task");
+      console.log(currentTask);
       state.taskDetail = currentTask;
     },
   },
