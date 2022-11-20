@@ -1,10 +1,18 @@
+/* import antd components */
 import { message } from "antd";
+
+/* import local interfaces */
 import {
   InterfaceProject,
   InterfaceProjectUpdate,
 } from "../models/Project/Project.interface";
+
+/* import redux hooks */
 import { projectActions } from "../redux/slice/projectSlice";
+import { spinnerActions } from "../redux/slice/spinnerSlice";
 import { AppDispatch } from "../redux/store/store";
+
+/* import config urls */
 import {
   AXIOS_INSTANCE_GENERATOR,
   BASE_PROJECT_URL,
@@ -46,12 +54,43 @@ const PROJECT_SERVICE = {
     ).get("");
     return data;
   },
-  getDetails: async (projectID: any) => {
+  getDetails: async (projectId: any) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).get(
-      `/getProjectDetail?id=${projectID}`
+      `/getProjectDetail?id=${projectId}`
     );
     return data;
   },
+
+  getDetailsThunk: (projectId: any) => (dispatch: AppDispatch) => {
+    AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
+      .get(`/getProjectDetail?id=${projectId}`)
+      .then((res) => {
+        let resContent = res.data.content;
+        dispatch(
+          projectActions.putProjectDetail({
+            id: resContent.id,
+            projectName: resContent.projectName,
+            description: resContent.description,
+            categoryName: resContent.projectCategory.name,
+            categoryId: resContent.projectCategory.id,
+            creator: resContent.creator,
+            lstTask: resContent.lstTask,
+            members: resContent.members,
+            alias: resContent.alias,
+          })
+        );
+        setTimeout(() => {
+          dispatch(spinnerActions.setLoadingOff());
+        }, 2500);
+      })
+      .catch((err) => {
+        console.log(err);
+        setTimeout(() => {
+          dispatch(spinnerActions.setLoadingOff());
+        }, 2500);
+      });
+  },
+
   update: async (projectId: number, updatedProject: InterfaceProjectUpdate) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).put(
       `/updateProject?projectId=${projectId}`,

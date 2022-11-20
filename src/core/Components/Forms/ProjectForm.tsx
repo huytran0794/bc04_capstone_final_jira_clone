@@ -68,7 +68,6 @@ const ProjectForm = ({
     </Label>
   );
 
-  console.log("Edit Form Rendered");
   return (
     <Form name="project_form" className="myform projectForm" {...formProps}>
       <Form.Item

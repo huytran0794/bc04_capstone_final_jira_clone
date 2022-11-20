@@ -1,39 +1,56 @@
-import { Avatar } from 'antd';
-import React from 'react'
-import SimpleMemberAvatar from '../../../core/Components/Avatar/SimpleMemberAvatar';
-import { IProjectDetail } from '../../../core/models/Project/Project.interface';
-import { BsFillBookmarkFill } from "react-icons/bs"
-import { ITask, ITaskDetailList } from '../../../core/models/Task/Task.Interface';
 import clsx from 'clsx';
-const DetailIssueBoard = ({ projectDetail }: Partial<IProjectDetail>) => {
+
+/* import and component */
+import { Avatar } from 'antd';
+
+/* import local components */
+import SimpleMemberAvatar from '../../../core/Components/Avatar/SimpleMemberAvatar';
+
+/* import local interfaces */
+import { IProjectDetail } from '../../../core/models/Project/Project.interface';
+import { ITask, ITaskDetailList } from '../../../core/models/Task/Task.Interface';
+
+import { useAppDispatch, useAppSelector } from '../../../core/hooks/redux/useRedux';
+import { modalActions } from '../../../core/redux/slice/modalSlice';
+import EditTask from './Task/EditTask';
+import EditTaskHeader from './Task/EditTaskHeader';
+
+
+const DetailIssueBoard = ({ project }: IProjectDetail) => {
+    let dispatch = useAppDispatch();
+    let modalProps = useAppSelector(state => state.modalReducer.modalProps);
+    const handleEditTask = (task: ITask) => {
+        dispatch(modalActions.setUpModal({ ...modalProps, width: 1000, headerContent: <EditTaskHeader /> }));
+        dispatch(modalActions.openModal(<EditTask task={task} project={project} />));
+    };
     const renderProjectCard = (lstTaskDeTail: ITask[]) => {
         if (lstTaskDeTail.length) {
-            return lstTaskDeTail.map((task: ITask, idx: number) => {
+            return lstTaskDeTail.map((taskDetail: ITask, idx: number) => {
                 return (
                     <div className={clsx(
                         "card cursor-pointer select-none",
-                        "rounded-[3px] bg-white shadow-md",
+                        "rounded-[3px] bg-white card-task-shadow",
                         "text-[#172B4D] hover:bg-[#F4F5F7] hover:text-[#172B4D]",
                         "transition-all duration-700"
-                    )}>
+                    )} key={taskDetail.taskId.toString() + idx} onClick={() => { handleEditTask(taskDetail) }} >
                         <div className="card-content p-3">
                             <div className="card__title text-sm mb-9">
-                                <h6>{task.taskName}</h6>
+                                <h6>{taskDetail.taskName}</h6>
                             </div>
                             <div className="card__info">
                                 <div className="wrapper flex items-center justify-between">
                                     <div className="card__info-col--left flex">
                                         <div className="type">
-                                            {task.taskTypeDetail.taskType}
+                                            {taskDetail.taskTypeDetail.taskType}
                                         </div>
                                         <div className="priority">
-                                            {task.priorityTask.priority}
+                                            {taskDetail.priorityTask.priority}
                                         </div>
                                     </div>
                                     <div className="card__info-col--left">
                                         <div className="member">
-                                            <Avatar.Group maxCount={2} size={35}>
-                                                <SimpleMemberAvatar members={task.assigness} />
+                                            <Avatar.Group size={30}>
+                                                <SimpleMemberAvatar members={taskDetail.assigness} />
                                             </Avatar.Group>
                                         </div>
                                     </div>
@@ -46,14 +63,12 @@ const DetailIssueBoard = ({ projectDetail }: Partial<IProjectDetail>) => {
         }
     }
     const projectBoard = (
-        <div className="wrapper project__board flex items-center gap-5">
+        <div className="wrapper project__board flex items-stretch gap-5">
             {
-                projectDetail?.lstTask.map((taskDetailList: ITaskDetailList, idx: number) => {
-                    console.log(taskDetailList);
-
+                project?.lstTask.map((taskDetailList: ITaskDetailList, idx: number) => {
                     return (
-                        <div className="col w-1/4 shadow-md" key={idx}>
-                            <div className="content-wrapper flex-1 px-2 bg-[#F4F5F7] shadow-md">
+                        <div className="col w-1/4 shadow-md" key={taskDetailList.statusId.toString() + idx}>
+                            <div className="content-wrapper flex-1 px-2 bg-[#F4F5F7] shadow-md h-full">
                                 <div className="content">
                                     <div className="header relative h-[40px] py-3 pl-2">
                                         <div className="title-wrapper h-full rounded-tl-md rounded-tr-md">

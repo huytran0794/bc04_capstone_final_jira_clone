@@ -218,7 +218,7 @@ export default function ProjectManagement() {
             </h3>
             <ButtonLocal
               handleOnClick={handleOpenCreateProject}
-              className="bg-science-blue-500 text-base border-none rounded-md hover:bg-[#0065ff] font-semibold py-1 px-3"
+              className="bg-science-blue-500 text-base border-none rounded-md hover:bg-[#0065ff] font-semibold"
             >
               Create Project
             </ButtonLocal>

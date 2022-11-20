@@ -6,6 +6,8 @@ import userReducer from "../slice/userSlice";
 import spinnerReducer from "../slice/spinnerSlice";
 import projectReducer from "../slice/projectSlice";
 import projectCategoryReducer from "../slice/projectCategorySlice";
+import taskReducer from "../slice/taskSlice";
+import modalReducer from "../slice/modalSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +16,8 @@ const store = configureStore({
     spinnerReducer,
     generalReducer,
     projectCategoryReducer,
+    taskReducer,
+    modalReducer,
   },
   devTools: true,
 });

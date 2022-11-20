@@ -23,7 +23,6 @@ const CreateProjectPage = () => {
     dispatch(spinnerActions.setLoadingOn());
     PROJECT_SERVICE.createProject(values)
       .then((res) => {
-        // dispatch(projectActions.createProject(res.content));
         toastify("success", "Create project successfully !");
         setTimeout(() => {
           navigate("/", { replace: true });
