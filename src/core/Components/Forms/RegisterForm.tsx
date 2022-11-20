@@ -1,4 +1,6 @@
 import React from "react";
+/* import react router dom packages */
+import { useNavigate } from "react-router-dom";
 
 /* import antd components */
 import { Button, Form, Input } from "antd";
@@ -11,24 +13,49 @@ import {
 
 /* import local components*/
 import Label from "./Label/Label";
+import toastify from "./../../utils/toastify/toastifyUtils";
 
 /* import local interfaces */
 import { FormProps } from "../../models/common/FormProps.interface";
+import { User } from "./../../models/User/User.interface";
+
+/* import local service */
+import USER_SERVICE from "./../../services/userServ";
 
 const RegisterForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
-  const onFinish = () => {};
-  const onFinishFailed = () => {};
+  const navigate = useNavigate();
+
+  const onFinish = (value: User) => {
+    USER_SERVICE.register(value)
+      .then((res) => {
+        toastify("success", "Register successfully! You can log in now!");
+        setTimeout(() => {
+          navigate("/login", { replace: true });
+        }, 2000);
+      })
+      .catch((err) => {
+        toastify("error", err.response.data.message);
+      });
+  };
+
   const labelItem = (labelText: string) => (
-    <Label className="text-lg font-medium text ">{labelText}</Label>
+    <Label className="text-lg font-medium">{labelText}</Label>
   );
+
   return (
     <Form
       name="registerForm"
       className="register-form w-full"
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       layout={layout}
       size={size}
+      initialValues={{
+        email: "abc123@g.co",
+        name: "dev đẹp chai lái mái bai",
+        passWord: "abc123",
+        confirmPassword: "abc123",
+        phoneNumber: "012465798",
+      }}
     >
       <Form.Item
         name="email"
@@ -49,6 +76,24 @@ const RegisterForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
           placeholder="Johndoe@email.com"
         />
       </Form.Item>
+
+      <Form.Item
+        name="name"
+        label={labelItem("User name")}
+        rules={[
+          {
+            required: true,
+            message: "Please do not leave ${name} empty",
+          },
+          // {
+          //   pattern: /^[A-Za-z\s]*$/i,
+          //   message: "${name} only accepts text, and char. Please input again.",
+          // },
+        ]}
+      >
+        <Input prefix={<IdcardOutlined />} placeholder="John Doe" />
+      </Form.Item>
+
       <Form.Item
         name="passWord"
         label={labelItem("Passwords")}
@@ -66,6 +111,7 @@ const RegisterForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
           placeholder="Enter your passwords"
         />
       </Form.Item>
+
       <Form.Item
         name="confirmPassword"
         label={labelItem("Confirm Passwords")}
@@ -93,6 +139,7 @@ const RegisterForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
           placeholder="Enter the confirmation passwords"
         />
       </Form.Item>
+
       <Form.Item
         name="phoneNumber"
         label={labelItem("Phone Number")}
@@ -109,22 +156,7 @@ const RegisterForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
       >
         <Input prefix={<MobileOutlined />} placeholder="0897831245" />
       </Form.Item>
-      <Form.Item
-        name="name"
-        label={labelItem("User name")}
-        rules={[
-          {
-            required: true,
-            message: "Please do not leave ${name} empty",
-          },
-          {
-            pattern: /^[A-Za-z\s]*$/i,
-            message: "${name} only accepts text, and char. Please input again.",
-          },
-        ]}
-      >
-        <Input prefix={<IdcardOutlined />} placeholder="John Doe" />
-      </Form.Item>
+
       <Form.Item>
         <Button
           type="primary"
