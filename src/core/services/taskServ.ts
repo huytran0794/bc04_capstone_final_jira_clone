@@ -1,3 +1,4 @@
+import { useAppSelector } from "../hooks/redux/useRedux";
 import {
   ITask,
   ITaskPriority,
@@ -5,6 +6,7 @@ import {
   ITaskType,
 } from "../models/Task/Task.Interface";
 import { spinnerActions } from "../redux/slice/spinnerSlice";
+import { taskActions } from "../redux/slice/taskSlice";
 import { AppDispatch } from "../redux/store/store";
 import {
   AXIOS_INSTANCE_GENERATOR,
@@ -35,6 +37,16 @@ type taskUpdateStatus = {
   taskId: number | string;
   statusId: number | string;
   projectId: number | string;
+};
+
+let updateRedux = async (dispatch: AppDispatch, task: ITask) => {
+  console.log("run first");
+  dispatch(taskActions.updateTask(task));
+};
+
+let updateProjectDetails = async (dispatch: AppDispatch, task: ITask) => {
+  console.log("run second");
+  dispatch(PROJECT_SERVICE.getDetailsThunk(task.projectId));
 };
 
 const TASK_SERVICE = {
@@ -93,7 +105,10 @@ const TASK_SERVICE = {
     AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
       .post(`updateTask`, task)
       .then((res) => {
-        dispatch(PROJECT_SERVICE.getDetailsThunk(task.projectId));
+        (async () => {
+          await updateRedux(dispatch, task);
+          await updateProjectDetails(dispatch, task);
+        })();
       })
       .catch((error) => {
         console.log(error);

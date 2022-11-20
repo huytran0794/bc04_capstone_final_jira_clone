@@ -145,13 +145,6 @@ export const getAllInfoThunk = () => async (dispatch: AppDispatch) => {
   return promiseData;
 };
 
-export const sendTaskData = createAsyncThunk(
-  "taskSlice/getTaskDetail",
-  (_,  {getState, dispatch:AppDispatch}) => {
-    getState();
-  }
-);
-
 const initialState: InitialState = {
   taskTypeList: [
     {
@@ -186,16 +179,6 @@ const taskSlice = createSlice({
   reducers: {
     updateTask: (state, action: PayloadAction<ITask>) => {
       let currentTask = action.payload;
-      if (currentTask.priorityId === 0) {
-        currentTask.priorityId = currentTask.priorityTask!.priorityId!;
-      }
-
-      if (currentTask.typeId === 0) {
-        currentTask.typeId = currentTask.taskTypeDetail.id;
-      }
-
-      console.log("taskSlice update task");
-      console.log(currentTask);
       state.taskDetail = currentTask;
     },
   },
@@ -269,7 +252,15 @@ const taskSlice = createSlice({
     builder.addCase(
       getTaskDetailThunk.fulfilled,
       (state, action: PayloadAction<ITask>) => {
-        state.taskDetail = action.payload;
+        let currentTask = action.payload;
+        if (currentTask.priorityId === 0) {
+          currentTask.priorityId = currentTask.priorityTask!.priorityId!;
+        }
+
+        if (currentTask.typeId === 0) {
+          currentTask.typeId = currentTask.taskTypeDetail.id;
+        }
+        state.taskDetail = currentTask;
       }
     );
     builder.addCase(getTaskDetailThunk.rejected, (state, action) => {

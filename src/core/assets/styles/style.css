@@ -114,6 +114,15 @@ h6 {
   .ant-select-selector {
   height: 40px !important;
 }
+
+.select-task-type .ant-select-selector {
+  border: none !important;
+}
+
+.select-task-type:hover .ant-select-selector {
+  background-color: transparent !important;
+  border: none !important;
+}
 /* ================================== edit task form header taskType styling */
 
 /* ================================================================== edit task form styling ============*/

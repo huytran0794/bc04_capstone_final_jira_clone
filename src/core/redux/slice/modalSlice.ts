@@ -12,6 +12,7 @@ const initialState: InitialState = {
     modalContent: null,
     width: "auto",
     form: null,
+    maskClosable: null,
   },
 };
 

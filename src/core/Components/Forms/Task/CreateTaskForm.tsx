@@ -1,6 +1,6 @@
 /* import antd components */
 import { Avatar, Button, Form, Input, InputNumber, Select, SelectProps, Slider } from "antd";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BsCheckSquareFill, BsExclamationSquareFill } from "react-icons/bs";
 
 
@@ -31,13 +31,18 @@ const CreateTaskForm = ({
     buttonText = "Submit",
     handleOnFinish,
 }: ITaskForm) => {
-    console.log("Current Project info", project);
     const dispatch = useAppDispatch();
     const [form] = Form.useForm();
     const { Option } = Select;
+    const componentMounted = useRef<boolean>(true);
     const onFinish = (values: ITask) => {
         handleOnFinish(values);
     };
+
+    const [timeTracking, setTimeTracking] = useState<{ timeSpent: number, timeRemains: number }>({
+        timeSpent: 0,
+        timeRemains: 0,
+    });
 
     const labelItem = (labelText: string) => (
         <Label className="text-sm font-medium text-pickled-bluewood-400 capitalize">
@@ -108,7 +113,12 @@ const CreateTaskForm = ({
     let initialValues = getInitialValue();
 
     useEffect(() => {
-        form.setFieldsValue(initialValues);
+        if (componentMounted.current) {
+            console.log('chay lai init');
+
+            form.setFieldsValue(initialValues);
+        }
+
     }, [form, initialValues]);
 
     const handleProjectChange = (value: string) => {
@@ -117,13 +127,24 @@ const CreateTaskForm = ({
 
 
     const onValuesChange = (changedValues: any, values: any) => {
-        values.timeTracking = values.timeTrackingSpent;
+        let fieldChangedName = Object.keys(changedValues)[0];
+        let fieldChangedValue: string | number = form.getFieldValue(fieldChangedName);
+        if (fieldChangedName === "timeTrackingSpent") {
+            componentMounted.current = false;
+            setTimeTracking({ ...timeTracking, timeSpent: Number(fieldChangedValue) });
+        }
 
-        form.setFieldsValue(values);
+        if (fieldChangedName === "timeTrackingRemaining") {
+            componentMounted.current = false;
+            setTimeTracking({ ...timeTracking, timeRemains: Number(fieldChangedValue) });
+        }
 
-        console.log("values");
-        console.log(values);
     }
+
+    // update time tracking
+    console.log("timeTracking");
+    console.log(timeTracking);
+
     const formProps = { form, layout, size, onFinish, onValuesChange };
     return (
         <Form name="create-task-form" className="myform projectForm" {...formProps}>
@@ -199,18 +220,16 @@ const CreateTaskForm = ({
 
 
                 <div className="form-item-wrapper time-tracking-input-wrapper w-1/2">
-                    <Form.Item noStyle >
-                        <Form.Item name="timeTracking" label={labelItem("time tracking")}>
-                            <Slider
-                                value={Number(form.getFieldValue('timeTracking'))}
-                                max={Number(form.getFieldValue('timeTrackingSpent')) + Number(form.getFieldValue('timeTrackingRemaining'))}
-                                disabled={true}
-                                tooltip={{ open: false }}
-                                trackStyle={{ backgroundColor: "#0052cc", height: "7px", borderRadius: "4px" }}
-                                handleStyle={{ display: "none" }}
-                                className="timeTrackingSlider"
-                            />
-                        </Form.Item>
+                    <Form.Item name="timeTracking" label={labelItem("time tracking")}>
+                        <Slider
+                            value={timeTracking.timeSpent}
+                            max={timeTracking.timeSpent + timeTracking.timeRemains}
+                            disabled={true}
+                            tooltip={{ open: false }}
+                            trackStyle={{ backgroundColor: "#0052cc", height: "7px", borderRadius: "4px" }}
+                            handleStyle={{ display: "none" }}
+                            className="timeTrackingSlider"
+                        />
                         <div className="time-logged flex items-center justify-between">
                             <div className="time-spent-logged font-bold">
                                 <span className="time-text">{form.getFieldValue('timeTrackingSpent')}</span>
@@ -222,13 +241,12 @@ const CreateTaskForm = ({
                             </div>
                         </div>
                     </Form.Item>
-
                 </div>
 
             </div>
             <div className="form-row flex items-center gap-5">
                 <div className="form-item-wrapper w-1/2">
-                    <Form.Item name="originalEstimate" label={labelItem("originalEstimate")}>
+                    <Form.Item name="originalEstimate" label={labelItem("original estimate")}>
                         <Input
                             placeholder="0"
                             className="py-2 px-5 rounded-md"
@@ -258,14 +276,6 @@ const CreateTaskForm = ({
                                 validator(_, value) {
                                     let timeSpent = getFieldValue('timeTrackingSpent');
                                     let condition = value >= 0 && timeSpent >= 0 && getFieldValue('timeTrackingSpent') <= value;
-                                    // console.log("*******************************");
-                                    // console.log("value");
-                                    // console.log(value);
-                                    // console.log("getFieldValue('timeTrackingSpent')");
-                                    // console.log(getFieldValue('timeTrackingSpent'));
-                                    // console.log('condition');
-                                    // console.log(condition);
-                                    // console.log("*******************************");
                                     if (condition) {
                                         return Promise.resolve();
                                     }

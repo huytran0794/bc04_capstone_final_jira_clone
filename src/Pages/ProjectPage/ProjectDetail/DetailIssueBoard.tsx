@@ -14,11 +14,14 @@ import { useAppDispatch, useAppSelector } from '../../../core/hooks/redux/useRed
 import { modalActions } from '../../../core/redux/slice/modalSlice';
 import EditTask from './Task/EditTask';
 import EditTaskHeader from './Task/EditTaskHeader';
+import { DropwDownIcons } from '../../../core/utils/TaskIcons/Dropdown';
 
 
 const DetailIssueBoard = ({ project }: IProjectDetail) => {
     let dispatch = useAppDispatch();
     let modalProps = useAppSelector(state => state.modalReducer.modalProps);
+    let taskTypeIcons = DropwDownIcons.taskType;
+    let taskStatusIcons = DropwDownIcons.status;
     const handleEditTask = (task: ITask) => {
         dispatch(modalActions.setUpModal({ ...modalProps, width: 1000, headerContent: <EditTaskHeader /> }));
         dispatch(modalActions.openModal(<EditTask task={task} project={project} />));
@@ -29,7 +32,7 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                 return (
                     <div className={clsx(
                         "card cursor-pointer select-none",
-                        "rounded-[3px] bg-white card-task-shadow",
+                        "rounded-[3px] bg-white hover:shadow-md",
                         "text-[#172B4D] hover:bg-[#F4F5F7] hover:text-[#172B4D]",
                         "transition-all duration-700"
                     )} key={taskDetail.taskId.toString() + idx} onClick={() => { handleEditTask(taskDetail) }} >
@@ -39,12 +42,20 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                             </div>
                             <div className="card__info">
                                 <div className="wrapper flex items-center justify-between">
-                                    <div className="card__info-col--left flex">
-                                        <div className="type">
-                                            {taskDetail.taskTypeDetail.taskType}
+                                    <div className="card__info-col--left flex items-center gap-2">
+                                        <div className="type flex items-center gap-2">
+                                            <span className="icon">
+                                                {taskTypeIcons[taskDetail.taskTypeDetail.taskType]}
+                                            </span>
+                                            
+                                            
                                         </div>
-                                        <div className="priority">
-                                            {taskDetail.priorityTask.priority}
+                                        <div className="priority flex items-center gap-1">
+                                            <span className="icon flex items-center">
+                                                {taskStatusIcons[taskDetail.priorityTask.priority!.toLowerCase()]}
+                                            </span>
+                                            <span className="txt">{taskDetail.priorityTask.priority}</span>
+
                                         </div>
                                     </div>
                                     <div className="card__info-col--left">

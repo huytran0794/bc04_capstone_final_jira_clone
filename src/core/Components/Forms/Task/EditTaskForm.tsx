@@ -13,8 +13,6 @@ import { ITask, } from "../../../models/Task/Task.Interface";
 
 /* import local components */
 import Label from "../Label/Label";
-import { modalActions } from "../../../redux/slice/modalSlice";
-import SimpleMemberAvatar from "../../Avatar/SimpleMemberAvatar";
 
 import { FormInstance } from "antd/es/form/Form";
 import CustomEditor from "../../tinyEditor/CustomEditor";
@@ -22,7 +20,10 @@ import CustomEditor from "../../tinyEditor/CustomEditor";
 import clsx from "clsx";
 import HTMLReactParser from "html-react-parser";
 import ButtonLocal from "../../Utils/ButtonLocal";
-import { User } from "../../../models/User/User.interface";
+
+import TASK_SERVICE from "../../../services/taskServ";
+import { modalActions } from "../../../redux/slice/modalSlice";
+import { LOCAL_SERVICE } from "../../../services/localServ";
 
 const EditTaskForm = ({
     layout = "horizontal",
@@ -45,7 +46,9 @@ const EditTaskForm = ({
 
     const componentMounted = useRef<boolean>(true);
     const [visibleEditor, setVisibleEditor] = useState<boolean>(false);
-
+    const inputRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const isSubmitted = useRef<boolean>(true);
+    // let inputRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     useEffect(() => {
         if (componentMounted.current) {
             dispatch(getAllInfoThunk());
@@ -55,7 +58,7 @@ const EditTaskForm = ({
     }, []);
 
     const labelItem = (labelText: string) => (
-        <Label className="text-sm font-medium text-pickled-bluewood-400 capitalize">
+        <Label className="text-base font-medium text-pickled-bluewood-400 capitalize">
             {labelText}
         </Label>
     );
@@ -74,20 +77,12 @@ const EditTaskForm = ({
         };
 
         if (taskDetail) {
-            console.log("taskDetail before");
-            console.log(taskDetail);
-            
-            console.log("taskDetail after");
-            console.log(taskDetail);
             returnedValue = {
                 ...returnedValue,
                 ...taskDetail,
                 listUserAsign: taskDetail.assigness.map(assignee => assignee.id),
             }
         }
-
-        console.log("returnedValue");
-        console.log(returnedValue);
         return { ...returnedValue, timeTracking: 0, };
     };
 
@@ -164,43 +159,51 @@ const EditTaskForm = ({
     useResetFormOnCloseModal({ form, open: isOpenModal });
 
     assigneesOptions = renderTaskAssigneesOptions();
-
-    const onValuesChange = (changedValues: any) => {
+    const [timeTracking, setTimeTracking] = useState<{ timeSpent: number, timeRemains: number }>({
+        timeSpent: 0,
+        timeRemains: 0,
+    });
+    const onValuesChange = async (changedValues: any) => {
         let fieldChangedName = Object.keys(changedValues)[0];
         let fieldChangedValue: string | number = form.getFieldValue(fieldChangedName);
         let formAllTaskValue = form.getFieldsValue();
-        componentMounted.current = true;
-        console.log('All edit task form value on change');
-        console.log(formAllTaskValue);
-        Object.entries(formAllTaskValue).map((item, idx) => {
-            clonedTask[item[0]] = item[1];
-        });
-        console.log("clonedTask");
-        console.log(clonedTask.listUserAsign);
-        let assignees = taskUserList.filter(user => {
-            let foundIdx = clonedTask.listUserAsign.findIndex((userAsignId: number) => userAsignId === user.userId);
-            if (foundIdx > -1) {
-                return true;
-            }
-            return false;
-        })
-        clonedTask.assigness = assignees.map(assign => {
-            let clonedObj = JSON.parse(JSON.stringify(assign));
-            clonedObj.id = assign.userId;
-            delete clonedObj.userId
+        if (fieldChangedName === "timeTrackingSpent") {
+            componentMounted.current = false;
+            setTimeTracking({ ...timeTracking, timeSpent: Number(fieldChangedValue) });
+        }
 
-            return clonedObj;
-        });
-        console.log("clonedTask.assigness ");
-        console.log(clonedTask.assigness);
-        dispatch(taskActions.updateTask(clonedTask));
+        if (fieldChangedName === "timeTrackingRemaining") {
+            componentMounted.current = false;
+            setTimeTracking({ ...timeTracking, timeRemains: Number(fieldChangedValue) });
+        }
+        if (isSubmitted.current) {
+            Object.entries(formAllTaskValue).map((item, idx) => {
+                clonedTask[item[0]] = item[1];
+            });
+
+            let assignees = taskUserList.filter(user => {
+                let foundIdx = clonedTask.listUserAsign.findIndex((userAsignId: number) => userAsignId === user.userId);
+                if (foundIdx > -1) {
+                    return true;
+                }
+                return false;
+            })
+            clonedTask.assigness = assignees.map(assign => {
+                let clonedObj = JSON.parse(JSON.stringify(assign));
+                clonedObj.id = assign.userId;
+                delete clonedObj.userId
+
+                return clonedObj;
+            });
+            dispatch(TASK_SERVICE.updateTaskThunk(clonedTask));
+        }
     }
-
+    let modalProps = useAppSelector((state) => state.modalReducer.modalProps);
     const formProps = { form, layout, size, onFinish, onValuesChange };
     return (
         <Form name="edit-task-form" className="myform editTaskForm" {...formProps}>
             <div className="content-wrapper flex justify-between">
-                <div className="col--left w-[55%]">
+                <div className="col--left w-[60%]">
                     <Form.Item name="taskName"
                         rules={[
                             {
@@ -225,7 +228,7 @@ const EditTaskForm = ({
                                             componentMounted.current = true;
                                             if (taskDetail) {
                                                 clonedTask.description = form.getFieldValue('description');
-                                                dispatch(taskActions.updateTask(clonedTask));
+                                                dispatch(TASK_SERVICE.updateTaskThunk(clonedTask));
                                             }
                                         }}
                                     >
@@ -248,14 +251,14 @@ const EditTaskForm = ({
                     </Form.Item>
                     <div className="form-section-wrapper mt-3">
                         <Form.Item name="comments" label={labelItem("comments")} >
-                            <div className="inner-wrapper flex gap-5">
-                                <Avatar size={30} />
+                            <div className="inner-wrapper flex gap-2">
+                                <Avatar size={35} src={LOCAL_SERVICE.user.get()!.avatar} />
                                 <TextArea className="rounded-md" />
                             </div>
                         </Form.Item>
                     </div>
                 </div>
-                <div className="col--right w-[40%]">
+                <div className="col--right w-[35%]">
                     <Form.Item name="statusId" label={labelItem("Status")}>
                         <Select className="select-task-status">
                             {renderTaskStatusOptions()}
@@ -294,77 +297,78 @@ const EditTaskForm = ({
                             })}
                         </Select>
                     </Form.Item>
-                    <Form.Item name="timeTracking" label={labelItem("time tracking")}>
-                        <Slider
-                            value={Number(form.getFieldValue('timeTracking'))}
-                            max={Number(form.getFieldValue('timeTrackingSpent')) + Number(form.getFieldValue('timeTrackingRemaining'))}
-                            disabled={true}
-                            tooltip={{ open: false }}
-                            trackStyle={{ backgroundColor: "#0052cc", height: "7px", borderRadius: "4px" }}
-                            handleStyle={{ display: "none" }}
-                            className="timeTrackingSlider"
-                        />
-                        <div className="time-logged flex items-center justify-between">
-                            <div className="time-spent-logged font-bold">
-                                <span className="time-text">{form.getFieldValue('timeTrackingSpent')}</span>
-                                <span>h logged</span>
-                            </div>
-                            <div className="time-remain-logged font-bold">
-                                <span className="time-text">{form.getFieldValue('timeTrackingRemaining')}</span>
-                                <span>h remaining</span>
-                            </div>
-                        </div>
-                    </Form.Item>
-                </div>
-            </div>
-            <div className="form-row flex items-center gap-5">
-                <div className="form-item-wrapper w-1/2">
-                    <Form.Item name="originalEstimate" label={labelItem("originalEstimate")}>
+                    <Form.Item name="originalEstimate" label={labelItem("original estimate")}>
                         <Input
-                            placeholder="0"
+                            placeholder="Number"
                             className="py-2 px-5 rounded-md"
                         />
                     </Form.Item>
-                </div>
+                    <div className="form-item-wrapper time-tracking-input-wrapper cursor-pointer" onClick={() => {
+                        dispatch(modalActions.setUpModal({ ...modalProps, width: 1000 }));
+                        dispatch(modalActions.openModal(
+                            <div className="form-inner-wrapper flex items-center gap-3 w-1/2">
+                                <div className="form-item-wrapper w-1/2">
+                                    <Form.Item name="timeTrackingSpent" label={labelItem("time spent (hours)")} rules={[
+                                        { type: 'number', min: 0 },
+                                    ]}>
+                                        <InputNumber
+                                            placeholder="0"
+                                            className="rounded-md"
 
-                <div className="form-inner-wrapper flex items-center gap-3 w-1/2">
-                    <div className="form-item-wrapper w-1/2">
-                        <Form.Item name="timeTrackingSpent" label={labelItem("time spent (hours)")} rules={[
-                            { type: 'number', min: 0 },
-                        ]}>
-                            <InputNumber
-                                placeholder="0"
-                                className="rounded-md"
+                                            min={0}
+                                        />
+                                    </Form.Item>
+                                </div>
 
-                                min={0}
+                                <div className="form-item-wrapper w-1/2">
+                                    <Form.Item name="timeTrackingRemaining" label={labelItem("time remaining (hours)")} rules={[
+                                        { type: 'number', min: 0 },
+                                        ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                                let timeSpent = getFieldValue('timeTrackingSpent');
+                                                let condition = value >= 0 && timeSpent >= 0 && getFieldValue('timeTrackingSpent') <= value;
+                                                if (condition) {
+                                                    return Promise.resolve();
+                                                }
+                                                return Promise.reject(new Error("Time tracking remaining can't be smaller than time trackingspent"));
+                                            },
+                                        }),
+                                    ]}>
+                                        <InputNumber
+                                            placeholder="0"
+                                            className="rounded-md"
+                                            min={0}
+                                        />
+                                    </Form.Item>
+                                </div>
+                            </div>
+                        ));
+                    }}>
+                        <Form.Item name="timeTrackingOut" label={labelItem("time tracking")} >
+                            <Slider
+                                value={timeTracking.timeSpent}
+                                max={timeTracking.timeSpent + timeTracking.timeRemains}
+                                disabled={true}
+                                tooltip={{ open: false }}
+                                trackStyle={{ backgroundColor: "#0052cc", height: "7px", borderRadius: "4px" }}
+                                handleStyle={{ display: "none" }}
+                                className="timeTrackingSlider cursor-pointer"
                             />
+                            <div className="time-logged flex items-center justify-between">
+                                <div className="time-spent-logged font-bold">
+                                    <span className="time-text">{form.getFieldValue('timeTrackingSpent')}</span>
+                                    <span>h logged</span>
+                                </div>
+                                <div className="time-remain-logged font-bold">
+                                    <span className="time-text">{form.getFieldValue('timeTrackingRemaining')}</span>
+                                    <span>h remaining</span>
+                                </div>
+                            </div>
                         </Form.Item>
                     </div>
 
-                    <div className="form-item-wrapper w-1/2">
-                        <Form.Item name="timeTrackingRemaining" label={labelItem("time remaining (hours)")} rules={[
-                            { type: 'number', min: 0 },
-                            ({ getFieldValue }) => ({
-                                validator(_, value) {
-                                    let timeSpent = getFieldValue('timeTrackingSpent');
-                                    let condition = value >= 0 && timeSpent >= 0 && getFieldValue('timeTrackingSpent') <= value;
-                                    if (condition) {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject(new Error("Time tracking remaining can't be smaller than time trackingspent"));
-                                },
-                            }),
-                        ]}>
-                            <InputNumber
-                                placeholder="0"
-                                className="rounded-md"
-                                min={0}
-                            />
-                        </Form.Item>
-                    </div>
                 </div>
             </div>
-
         </Form >
     );
 }

@@ -7,6 +7,7 @@ import { TfiTrash } from "react-icons/tfi";
 
 import { useAppDispatch, useAppSelector } from "../../../../core/hooks/redux/useRedux";
 import { taskActions } from "../../../../core/redux/slice/taskSlice";
+import TASK_SERVICE from "../../../../core/services/taskServ";
 
 import { DropwDownIcons } from "../../../../core/utils/TaskIcons/Dropdown";
 
@@ -22,18 +23,14 @@ const EditTaskHeader = () => {
   // class flex between
   const flexBetweenClass = "flex items-center justify-between";
   const btnActionClass =
-    "flex items-center gap-2 cursor-pointer hover:bg-slate-400/50 p-3 rounded-md transition-all duration-[700ms]";
+    "flex items-center gap-2 cursor-pointer hover:bg-slate-400/20 p-3 rounded-md transition-all duration-[700ms]";
 
 
   const handleSelect = (value: number | string) => {
-    console.log('choose value');
-    console.log(value);
     clonedTask = { ...clonedTask, typeId: value };
-    dispatch(taskActions.updateTask(clonedTask));
+    dispatch(TASK_SERVICE.updateTaskThunk(clonedTask));
   }
-  const defaultOption = task && task.typeId;
-  console.log("defaultOption");
-  console.log(defaultOption);
+  let defaultOption = task && task.typeId;
   return (
     <div className="content">
       <div className={clsx("content-wrapper", flexBetweenClass)}>
@@ -41,10 +38,12 @@ const EditTaskHeader = () => {
           <div className="task-title">
             <div className="wrapper flex items-center gap-1">
               <Select
-                className="select-task-type w-[200px]"
+                className="select-task-type w-[200px]  hover:bg-slate-400/20 p-3 rounded-md transition-all duration-[700ms]"
+                value={defaultOption}
                 defaultValue={defaultOption}
                 optionLabelProp="label"
                 onSelect={handleSelect}
+                showArrow={false}
               >
                 {taskTypeList?.map((type, idx) => {
                   let optionLabel = (
