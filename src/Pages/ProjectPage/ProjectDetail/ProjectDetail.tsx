@@ -22,6 +22,7 @@ const ProjectDetail = () => {
                     description: res.content.description,
                     categoryName: res.content.projectCategory.name,
                     categoryId: res.content.projectCategory.id,
+                    projectCategory: res.content.projectCategory,
                     creator: res.content.creator,
                     lstTask: res.content.lstTask,
                     members: res.content.members,

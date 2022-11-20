@@ -1,7 +1,6 @@
 import { InterfaceProject } from "../models/Project/Project.interface";
 import { User } from "../models/User/User.interface";
 import { AXIOS_INSTANCE_GENERATOR, BASE_USER_URL } from "./configURL";
-import { User } from './../models/User/User.interface';
 
 type TaskGetUserListResponse = {
   content: User[];
@@ -26,7 +25,7 @@ const USER_SERVICE = {
     );
     return data;
   },
-  
+
   getUserByKeyword: async (keyword: string) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(
       BASE_USER_URL
@@ -40,14 +39,13 @@ const USER_SERVICE = {
     return data;
   },
 
-  register: async (registerData:User) => {
+  register: async (registerData: User) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).post(
       `/signup`,
       registerData
     );
     return data;
   },
-
 };
 
 export default USER_SERVICE;
