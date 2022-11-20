@@ -7,6 +7,7 @@ import { TfiTrash } from "react-icons/tfi";
 
 import { useAppDispatch, useAppSelector } from "../../../../core/hooks/redux/useRedux";
 import { taskActions } from "../../../../core/redux/slice/taskSlice";
+import TASK_SERVICE from "../../../../core/services/taskServ";
 
 import { DropwDownIcons } from "../../../../core/utils/TaskIcons/Dropdown";
 
@@ -17,28 +18,19 @@ const EditTaskHeader = () => {
   );
   const dispatch = useAppDispatch();
   let clonedTask = task ? JSON.parse(JSON.stringify(task)) : "";
-
-  console.log("task");
-  console.log(task);
-
-  console.log("taskTypeList");
-  console.log(taskTypeList);
-
   const { Option } = Select;
 
   // class flex between
   const flexBetweenClass = "flex items-center justify-between";
   const btnActionClass =
-    "flex items-center gap-2 cursor-pointer hover:bg-slate-400/50 p-3 rounded-md transition-all duration-[700ms]";
+    "flex items-center gap-2 cursor-pointer hover:bg-slate-400/20 p-3 rounded-md transition-all duration-[700ms]";
 
 
   const handleSelect = (value: number | string) => {
-    console.log("value");
-    console.log(value);
     clonedTask = { ...clonedTask, typeId: value };
-    dispatch(taskActions.updateTask(clonedTask));
+    dispatch(TASK_SERVICE.updateTaskThunk(clonedTask));
   }
-
+  let defaultOption = task && task.typeId;
   return (
     <div className="content">
       <div className={clsx("content-wrapper", flexBetweenClass)}>
@@ -46,27 +38,30 @@ const EditTaskHeader = () => {
           <div className="task-title">
             <div className="wrapper flex items-center gap-1">
               <Select
-                className="select-task-type w-[200px]"
+                className="select-task-type w-[200px]  hover:bg-slate-400/20 p-3 rounded-md transition-all duration-[700ms]"
+                value={defaultOption}
+                defaultValue={defaultOption}
                 optionLabelProp="label"
                 onSelect={handleSelect}
+                showArrow={false}
               >
                 {taskTypeList?.map((type, idx) => {
                   let optionLabel = (
                     <div className="task-type-label flex items-center gap-3 w-full h-full">
                       <span className="icon">
-                        {task
-                          ? taskTypeIcons[task.taskTypeDetail.taskType]
-                          : ""}
+                        {taskTypeIcons[type.taskType]}
                       </span>
                       <p className="title flex items-center mb-0">
                         <span className="txt uppercase">
-                          {task?.taskTypeDetail.taskType}
+                          {type.taskType}
                         </span>
                         <span className="char mx-2">-</span>
                         <span className="task-id">{task?.taskId}</span>
                       </p>
                     </div>
                   );
+                  console.log("type")
+                  console.log(type)
                   return (
                     <Option
                       key={type.id.toString() + idx}

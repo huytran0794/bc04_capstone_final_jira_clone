@@ -38,10 +38,8 @@ const LoginForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
         }, 2500);
       })
       .catch((err) => {
-        setTimeout(() => {
-          toastify("error", err.response.data.message);
-          dispatch(spinnerActions.setLoadingOff());
-        }, 2500);
+        
+        
       });
   };
 

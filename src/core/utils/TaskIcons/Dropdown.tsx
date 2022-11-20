@@ -8,7 +8,7 @@ export const DropwDownIcons = {
     [TASK_TYPE.NEW]: <BsCheckSquareFill color="#4fade6" />
   },
   status: {
-    [TASK_STATUS.HIGH]: <ArrowUpOutlined />,
+    [TASK_STATUS.HIGH]: <ArrowUpOutlined className="h-full w-full block" />,
     [TASK_STATUS.MEDIUM]: <ArrowUpOutlined />,
     [TASK_STATUS.LOW]: <ArrowDownOutlined />,
     [TASK_STATUS.LOWEST]: <ArrowDownOutlined />

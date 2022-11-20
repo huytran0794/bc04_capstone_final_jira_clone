@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IModalProps } from "../../models/Task/ModalForm.interface";
 
-type PartialModalProps = Partial<IModalProps>;
-
 type InitialState = {
   modalProps: IModalProps;
 };
@@ -14,6 +12,7 @@ const initialState: InitialState = {
     modalContent: null,
     width: "auto",
     form: null,
+    maskClosable: null,
   },
 };
 
