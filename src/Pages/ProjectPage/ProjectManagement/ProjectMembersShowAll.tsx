@@ -1,67 +1,106 @@
 import React from "react";
 
-// import ant component
-import { Avatar, message, Popconfirm } from "antd";
-import { CloseCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
+// import local components
+import {
+  DesktopView,
+  MobileView,
+  TabletView,
+} from "../../../core/HOC/Responsive";
 
-// import local component Interface
+// import local Interface
 import { InterfaceProjectMembersShowAllComponent } from "../../../core/models/Project/Project.interface";
-import PROJECT_SERVICE from "../../../core/services/projectServ";
-import { useAppDispatch } from "../../../core/hooks/redux/useRedux";
+import { User } from "../../../core/models/User/User.interface";
+
+// import ant component
+import { Avatar, Modal, Popconfirm } from "antd";
+import {
+  CloseCircleOutlined,
+  ExclamationCircleOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 
 export default function ProjectMembersShowAll({
-  projectID,
   members,
+  handleDeleteMember,
+  containerStyle = "w-64",
+  title = "ALL MEMBERS",
 }: InterfaceProjectMembersShowAllComponent) {
-  const dispatch = useAppDispatch();
-
-  const handleDeleteMember = (projectID: number, memberID: number) => {
-    PROJECT_SERVICE.deleteMember(projectID, memberID)
-      .then((res) => {
-        console.log(res);
-        dispatch(PROJECT_SERVICE.getAllAndDispatch("Member deleted"));
-      })
-      .catch((err) => {
-        console.log(err);
-        message.error(err.response.data.content);
-      });
+  // ANTD Modal Control
+  const { confirm } = Modal;
+  const showDeleteMemberConfirm = (member: Partial<User>) => {
+    confirm({
+      title: <span className="text-lg">Are you sure delete this Member?</span>,
+      icon: <ExclamationCircleOutlined className="text-2xl" />,
+      content: <span className="text-lg">{member.name}</span>,
+      okText: "Yes",
+      okType: "danger",
+      okButtonProps: {
+        type: "primary",
+      },
+      cancelText: "No",
+      onOk() {
+        handleDeleteMember(member.userId!);
+      },
+    });
   };
+
+  // render function
+  const renderDeleteButtonDesktop = (member: Partial<User>) => (
+    <Popconfirm
+      title={
+        <span className="text-lg pl-1">
+          Are you sure to delete{" "}
+          <span className="font-semibold">{member.name}</span>?
+        </span>
+      }
+      onConfirm={() => {
+        handleDeleteMember(member.userId!);
+      }}
+      okText="Yes"
+      okButtonProps={{ type: "default", danger: true, size: "middle" }}
+      cancelText="No"
+      cancelButtonProps={{ type: "primary", size: "middle" }}
+      icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
+    >
+      <CloseCircleOutlined
+        style={{ fontSize: 20 }}
+        className="text-red-500 cursor-pointer"
+      />
+    </Popconfirm>
+  );
+
+  const renderDeleteButtonMobile = (member: Partial<User>) => (
+    <CloseCircleOutlined
+      style={{ fontSize: 20 }}
+      className="text-red-500 cursor-pointer"
+      onClick={() => {
+        showDeleteMemberConfirm(member);
+      }}
+    />
+  );
+
   return (
-    <div className="w-64">
+    <div className={containerStyle}>
       <p className="w-full mb-0 px-2 bg-gray-200 text-sm text-gray-500 font-bold">
-        ALL MEMBERS
+        {title}
       </p>
       <div className="w-full max-h-96 overflow-y-auto">
         {members.map((member, index) => (
           <div
-            className="px-3 py-2 flex justify-between items-center hover:bg-orange-100"
+            className="px-3 py-2 flex justify-between items-center hover:bg-slate-100"
             key={member.userId!.toString() + index}
           >
-            <div>
-              <Avatar src={member.avatar} />
-              <span className="ml-2 align-middle text-lg">{member.name}</span>
+            <div className="flex items-center">
+              <div>
+                <Avatar src={member.avatar} />
+              </div>
+              <p className="ml-2 mb-0 pr-2 align-middle text-lg">
+                {member.name}
+              </p>
             </div>
-            <Popconfirm
-              title={
-                <span className="text-lg pl-1">
-                  Are you sure to delete{" "}
-                  <span className="font-semibold">{member.name}</span>?
-                </span>
-              }
-              onConfirm={() => {
-                handleDeleteMember(projectID, member.userId!);
-              }}
-              okText="Yes"
-              cancelText="No"
-              icon={
-                <QuestionCircleOutlined className="top-1 text-red-500 text-xl" />
-              }
-            >
-              <CloseCircleOutlined
-                style={{ fontSize: 20 }}
-                className="text-red-500 cursor-pointer"
-              />
-            </Popconfirm>
+            <DesktopView>{renderDeleteButtonDesktop(member)}</DesktopView>
+            <TabletView>{renderDeleteButtonMobile(member)}</TabletView>
+            <MobileView>{renderDeleteButtonMobile(member)}</MobileView>
           </div>
         ))}
       </div>

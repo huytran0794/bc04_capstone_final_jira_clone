@@ -1,7 +1,4 @@
-import React, { useState, useRef } from "react";
-
-// import redux
-import { useAppDispatch } from "../../../core/hooks/redux/useRedux";
+import React, { useState, useRef, useEffect } from "react";
 
 // import local Interface
 import { User } from "../../../core/models/User/User.interface";
@@ -9,82 +6,153 @@ import { InterfaceProjectMembersAddNewComponent } from "../../../core/models/Pro
 
 // import local service
 import USER_SERVICE from "../../../core/services/userServ";
-import PROJECT_SERVICE from "../../../core/services/projectServ";
 
 // import antd components
-import { Avatar, message, Popconfirm } from "antd";
-import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Avatar, Modal, Popconfirm } from "antd";
+import {
+  ExclamationCircleOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
+import {
+  DesktopView,
+  MobileView,
+  TabletView,
+} from "../../../core/HOC/Responsive";
+import InnerSpinner from "../../../core/Components/Spinner/InnerSpinner";
+import clsx from "clsx";
 
 export default function ProjectMembersAddNew({
-  projectID,
+  isMobile = false,
+  title,
   projectName,
+  handleAssignUser,
+  containerClassName = "w-64",
+  userListClassName = "max-h-96",
 }: InterfaceProjectMembersAddNewComponent) {
-  let searchRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const searchRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [userList, setUserList] = useState<Partial<User>[] | null>(null);
-  const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef.current!.focus();
+    }, 100);
+  }, []);
 
   const getUserList = (keyword: string) => {
+    setIsLoading(true);
     USER_SERVICE.getUserByKeyword(keyword)
       .then((res) => {
         // console.log(res);
         setUserList(res.content);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setIsLoading(false);
       });
   };
 
-  const handleAssignUser = (projectId: number, userId: number) => {
-    PROJECT_SERVICE.assignUser(projectId, userId)
-      .then((res) => {
-        console.log(res);
-        dispatch(
-          PROJECT_SERVICE.getAllAndDispatch("Member added successfully")
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-        message.error(err.response.data.content);
-      });
+  // ANTD Modal Control
+  const { confirm } = Modal;
+  const showAssignUserConfirm = (user: Partial<User>) => {
+    confirm({
+      title: (
+        <span className="text-lg">
+          Are you sure you want to assign this member?
+        </span>
+      ),
+      icon: <ExclamationCircleOutlined className="text-2xl" />,
+      content: <span className="text-lg">{user.name}</span>,
+      okText: "Yes",
+      okType: "primary",
+      cancelText: "No",
+      onOk() {
+        handleAssignUser(user.userId!);
+      },
+    });
   };
 
-  let renderUsers = (userList: Partial<User>[] | null) => {
-    if (!userList) return null;
-    return userList.map((user, index) => (
-      <Popconfirm
-        title={
-          <span className="text-lg pl-1">
-            Adding <span className="font-semibold">{user.name}</span> to{" "}
-            <span className="font-semibold">{projectName}</span>?
+  // render function
+  const renderUser = (
+    user: Partial<User>,
+    index: number,
+    isMobileRendering: boolean
+  ) => (
+    <div
+      className="w-full px-3 py-2 flex justify-between items-center hover:bg-slate-100 cursor-pointer"
+      key={user.userId!.toString() + index}
+      onClick={() => {
+        if (isMobileRendering) showAssignUserConfirm(user);
+      }}
+    >
+      <div className="flex-shrink-0">
+        <Avatar src={user.avatar} />
+      </div>
+      <p className="ml-2 mb-0 align-middle text-lg break-all">{user.name}</p>
+    </div>
+  );
+
+  const renderUserDesktop = (user: Partial<User>, index: number) => (
+    <Popconfirm
+      title={
+        <span className="text-lg pl-1">
+          Adding <span className="font-semibold">{user.name}</span> to{" "}
+          <span className="font-semibold">
+            {projectName ? projectName : "Project"}
           </span>
-        }
-        onConfirm={() => {
-          handleAssignUser(projectID, user.userId!);
-        }}
-        okText="Yes"
-        cancelText="No"
-        icon={
-          <QuestionCircleOutlined className="top-1 text-yellow-500 text-xl" />
-        }
+          ?
+        </span>
+      }
+      onConfirm={() => {
+        handleAssignUser(user.userId!);
+        inputRef.current!.focus();
+      }}
+      okText="Yes"
+      okButtonProps={{ size: "middle" }}
+      cancelText="No"
+      cancelButtonProps={{ size: "middle" }}
+      icon={
+        <QuestionCircleOutlined className="top-1 text-yellow-500 text-xl" />
+      }
+    >
+      {renderUser(user, index, false)}
+    </Popconfirm>
+  );
+
+  const renderUsersList = (userList: Partial<User>[] | null) => {
+    if (!userList) return null;
+    return (
+      <div
+        className={clsx(
+          userListClassName,
+          "flex-grow w-full overflow-y-auto",
+          "scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100 scrollbar-thumb-rounded-full"
+        )}
       >
-        <div
-          className="px-3 py-2 flex justify-between items-center hover:bg-orange-100 cursor-pointer"
-          key={user.userId!.toString() + index}
-        >
-          <Avatar src={user.avatar} />
-          <span className="ml-2 align-middle text-lg">{user.name}</span>
-        </div>
-      </Popconfirm>
-    ));
+        {userList.map((user, index) => (
+          <>
+            <DesktopView>{renderUserDesktop(user, index)}</DesktopView>
+            <TabletView>{renderUser(user, index, true)}</TabletView>
+            <MobileView>{renderUser(user, index, true)}</MobileView>
+          </>
+        ))}
+      </div>
+    );
   };
 
   return (
-    <div className="w-64">
+    <div className={clsx(containerClassName, "flex flex-col")}>
+      {!title ? null : (
+        <h4 className="flex-shrink-0 pb-2 text-base">{title}</h4>
+      )}
       <input
         type="search"
         placeholder="Search users"
-        className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 focus:border-orange-500 focus-visible:outline-none"
-        // value={searchValue}
+        className="block flex-shrink-0 p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 border border-gray-300 focus:border-orange-500 focus-visible:outline-none"
+        ref={inputRef}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           if (searchRef.current) {
             clearTimeout(searchRef.current);
@@ -95,9 +163,15 @@ export default function ProjectMembersAddNew({
           }, 300);
         }}
       />
-      <div className="w-full max-h-96 overflow-y-auto">
-        {renderUsers(userList)}
-      </div>
+      {isLoading ? (
+        <div className="flex-grow w-full">
+          <InnerSpinner
+            spinnerClass={isMobile ? "w-full h-full" : "w-full aspect-square"}
+          />
+        </div>
+      ) : (
+        renderUsersList(userList)
+      )}
     </div>
   );
 }

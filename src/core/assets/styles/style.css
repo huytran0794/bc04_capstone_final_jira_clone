@@ -109,3 +109,46 @@ h6 {
   box-shadow: 0 0 0 2px #79bfffe8 !important;
 }
 /* ================================== edit task form styling */
+/* START ================================== ANT Design component styling */
+/* START Project Management */
+/* Start DESKTOP */
+.projectManagement
+  .projectManagement__content
+  .ant-table-row:hover
+  .ant-table-cell
+  .projectName {
+  color: #f56565;
+}
+/* End DESKTOP */
+
+/* Start MOBILE: Project Setting  */
+.projectManagement__setting .ant-modal-content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.projectSetting__members__showAll
+  .ant-collapse-item
+  .ant-collapse-header
+  .ant-collapse-header-text {
+  display: flex;
+}
+.projectSetting__members__showAll
+  .ant-collapse-item
+  .ant-collapse-content
+  .ant-collapse-content-box {
+  padding: 0;
+}
+.projectSetting__members__addNew .ant-modal-content {
+  height: 100%;
+}
+/* End MOBILE: Project Setting */
+/* END Project Management */
+/* END ================================== ANT Design component styling */
+
+/* START TinyMCE Component styling */
+.tox-notification.tox-notification--in {
+  display: none !important;
+}
+/* END TinyMCE Component styling */

@@ -26,6 +26,7 @@
     "react-highlight-words": "^0.18.0",
     "react-icons": "^4.6.0",
     "react-redux": "^8.0.4",
+    "react-responsive": "^9.0.0",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.6",
@@ -33,6 +34,7 @@
     "sweetalert2": "^11.6.1",
     "sweetalert2-react-content": "^5.0.5",
     "swiper": "^8.4.4",
+    "tailwind-scrollbar": "^2.0.1",
     "typescript": "^4.8.4",
     "web-vitals": "^2.1.4"
   },
