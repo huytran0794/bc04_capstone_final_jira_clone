@@ -1,4 +1,5 @@
 import { AXIOS_INSTANCE_GENERATOR, BASE_USER_URL } from "./configURL";
+import { User } from './../models/User/User.interface';
 
 const USER_SERVICE = {
   login: async (loginData: { email: string; passWord: string }) => {
@@ -8,18 +9,29 @@ const USER_SERVICE = {
     );
     return data;
   },
+
   getAllUser: async () => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).get(
       `/getUser`
     );
     return data;
   },
+  
   getUserByKeyword: async (keyword: string) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).get(
       `/getUser?keyword=${keyword}`
     );
     return data;
   },
+
+  register: async (registerData:User) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).post(
+      `/signup`,
+      registerData
+    );
+    return data;
+  },
+
 };
 
 export default USER_SERVICE;
