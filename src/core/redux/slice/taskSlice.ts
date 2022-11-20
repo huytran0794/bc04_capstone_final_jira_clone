@@ -179,19 +179,6 @@ const taskSlice = createSlice({
   reducers: {
     updateTask: (state, action: PayloadAction<ITask>) => {
       let currentTask = action.payload;
-      let taskMembers: (number | undefined)[] = [];
-      if (currentTask && currentTask.assigness.length > 0) {
-        taskMembers = currentTask.assigness.map((member, idx) => member.id);
-      }
-      if (currentTask && currentTask.priorityId === 0) {
-        currentTask.priorityId = currentTask.priorityTask!.priorityId!;
-      }
-
-      if (currentTask && currentTask.typeId === 0) {
-        currentTask.typeId = currentTask.taskTypeDetail.id;
-      }
-
-      currentTask.listUserAsign = taskMembers as Partial<User>[];
       state.taskDetail = currentTask;
     },
   },
@@ -265,7 +252,15 @@ const taskSlice = createSlice({
     builder.addCase(
       getTaskDetailThunk.fulfilled,
       (state, action: PayloadAction<ITask>) => {
-        state.taskDetail = action.payload;
+        let currentTask = action.payload;
+        if (currentTask.priorityId === 0) {
+          currentTask.priorityId = currentTask.priorityTask!.priorityId!;
+        }
+
+        if (currentTask.typeId === 0) {
+          currentTask.typeId = currentTask.taskTypeDetail.id;
+        }
+        state.taskDetail = currentTask;
       }
     );
     builder.addCase(getTaskDetailThunk.rejected, (state, action) => {

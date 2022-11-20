@@ -5,5 +5,8 @@ export interface IModalProps {
   modalContent: React.ReactNode;
   headerContent: React.ReactNode;
   width: "auto" | number;
-  form: null | FormInstance,
+  form: null | FormInstance;
+  maskClosable: null | boolean;
+  onClose?: () => void;
+  onOK?: () => void;
 }

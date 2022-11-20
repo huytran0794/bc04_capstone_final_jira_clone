@@ -9,7 +9,6 @@ interface interfaceInitialStateGeneralReducer {
 const initialState: interfaceInitialStateGeneralReducer = {
   isDrawerOpen: false,
   DrawerContent: null,
-  // handleSummitDrawer: () => {},
 };
 
 const generalSlice = createSlice({
