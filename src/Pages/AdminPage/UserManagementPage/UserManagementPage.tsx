@@ -1,24 +1,22 @@
 import React from "react";
 import { useState } from "react";
-import { User } from "./../../../core/models/User/User.interface";
+import { UserInterface } from "./../../../core/models/User/User.interface";
 import { useEffect } from "react";
 import USER_SERVICE from "./../../../core/services/userServ";
 import UserTable from "./UserTable";
 import UserAction from "./UserAction";
 
 export default function UserManagementPage() {
-  const [userList, setUserList] = useState<User[]>([]);
+  const [userList, setUserList] = useState<UserInterface[]>([]);
 
   useEffect(() => {
     let fetchUserList = () => {
       USER_SERVICE.getAllUser()
         .then((res) => {
-          let data = res.content.map((item: User) => {
+          let data = res.content.map((user: UserInterface) => {
             return {
-              ...item,
-              action: (
-                <UserAction onSuccess={fetchUserList} userId={item.userId} />
-              ),
+              ...user,
+              action: <UserAction onSuccess={fetchUserList} user={user} />,
             };
           });
           setUserList(data);

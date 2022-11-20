@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import USER_SERVICE from "./../../../core/services/userServ";
 import { InterfaceUserActionProps } from "./../../../core/models/User/User.interface";
 import toastify from "./../../../core/utils/toastify/toastifyUtils";
-import { Popconfirm } from "antd";
+import UserEditModal from "./UserEditModal";
+import { Modal, Popconfirm } from "antd";
 import {
   DeleteOutlined,
   FormOutlined,
@@ -10,11 +11,11 @@ import {
 } from "@ant-design/icons";
 
 export default function UserAction({
-  userId,
+  user,
   onSuccess,
 }: InterfaceUserActionProps) {
   let handleDeleteUser = () => {
-    USER_SERVICE.deleteUser(userId)
+    USER_SERVICE.deleteUser(user.userId)
       .then((res) => {
         toastify("success", "Delete user successfully!");
         onSuccess();
@@ -24,11 +25,27 @@ export default function UserAction({
       });
   };
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="space-x-2">
-      <button>
+      <button onClick={showModal}>
         <FormOutlined className="text-blue-500 text-2xl" />
       </button>
+      <Modal
+        title="Update user information"
+        open={isModalOpen}
+        onCancel={handleCancel}
+        okText
+      >
+        <UserEditModal user={user} onSuccess={onSuccess} />
+      </Modal>
 
       <Popconfirm
         title={

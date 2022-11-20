@@ -6,14 +6,17 @@ export interface User {
   phoneNumber: string;
   accessToken?: string;
   avatar?: string;
+}
+
+export interface UserInterface extends User {
   action?: React.ReactNode;
 }
 
 export interface InterfaceUserTableProps {
-  userList: User[];
+  userList: UserInterface[];
 }
 
 export interface InterfaceUserActionProps {
-  userId: any;
+  user: UserInterface;
   onSuccess: () => void;
 }

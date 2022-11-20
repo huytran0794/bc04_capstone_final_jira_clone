@@ -1,5 +1,5 @@
 import { AXIOS_INSTANCE_GENERATOR, BASE_USER_URL } from "./configURL";
-import { User } from './../models/User/User.interface';
+import { User, UserInterface } from './../models/User/User.interface';
 
 const USER_SERVICE = {
   login: async (loginData: { email: string; passWord: string }) => {
@@ -32,7 +32,7 @@ const USER_SERVICE = {
     return data;
   },
 
-  deleteUser: async (userId:number) => {
+  deleteUser: async (userId:number|undefined) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).delete(
       `/deleteUser?id=${userId}`,
       
@@ -40,6 +40,13 @@ const USER_SERVICE = {
     return data;
   },
 
+  editUser: async (userEdit:User) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).put(
+      `/editUser`,
+      userEdit
+    );
+    return data;
+  },
 
 };
 
