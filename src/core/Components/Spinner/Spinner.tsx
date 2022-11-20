@@ -23,8 +23,12 @@ export default function Spinner() {
         "transition-all duration-[1200ms]"
       )}
     >
-
-      <ClimbingBoxLoader color="#ebbd60" loading size={80} speedMultiplier={0.7} />
+      <ClimbingBoxLoader
+        color="#ebbd60"
+        loading
+        size={80}
+        speedMultiplier={0.7}
+      />
     </div>
   );
 }

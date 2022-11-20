@@ -1,4 +1,5 @@
 import { FormInstance } from "antd";
+import React from "react";
 export interface BaseProps {
   className?: string;
   children?: React.ReactNode;
@@ -13,7 +14,7 @@ export interface EditorProps extends FormComponentProps {
 }
 
 export interface ButtonLocalProps extends BaseProps {
-  baseColor?:
+  baseColor:
     | "red"
     | "orange"
     | "yellow"
@@ -23,5 +24,15 @@ export interface ButtonLocalProps extends BaseProps {
     | "indigo"
     | "purple"
     | "pink";
-  handleOnClick: () => void;
+  handleOnClick?: () => void;
+}
+
+export interface ResponsiveProps {
+  children: JSX.Element;
+}
+
+export interface InterfaceSpinner {
+  isLoading?: boolean;
+  spinnerClass?: string;
+  spinnerType?: JSX.Element;
 }

@@ -6,14 +6,11 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
 // import custom Hooks
 import { useFetchProjectCatList } from "../../hooks/ProjectHooks/useFetchProjectCatList";
 
-
 /* import local interface */
 import { InterfaceProjectFormComponent } from "../../models/common/FormProps.interface";
 
-
 // import local component
 import Label from "./Label/Label";
-
 
 /* import antd components */
 import { Button, Form, Input, Select } from "antd";
@@ -37,19 +34,22 @@ const ProjectForm = ({
   const { Option } = Select;
 
   const getInitialValue = () => {
-    if (project)
+    if (project) {
+      const categoryId = project.categoryId
+        ? project.categoryId
+        : project.projectCategory.id;
       return {
-        categoryId: project!.categoryId,
-        projectName: project!.projectName,
-        description: project!.description,
+        categoryId,
+        projectName: project.projectName,
+        description: project.description,
       };
+    }
     return { categoryId: projectCategoryList[0]?.id || 1 };
   };
   const initialValues = getInitialValue();
 
   useFetchProjectCatList(dispatch);
   useEffect(() => {
-    // console.log("Editor useEffect");
     form.setFieldsValue(initialValues);
   }, [form, initialValues]);
 
@@ -63,7 +63,7 @@ const ProjectForm = ({
 
   const formProps = { form, onFinish, layout, size };
   const labelItem = (labelText: string) => (
-    <Label className="text-sm font-medium text-pickled-bluewood-400 capitalize">
+    <Label className="text-lg font-medium text-pickled-bluewood-400 capitalize">
       {labelText}
     </Label>
   );
@@ -90,7 +90,13 @@ const ProjectForm = ({
       <Form.Item name="description" label={labelItem("description")}>
         <CustomEditor formInstance={form} />
       </Form.Item>
-      <Form.Item name="categoryId" label={labelItem("Project Category")}>
+      <Form.Item
+        name="categoryId"
+        rules={[
+          { required: true, message: "Please do not leave Category empty" },
+        ]}
+        label={labelItem("Project Category")}
+      >
         <Select className="select-category">
           {/* map project category list */}
           {projectCategoryList.map((cat, idx) => {

@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 
 import PrivateRoutes from "./core/routes/PrivateRoutes/PrivateRoutes";
 import Spinner from "./core/Components/Spinner/Spinner";
-import ProjectManagement from "./Pages/ProjectPage/ProjectManagement/ProjectManagement";
 
 /* import local components */
 import Layout from "./core/Layout/Layout";
@@ -11,6 +10,7 @@ import LoginPage from "./Pages/LoginPage/LoginPage";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import CreateProjectPage from "./Pages/ProjectPage/CreateProject/CreateProjectPage";
+import ProjectManagement from "./Pages/ProjectPage/ProjectManagement/ProjectManagement";
 
 import GeneralDrawer from "./core/Components/Drawer/GeneralDrawer";
 import ProjectDetail from "./Pages/ProjectPage/ProjectDetail/ProjectDetail";

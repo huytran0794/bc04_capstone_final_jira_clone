@@ -13,6 +13,7 @@ import { spinnerActions } from "../redux/slice/spinnerSlice";
 import { AppDispatch } from "../redux/store/store";
 
 /* import config urls */
+// import config URL
 import {
   AXIOS_INSTANCE_GENERATOR,
   BASE_PROJECT_URL,
@@ -33,6 +34,12 @@ const PROJECT_SERVICE = {
     );
     return data;
   },
+  getAllByName: async (searchKey: string) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).get(
+      `/getAllProject?keyword=${searchKey}`
+    );
+    return data;
+  },
   getAllAndDispatch:
     (successMessage: string | null) => (dispatch: AppDispatch) => {
       AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
@@ -42,10 +49,12 @@ const PROJECT_SERVICE = {
           if (successMessage) {
             message.success(successMessage);
           }
+          dispatch(spinnerActions.setLoadingOff());
         })
         .catch((err) => {
           console.log(err);
           message.error(err.response.data.content);
+          dispatch(spinnerActions.setLoadingOff());
         });
     },
   getAllProjectCategory: async () => {
@@ -66,19 +75,13 @@ const PROJECT_SERVICE = {
       .get(`/getProjectDetail?id=${projectId}`)
       .then((res) => {
         let resContent = res.data.content;
-        dispatch(
-          projectActions.putProjectDetail({
-            id: resContent.id,
-            projectName: resContent.projectName,
-            description: resContent.description,
-            categoryName: resContent.projectCategory.name,
-            categoryId: resContent.projectCategory.id,
-            creator: resContent.creator,
-            lstTask: resContent.lstTask,
-            members: resContent.members,
-            alias: resContent.alias,
-          })
-        );
+        resContent = {
+          ...resContent,
+          categoryName: resContent.projectCategory.name,
+        };
+        dispatch(projectActions.putProjectDetail(resContent));
+        console.log("project rescontent");
+        console.log(resContent);
         setTimeout(() => {
           dispatch(spinnerActions.setLoadingOff());
         }, 2500);
@@ -91,6 +94,29 @@ const PROJECT_SERVICE = {
       });
   },
 
+  getDetailsAndSetProject:
+    (
+      projectID: number,
+      setProject: React.Dispatch<React.SetStateAction<InterfaceProject | null>>,
+      successMessage?: string
+    ) =>
+    (dispatch: AppDispatch) => {
+      AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
+        .get(`/getProjectDetail?id=${projectID}`)
+        .then((res) => {
+          console.log(res);
+          setProject(res.data.content);
+          if (successMessage) {
+            message.success(successMessage);
+          }
+          dispatch(spinnerActions.setLoadingOff());
+        })
+        .catch((err) => {
+          console.log(err);
+          message.error(err.response.data.content);
+          dispatch(spinnerActions.setLoadingOff());
+        });
+    },
   update: async (projectId: number, updatedProject: InterfaceProjectUpdate) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).put(
       `/updateProject?projectId=${projectId}`,
