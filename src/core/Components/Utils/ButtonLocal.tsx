@@ -68,10 +68,7 @@ export default function ButtonLocal({
         `text-white text-lg font-medium`,
         `focus:outline-none focus:ring-4 focus:ring-${baseColor}-300`,
         `transition duration-300`,
-        `text-white text-lg font-medium`,
-        `focus:outline-none focus:ring-4`,
-        `transition duration-300`,
-        buttonColor(baseColor!),
+        baseColor && buttonColor(baseColor!),
         className
       )}
       onClick={handleOnClick}
