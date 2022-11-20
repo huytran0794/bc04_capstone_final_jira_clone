@@ -58,7 +58,5 @@ export interface IProjectCategory {
 }
 
 export interface IProjectDetail {
-  projectDetail: InterfaceProject;
+  project: InterfaceProject;
 }
-
-

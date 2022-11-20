@@ -1,0 +1,104 @@
+import {
+  ITask,
+  ITaskPriority,
+  ITaskStatus,
+  ITaskType,
+} from "../models/Task/Task.Interface";
+import { spinnerActions } from "../redux/slice/spinnerSlice";
+import { AppDispatch } from "../redux/store/store";
+import {
+  AXIOS_INSTANCE_GENERATOR,
+  BASE_PRIORITY_URL,
+  BASE_PROJECT_URL,
+  BASE_STATUS_URL,
+  BASE_TASK_TYPE_URL,
+} from "./configURL";
+import PROJECT_SERVICE from "./projectServ";
+
+type TaskTypeResponse = {
+  content: ITaskType[];
+};
+
+type TaskPriorityResponse = {
+  content: ITaskPriority[];
+};
+
+type TaskStatusResponse = {
+  content: ITaskStatus[];
+};
+
+type TaskResponse = {
+  content: ITask;
+};
+
+type taskUpdateStatus = {
+  taskId: number | string;
+  statusId: number | string;
+  projectId: number | string;
+};
+
+const TASK_SERVICE = {
+  getAllTaskType: async () => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(
+      BASE_TASK_TYPE_URL
+    ).get<TaskTypeResponse>(`getAll`);
+
+    return data;
+  },
+  getAllTaskStatus: async () => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(
+      BASE_STATUS_URL
+    ).get<TaskStatusResponse>(`getAll`);
+    return data;
+  },
+  getAllTaskPriority: async () => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(
+      BASE_PRIORITY_URL
+    ).get<TaskPriorityResponse>(`getAll`);
+    return data;
+  },
+  // create task
+  createTask: async (taskValues: ITask) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).post(
+      `createTask`,
+      taskValues
+    );
+    return data;
+  },
+  // getTaskDetail
+  getTaskDetail: async (taskId: string | number) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(
+      BASE_PROJECT_URL
+    ).get<TaskResponse>(`getTaskDetail?taskId=${taskId}`);
+    return data;
+  },
+  // delete task
+  deleteTask: async (taskId: string | number) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).post(
+      `removeTask`,
+      taskId
+    );
+    return data;
+  },
+
+  updateTaskStatus: async ({ taskId, statusId }: taskUpdateStatus) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).put(
+      `updateStatus`,
+      { taskId, statusId }
+    );
+    return data;
+  },
+
+  updateTaskThunk: (task: ITask) => (dispatch: AppDispatch) => {
+    AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
+      .post(`updateTask`, task)
+      .then((res) => {
+        PROJECT_SERVICE.getDetailsThunk(task.projectId);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+};
+
+export default TASK_SERVICE;

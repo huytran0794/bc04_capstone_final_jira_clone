@@ -1,8 +1,8 @@
-import { Avatar } from "antd";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom"
 import SectionWrapper from "../../../core/Components/SectionWrapper/SectionWrapper";
 import { useAppDispatch, useAppSelector } from "../../../core/hooks/redux/useRedux";
+import { InterfaceProject } from "../../../core/models/Project/Project.interface";
 import { projectActions } from "../../../core/redux/slice/projectSlice";
 import { spinnerActions } from "../../../core/redux/slice/spinnerSlice";
 import PROJECT_SERVICE from "../../../core/services/projectServ";
@@ -16,7 +16,6 @@ const ProjectDetail = () => {
         dispatch(spinnerActions.setLoadingOn());
         PROJECT_SERVICE.getDetails(projectId)
             .then((res) => {
-                console.log(res.content);
                 dispatch(projectActions.putProjectDetail({
                     id: res.content.id,
                     projectName: res.content.projectName,
@@ -39,13 +38,13 @@ const ProjectDetail = () => {
             });
     }, [])
 
-    let projectDetailInfo = useAppSelector((state) => state.projectReducer.project);
+    let projectDetailInfo = useAppSelector((state) => state.projectReducer.project as InterfaceProject);
 
 
     const pageContent = (
         <>
-            <DetailHeader members={projectDetailInfo?.members} />
-            <DetailIssueBoard projectDetail={projectDetailInfo} />
+            <DetailHeader project={projectDetailInfo} />
+            <DetailIssueBoard project={projectDetailInfo} />
         </>
     );
 

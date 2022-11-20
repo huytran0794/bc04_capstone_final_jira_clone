@@ -1,0 +1,361 @@
+/* import antd components */
+import { Avatar, Button, Form, Input, InputNumber, Select, SelectProps, Slider } from "antd";
+import { useState, useEffect, useRef } from "react";
+
+/* import redux hooks */
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux/useRedux";
+import { getAllInfoThunk, getTaskDetailThunk, getTaskUsersThunk, taskActions } from "../../../redux/slice/taskSlice";
+
+/* import local interfaces */
+import { ITaskForm } from "../../../models/common/FormProps.interface";
+import { ITask, ITaskPriority } from "../../../models/Task/Task.Interface";
+
+
+/* import local components */
+import Label from "../Label/Label";
+import { modalActions } from "../../../redux/slice/modalSlice";
+import SimpleMemberAvatar from "../../Avatar/SimpleMemberAvatar";
+
+import { FormInstance } from "antd/es/form/Form";
+import CustomEditor from "../../tinyEditor/CustomEditor";
+
+import clsx from "clsx";
+import HTMLReactParser from "html-react-parser";
+import ButtonLocal from "../../Utils/ButtonLocal";
+import { User } from "../../../models/User/User.interface";
+
+const EditTaskForm = ({
+    layout = "horizontal",
+    size = "large",
+    project,
+    task,
+    handleOnFinish,
+}: ITaskForm) => {
+    const dispatch = useAppDispatch();
+    const [form] = Form.useForm();
+    const { Option } = Select;
+    const { TextArea } = Input;
+    const onFinish = (values: ITask) => {
+        handleOnFinish(values);
+    };
+
+    const { taskStatusList, taskPriorityList, taskUserList, taskDetail } = useAppSelector(
+        (state) => state.taskReducer
+    );
+
+    let clonedTask = taskDetail ? JSON.parse(JSON.stringify(taskDetail)) : "";
+
+    const componentMounted = useRef<boolean>(true);
+    const [visibleEditor, setVisibleEditor] = useState<boolean>(false);
+    console.log('Kiểm tra useRef mounted', componentMounted.current);
+    useEffect(() => {
+        if (componentMounted.current) {
+            dispatch(getAllInfoThunk());
+            dispatch(getTaskUsersThunk(task!.projectId));
+            dispatch(getTaskDetailThunk(task!.taskId));
+        }
+    }, []);
+
+    const labelItem = (labelText: string) => (
+        <Label className="text-sm font-medium text-pickled-bluewood-400 capitalize">
+            {labelText}
+        </Label>
+    );
+
+    const getInitialValue = () => {
+        let listUserAssign: (number | undefined)[] = [];
+        let returnedValue = {
+            taskName: "",
+            priorityId: taskPriorityList[0].priorityId,
+            statusId: taskStatusList[0].statusId,
+            originalEstimate: 0,
+            timeTrackingSpent: 0,
+            timeTrackingRemaining: 0,
+            listUserAsign: listUserAssign,
+            description: "",
+        };
+
+        if (taskDetail) {
+            console.log('co task detail');
+            console.log(taskDetail);
+
+            returnedValue = {
+                ...returnedValue,
+                ...taskDetail,
+                listUserAsign: taskDetail.assigness.map(assignee => assignee.id),
+            }
+        }
+        return { ...returnedValue, timeTracking: 0, };
+    };
+
+    let initialValues = getInitialValue();
+
+    useEffect(() => {
+        if (componentMounted.current) {
+            form.setFieldsValue(initialValues);
+        }
+
+    }, [form, initialValues]);
+
+
+    const renderParsedDesc = () => {
+        if (taskDetail) {
+            return (
+                <div onClick={() => {
+                    setVisibleEditor(!visibleEditor);
+                    componentMounted.current = visibleEditor;
+                }}
+                    className={clsx("txt cursor-pointer",
+                        "transition-all duration-[700ms]",
+                        taskDetail.description.length === 0 ? "hover:bg-slate-400/50 p-3 rounded-md" : "",
+                        !visibleEditor ? "opacity-100 visible w-full h-auto" : "opacity-0 hidden w-0 h-0"
+                    )}
+                >
+                    {taskDetail!.description.length > 0 ? HTMLReactParser(taskDetail!.description) : "Add a description..."}
+                </div>
+            )
+        }
+    }
+
+
+    const renderTaskStatusOptions = () => {
+        return taskStatusList?.map((taskStatus, idx) => {
+            return <Option key={taskStatus.statusId.toString() + idx} value={taskStatus.statusId}>{taskStatus.statusName}</Option>
+        })
+    }
+
+
+    let assigneesOptions: SelectProps['options'] = [];
+    const renderTaskAssigneesOptions = () => {
+        if (taskUserList.length) {
+            return taskUserList?.map((user, idx) => {
+                let label = (
+                    <div className={clsx(`user-${user.name}`, "flex items-center gap-3 m-0")}>
+                        <div className="avatar">
+                            <Avatar size={20} src={user.avatar} key={(Math.floor(Math.random() * 100) + 1).toString() + idx} className="" />
+                        </div>
+                        <p className="text mb-0">{user.name}</p>
+                    </div>
+                );
+
+                return { label: label, value: user.userId }
+            });
+        }
+    };
+
+    const useResetFormOnCloseModal = ({ form, open }: { form: FormInstance; open: boolean }) => {
+
+        const prevOpenRef = useRef<boolean>();
+        useEffect(() => {
+            prevOpenRef.current = open;
+        }, [open]);
+        const prevOpen = prevOpenRef.current;
+
+        useEffect(() => {
+            if (!open && prevOpen) {
+                form.resetFields();
+            }
+        }, [form, prevOpen, open]);
+    };
+
+    let isOpenModal = useAppSelector(state => state.modalReducer.modalProps.open);
+    useResetFormOnCloseModal({ form, open: isOpenModal });
+
+    assigneesOptions = renderTaskAssigneesOptions();
+
+    const onValuesChange = (changedValues: any) => {
+        let fieldChangedName = Object.keys(changedValues)[0];
+        let fieldChangedValue: string | number = form.getFieldValue(fieldChangedName);
+        let formAllTaskValue = form.getFieldsValue();
+        console.log('All edit task form value on change');
+        console.log(formAllTaskValue);
+        // clonedTask = { ...clonedTask, [fieldChangedName]: fieldChangedValue };
+        clonedTask[fieldChangedName] = fieldChangedValue;
+        console.log('clonedTask')
+        console.log(clonedTask)
+        // dispatch(taskActions.updateTask(clonedTask));
+
+    }
+
+    const formProps = { form, layout, size, onFinish, onValuesChange };
+    return (
+        <Form name="edit-task-form" className="myform editTaskForm" {...formProps}>
+            <div className="content-wrapper flex justify-between">
+                <div className="col--left w-[55%]">
+                    <Form.Item name="taskName"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Please do not leave ${name} empty",
+                            },
+                            { max: 80, message: "Project name can't extend 80 characters." },
+                        ]}
+                    >
+                        <Input className="py-2 pl-2 pr-3 rounded-md border-none text-2xl font-bold" />
+                    </Form.Item>
+                    <Form.Item noStyle className="wrapper flex flex-col justify-center gap-4">
+                        {renderParsedDesc()}
+                        <Form.Item name="description" label={labelItem("description")} className={clsx("desc-editor", visibleEditor ? "opacity-100 visible w-full h-auto" : "opacity-0 hidden w-0 h-0")}>
+                            <CustomEditor formInstance={form} />
+                            <div className="btn-list mt-4">
+                                <div className="wrapper flex gap-3">
+                                    <ButtonLocal
+                                        className="btn-save bg-science-blue-500 text-white border-none rounded-[4px] hover:bg-[#0065ff] font-semibold text-base transition-all duration-[400ms] order-2"
+                                        handleOnClick={() => {
+                                            setVisibleEditor(false);
+                                            componentMounted.current = false;
+                                            if (taskDetail) {
+                                                clonedTask.description = form.getFieldValue('description');
+                                                dispatch(taskActions.updateTask(clonedTask));
+                                            }
+                                        }}
+                                    >
+                                        Save
+                                    </ButtonLocal>
+                                    <ButtonLocal
+                                        className="btn-cancel btn-txt--underlined border-none text-[#6B778C] text-base order-1"
+                                        handleOnClick={() => {
+                                            setVisibleEditor(false);
+                                            componentMounted.current = false;
+                                            form.setFieldValue('description', taskDetail?.description);
+                                        }}
+                                    >
+                                        Cancel
+                                    </ButtonLocal>
+                                </div>
+                            </div>
+                        </Form.Item>
+
+                    </Form.Item>
+                    <div className="form-section-wrapper mt-3">
+                        <Form.Item name="comments" label={labelItem("comments")} >
+                            <div className="inner-wrapper flex gap-5">
+                                <Avatar size={30} />
+                                <TextArea className="rounded-md" />
+                            </div>
+                        </Form.Item>
+                    </div>
+                </div>
+                <div className="col--right w-[40%]">
+                    <Form.Item name="statusId" label={labelItem("Status")}>
+                        <Select className="select-task-status">
+                            {renderTaskStatusOptions()}
+                        </Select>
+                    </Form.Item>
+                    <Form.Item name="listUserAsign" label={labelItem("assignees")}>
+                        <Select
+                            mode="multiple"
+                            optionFilterProp="label"
+                            placeholder="Select assignees"
+                            className="select-listUserAsign py-3"
+                            options={assigneesOptions}
+                        >
+
+                        </Select>
+                    </Form.Item>
+                    <Form.Item name="reporter" label={labelItem("reporter")}>
+                        <Select
+                            className="select-reporter"
+                            mode="multiple"
+                            optionFilterProp="label"
+                        />
+                    </Form.Item>
+                    <Form.Item name="priorityId" label={labelItem("priority")}>
+                        <Select className="select-task-priority">
+                            {taskPriorityList?.map((taskPriority, idx) => {
+                                return (
+                                    <Option key={taskPriority.priorityId.toString() + idx} value={taskPriority.priorityId}>
+                                        <div className="option-label-item capitalize flex items-center gap-4">
+                                            <span role="img" aria-label={taskPriority.priority}>
+                                            </span>
+                                            {taskPriority.priority}
+                                        </div>
+                                    </Option>
+                                )
+                            })}
+                        </Select>
+                    </Form.Item>
+                    <Form.Item name="timeTracking" label={labelItem("time tracking")}>
+                        <Slider
+                            value={Number(form.getFieldValue('timeTracking'))}
+                            max={Number(form.getFieldValue('timeTrackingSpent')) + Number(form.getFieldValue('timeTrackingRemaining'))}
+                            disabled={true}
+                            tooltip={{ open: false }}
+                            trackStyle={{ backgroundColor: "#0052cc", height: "7px", borderRadius: "4px" }}
+                            handleStyle={{ display: "none" }}
+                            className="timeTrackingSlider"
+                        />
+                        <div className="time-logged flex items-center justify-between">
+                            <div className="time-spent-logged font-bold">
+                                <span className="time-text">{form.getFieldValue('timeTrackingSpent')}</span>
+                                <span>h logged</span>
+                            </div>
+                            <div className="time-remain-logged font-bold">
+                                <span className="time-text">{form.getFieldValue('timeTrackingRemaining')}</span>
+                                <span>h remaining</span>
+                            </div>
+                        </div>
+                    </Form.Item>
+                </div>
+            </div>
+            <div className="form-row flex items-center gap-5">
+                <div className="form-item-wrapper w-1/2">
+                    <Form.Item name="originalEstimate" label={labelItem("originalEstimate")}>
+                        <Input
+                            placeholder="0"
+                            className="py-2 px-5 rounded-md"
+                        />
+                    </Form.Item>
+                </div>
+
+                <div className="form-inner-wrapper flex items-center gap-3 w-1/2">
+                    <div className="form-item-wrapper w-1/2">
+                        <Form.Item name="timeTrackingSpent" label={labelItem("time spent (hours)")} rules={[
+                            { type: 'number', min: 0 },
+                        ]}>
+                            <InputNumber
+                                placeholder="0"
+                                className="rounded-md"
+
+                                min={0}
+                            />
+                        </Form.Item>
+                    </div>
+
+                    <div className="form-item-wrapper w-1/2">
+                        <Form.Item name="timeTrackingRemaining" label={labelItem("time remaining (hours)")} rules={[
+                            { type: 'number', min: 0 },
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    let timeSpent = getFieldValue('timeTrackingSpent');
+                                    let condition = value >= 0 && timeSpent >= 0 && getFieldValue('timeTrackingSpent') <= value;
+                                    // console.log("*******************************");
+                                    // console.log("value");
+                                    // console.log(value);
+                                    // console.log("getFieldValue('timeTrackingSpent')");
+                                    // console.log(getFieldValue('timeTrackingSpent'));
+                                    // console.log('condition');
+                                    // console.log(condition);
+                                    // console.log("*******************************");
+                                    if (condition) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(new Error("Time tracking remaining can't be smaller than time trackingspent"));
+                                },
+                            }),
+                        ]}>
+                            <InputNumber
+                                placeholder="0"
+                                className="rounded-md"
+                                min={0}
+                            />
+                        </Form.Item>
+                    </div>
+                </div>
+            </div>
+
+        </Form >
+    );
+}
+
+export default EditTaskForm;

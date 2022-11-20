@@ -15,11 +15,15 @@ import CreateProjectPage from "./Pages/ProjectPage/CreateProject/CreateProjectPa
 import GeneralDrawer from "./core/Components/Drawer/GeneralDrawer";
 import ProjectDetail from "./Pages/ProjectPage/ProjectDetail/ProjectDetail";
 
+import CreateTask from "./Pages/ProjectPage/ProjectDetail/Task/CreateTask";
+import ModalComponent from "./core/Components/Modal/ModalComponent";
+
 function App() {
   return (
     <>
       <Spinner />
       <GeneralDrawer />
+      <ModalComponent />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="login" element={<LoginPage />} />

@@ -1,4 +1,14 @@
+import { InterfaceProject } from "../models/Project/Project.interface";
+import { User } from "../models/User/User.interface";
 import { AXIOS_INSTANCE_GENERATOR, BASE_USER_URL } from "./configURL";
+
+type TaskGetUserListResponse = {
+  content: User[];
+};
+
+type ProjectResponse = {
+  content: InterfaceProject;
+};
 
 const USER_SERVICE = {
   login: async (loginData: { email: string; passWord: string }) => {
@@ -15,9 +25,15 @@ const USER_SERVICE = {
     return data;
   },
   getUserByKeyword: async (keyword: string) => {
-    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).get(
-      `/getUser?keyword=${keyword}`
-    );
+    let { data } = await AXIOS_INSTANCE_GENERATOR(
+      BASE_USER_URL
+    ).get<TaskGetUserListResponse>(`/getUser?keyword=${keyword}`);
+    return data;
+  },
+  getUserByProjectId: async (id: number) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(
+      BASE_USER_URL
+    ).get<TaskGetUserListResponse>(`/getUserByProjectId?idProject=${id}`);
     return data;
   },
 };

@@ -3,13 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface interfaceInitialStateGeneralReducer {
   isDrawerOpen: boolean;
   DrawerContent: React.ReactNode;
-  handleSummitDrawer: () => void;
+  // handleSummitDrawer: () => void;
 }
 
 const initialState: interfaceInitialStateGeneralReducer = {
   isDrawerOpen: false,
   DrawerContent: null,
-  handleSummitDrawer: () => {},
+  // handleSummitDrawer: () => {},
 };
 
 const generalSlice = createSlice({

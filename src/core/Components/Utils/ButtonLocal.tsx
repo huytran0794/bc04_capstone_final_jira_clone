@@ -28,7 +28,7 @@ export default function ButtonLocal({
     <button
       type="button"
       className={clsx(
-        `px-5 py-2.5 rounded-lg`,
+        `py-2 px-4 rounded-md`,
         `bg-${baseColor}-500 hover:bg-${baseColor}-600`,
         `text-white text-lg font-medium`,
         `focus:outline-none focus:ring-4 focus:ring-${baseColor}-300`,
