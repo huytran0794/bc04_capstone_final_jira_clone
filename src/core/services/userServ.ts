@@ -32,6 +32,15 @@ const USER_SERVICE = {
     return data;
   },
 
+  deleteUser: async (userId:number) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).delete(
+      `/deleteUser?id=${userId}`,
+      
+    );
+    return data;
+  },
+
+
 };
 
 export default USER_SERVICE;

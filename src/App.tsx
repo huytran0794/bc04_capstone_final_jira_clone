@@ -14,6 +14,7 @@ import CreateProjectPage from "./Pages/ProjectPage/CreateProject/CreateProjectPa
 
 import GeneralDrawer from "./core/Components/Drawer/GeneralDrawer";
 import ProjectDetail from "./Pages/ProjectPage/ProjectDetail/ProjectDetail";
+import UserManagementPage from './Pages/AdminPage/UserManagementPage/UserManagementPage';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="create-project" element={<CreateProjectPage />} />
             <Route path="project-detail/:projectId" element={<ProjectDetail />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="admin/userManagement" element={<UserManagementPage />} />
           </Route>
         </Route>
       </Routes>
