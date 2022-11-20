@@ -4,11 +4,13 @@ interface interfaceInitialStateGeneralReducer {
   isDrawerOpen: boolean;
   DrawerContent: React.ReactNode;
   // handleSummitDrawer: () => void;
+  sidebarCollapse: boolean;
 }
 
 const initialState: interfaceInitialStateGeneralReducer = {
   isDrawerOpen: false,
   DrawerContent: null,
+  sidebarCollapse: false,
 };
 
 const generalSlice = createSlice({
@@ -21,6 +23,16 @@ const generalSlice = createSlice({
     },
     closeDrawer: (state) => {
       state.isDrawerOpen = false;
+    },
+    toggleCollapseSidebar: (state) => {
+      if (state.sidebarCollapse === true) {
+        state.sidebarCollapse = false;
+      } else {
+        state.sidebarCollapse = true;
+      }
+    },
+    collapseSidebar: (state) => {
+      state.sidebarCollapse = true;
     },
   },
 });

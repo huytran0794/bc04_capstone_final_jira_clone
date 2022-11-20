@@ -1,6 +1,6 @@
 import { toast, ToastOptions } from "react-toastify";
 
-const toastify = (type: string, content: string) => {  
+const toastify = (type: string, content: string) => {
   const toastOptions: ToastOptions = {
     position: "bottom-right",
     autoClose: 3000,

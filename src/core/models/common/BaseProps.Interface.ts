@@ -23,7 +23,8 @@ export interface ButtonLocalProps extends BaseProps {
     | "blue"
     | "indigo"
     | "purple"
-    | "pink";
+    | "pink"
+    | "gray";
   handleOnClick?: () => void;
 }
 
