@@ -13,9 +13,6 @@ export default function UserManagementPage() {
     let fetchUserList = () => {
       USER_SERVICE.getAllUser()
         .then((res) => {
-          console.log(res);
-          console.log(res.content);
-
           let data = res.content.map((item: User) => {
             return {
               ...item,

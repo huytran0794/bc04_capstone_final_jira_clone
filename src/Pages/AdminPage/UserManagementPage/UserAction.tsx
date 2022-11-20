@@ -2,12 +2,17 @@ import React from "react";
 import USER_SERVICE from "./../../../core/services/userServ";
 import { InterfaceUserActionProps } from "./../../../core/models/User/User.interface";
 import toastify from "./../../../core/utils/toastify/toastifyUtils";
+import { Popconfirm } from "antd";
+import {
+  DeleteOutlined,
+  FormOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 
 export default function UserAction({
   userId,
   onSuccess,
 }: InterfaceUserActionProps) {
-  
   let handleDeleteUser = () => {
     USER_SERVICE.deleteUser(userId)
       .then((res) => {
@@ -21,13 +26,23 @@ export default function UserAction({
 
   return (
     <div className="space-x-2">
-      <button
-        onClick={handleDeleteUser}
-        className="px-5 py-2 rounded bg-red-500 text-white"
-      >
-        Delete
+      <button>
+        <FormOutlined className="text-blue-500 text-2xl" />
       </button>
-      <button className="px-5 py-2 rounded bg-blue-500 text-white">Edit</button>
+
+      <Popconfirm
+        title={
+          <span className="text-lg pl-1">
+            Are you sure you want to delete this user?
+          </span>
+        }
+        onConfirm={handleDeleteUser}
+        okText="Yes"
+        cancelText="No"
+        icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
+      >
+        <DeleteOutlined className="text-red-500 text-2xl" />
+      </Popconfirm>
     </div>
   );
 }
