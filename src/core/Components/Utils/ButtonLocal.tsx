@@ -35,6 +35,7 @@ export default function ButtonLocal({
       | "indigo"
       | "purple"
       | "pink"
+      | "gray"
   ) => {
     switch (baseColor) {
       case "red":
