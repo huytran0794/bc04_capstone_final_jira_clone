@@ -18,18 +18,20 @@ const Layout = () => {
 
   /* write more conditions here if you like */
   return (
-    <>
-      <Header />
-      <main className="flex">
-        <div className="flex-shrink-0">
+    <div className="flex">
+      <div className="flex-shrink-0">
+        <div className="sticky top-0 left-0">
           <Sidebar />
         </div>
-        <div className="flex-grow">
+      </div>
+      <div className="flex-grow">
+        <Header />
+        <main>
           <Outlet />
-        </div>
-      </main>
-      <Footer />
-    </>
+        </main>
+        <Footer />
+      </div>
+    </div>
   );
 };
 

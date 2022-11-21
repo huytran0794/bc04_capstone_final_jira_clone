@@ -3,12 +3,16 @@ import { NavLink, useLocation } from "react-router-dom";
 
 // import redux
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
+import { generalActions } from "../../redux/slice/generalSlice";
 
 // import ANTD components
-import { FileAddOutlined, SnippetsOutlined } from "@ant-design/icons";
+import {
+  FileAddOutlined,
+  SnippetsOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Menu } from "antd";
 import Sider from "antd/lib/layout/Sider";
-import { generalActions } from "../../redux/slice/generalSlice";
 
 export default function Sidebar() {
   const dispatch = useAppDispatch();
@@ -22,6 +26,7 @@ export default function Sidebar() {
   const routes: { [key: string]: string } = {
     "/create-project": "create-project",
     "/": "project-management",
+    "/profile": "profile",
   };
 
   useEffect(() => {
@@ -37,7 +42,7 @@ export default function Sidebar() {
       breakpoint="lg"
       theme={"light"}
       width="230"
-      style={{ height: "100%" }}
+      style={{ height: "100%", paddingTop: "80px" }}
       onBreakpoint={(broken) => {
         if (broken) {
           dispatch(generalActions.collapseSidebar());
@@ -76,6 +81,19 @@ export default function Sidebar() {
             label: (
               <NavLink to="/" className="text-base font-semibold">
                 Project Management
+              </NavLink>
+            ),
+          },
+          {
+            key: "profile",
+            icon: (
+              <div className="py-1 transition">
+                <UserOutlined className="flex text-lg" />
+              </div>
+            ),
+            label: (
+              <NavLink to="/profile" className="text-base font-semibold">
+                My Profile
               </NavLink>
             ),
           },
