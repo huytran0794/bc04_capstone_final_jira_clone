@@ -166,7 +166,7 @@ export default function ProjectManagementDesktop() {
         <span
           className="projectName text-lg font-semibold cursor-pointer transition-colors duration-300"
           onClick={() => {
-            window.location.href = `/project-details/${project.id}`;
+            window.location.href = `/project-detail/${project.id}`;
           }}
         >
           {projectName}
