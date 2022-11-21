@@ -5,9 +5,11 @@ import { EditorProps } from "../../models/common/BaseProps.Interface";
 import { initEditorConfig } from "./editorConfig";
 
 const CustomEditor = ({ name, className, formInstance }: EditorProps) => {
+  const [value, setValue] = useState<string>("");
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const handleChange = (newValue: string, editor: TinyMCEEditor) => {
     formInstance?.setFieldValue("description", newValue);
+    setValue(newValue);
   };
 
   return (
