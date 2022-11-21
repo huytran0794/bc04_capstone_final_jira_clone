@@ -30,7 +30,6 @@ const CreateProjectPage = () => {
     }
     PROJECT_SERVICE.createProject(newProject)
       .then((res) => {
-        toastify("success", "Create project successfully !");
         dispatch(projectActions.putProjectDetail(res.content));
         setTimeout(() => {
           navigate("/", { replace: true });
