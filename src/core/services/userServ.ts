@@ -1,5 +1,5 @@
 import { InterfaceProject } from "../models/Project/Project.interface";
-import { User } from "../models/User/User.interface";
+import { User, UserInterface } from "./../models/User/User.interface";
 import { AXIOS_INSTANCE_GENERATOR, BASE_USER_URL } from "./configURL";
 
 type TaskGetUserListResponse = {
@@ -43,6 +43,21 @@ const USER_SERVICE = {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).post(
       `/signup`,
       registerData
+    );
+    return data;
+  },
+
+  deleteUser: async (userId: number | undefined) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).delete(
+      `/deleteUser?id=${userId}`
+    );
+    return data;
+  },
+
+  editUser: async (userEdit: User) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).put(
+      `/editUser`,
+      userEdit
     );
     return data;
   },

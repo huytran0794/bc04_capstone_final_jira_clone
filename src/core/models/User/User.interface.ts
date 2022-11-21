@@ -9,3 +9,16 @@ export interface User {
   avatar?: string;
   alias?: string;
 }
+
+export interface UserInterface extends User {
+  action?: React.ReactNode;
+}
+
+export interface InterfaceUserTableProps {
+  userList: UserInterface[];
+}
+
+export interface InterfaceUserActionProps {
+  user: UserInterface;
+  onSuccess: () => void;
+}

@@ -14,6 +14,7 @@ import ProjectManagement from "./Pages/ProjectPage/ProjectManagement/ProjectMana
 
 import GeneralDrawer from "./core/Components/Drawer/GeneralDrawer";
 import ProjectDetail from "./Pages/ProjectPage/ProjectDetail/ProjectDetail";
+import UserManagementPage from './Pages/AdminPage/UserManagementPage/UserManagementPage';
 
 import CreateTask from "./Pages/ProjectPage/ProjectDetail/Task/CreateTask";
 import ModalComponent from "./core/Components/Modal/ModalComponent";
@@ -35,6 +36,7 @@ function App() {
             <Route path="create-project" element={<CreateProjectPage />} />
             <Route path="project-detail/:projectId" element={<ProjectDetail />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="admin/userManagement" element={<UserManagementPage />} />
           </Route>
         </Route>
       </Routes>
