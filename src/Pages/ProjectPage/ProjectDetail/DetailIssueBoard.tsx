@@ -31,7 +31,7 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
     let cardDragEnter = useRef<ITask>();
 
     let [projectDetail, setProjectDetail] = useState<InterfaceProject>(project);
-    const [propSpring, set] = useSpring(() => ({ from: { bottom: -25 }, to: { bottom: 0 } }));
+    const [propSpring, set] = useSpring(() => ({ from: { bottom: -25 }, to: { bottom: 0 }, config: { duration: 250 }, reset: true }));
 
     const handleEditTask = (task: ITask) => {
         dispatch(modalActions.setUpModal({ ...modalProps, width: 1000, headerContent: <EditTaskHeader /> }));
@@ -41,53 +41,58 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
     // to store the current item we're dragging
 
 
-    const handleDragDropCard = (e: React.DragEvent<HTMLDivElement>, taskDrag: ITask, idx: number) => {
+    const handleDragStart = (e: React.DragEvent<HTMLDivElement>, taskDrag: ITask, idx: number) => {
         cardDrag.current = taskDrag;
+        console.log('drag start tag', e.target);
+        console.log(taskDrag);
     }
 
-    const handleDragEnter = (e: React.DragEvent<HTMLDivElement>, taskDragEnter: ITask) => {
+    const handleDragEnter = (e: React.DragEvent<HTMLDivElement>, taskDragEnter: ITask, idx: number) => {
+        console.log('drag enter tag', e.target);
+        console.log('target over', taskDragEnter);
+        console.log('idx');
+        console.log(idx)
+        // cardDragEnter.current = { ...taskDragEnter };
 
-        cardDragEnter.current = { ...taskDragEnter };
+        // // get list of task
+        // let taskListUpdate: ITask[] = [];
+        // projectDetail?.lstTask.map((taskDetailList: ITaskDetailList, idx: number) => {
+        //     taskListUpdate = [...taskListUpdate, ...taskDetailList.lstTaskDeTail];
+        // });
 
-        // get list of task
-        let taskListUpdate: ITask[] = [];
-        projectDetail?.lstTask.map((taskDetailList: ITaskDetailList, idx: number) => {
-            taskListUpdate = [...taskListUpdate, ...taskDetailList.lstTaskDeTail];
-        });
+        // // index card dang keo
+        // let idxTagDrag = taskListUpdate.findIndex(task => task.taskId === cardDrag.current?.taskId);
 
-        // index card dang keo
-        let idxTagDrag = taskListUpdate.findIndex(task => task.taskId === cardDrag.current?.taskId);
+        // // index card bi keo
+        // let idxTagDragEnter = taskListUpdate.findIndex(task => task.taskId === taskDragEnter.taskId);
 
-        // index card bi keo
-        let idxTagDragEnter = taskListUpdate.findIndex(task => task.taskId === taskDragEnter.taskId);
+        // console.log('gia tri truoc khi swap');
+        // console.log('thang keo')
+        // console.log(taskListUpdate[idxTagDrag]);
 
-        console.log('gia tri truoc khi swap');
-        console.log('thang keo')
-        console.log(taskListUpdate[idxTagDrag]);
+        // console.log('thang bi keo qua')
+        // console.log(taskListUpdate[idxTagDragEnter]);
 
-        console.log('thang bi keo qua')
-        console.log(taskListUpdate[idxTagDragEnter]);
+        // // swap
+        // let temp = taskListUpdate[idxTagDrag];
+        // taskListUpdate[idxTagDrag] = taskListUpdate[idxTagDragEnter];
+        // taskListUpdate[idxTagDragEnter] = temp;
 
-        // swap
-        let temp = taskListUpdate[idxTagDrag];
-        taskListUpdate[idxTagDrag] = taskListUpdate[idxTagDragEnter];
-        taskListUpdate[idxTagDragEnter] = temp;
+        // console.log('gia tri sau khi swap');
+        // console.log('thang keo')
+        // console.log(taskListUpdate[idxTagDrag]);
 
-        console.log('gia tri sau khi swap');
-        console.log('thang keo')
-        console.log(taskListUpdate[idxTagDrag]);
+        // console.log('thang bi keo qua')
+        // console.log(taskListUpdate[idxTagDragEnter]);
 
-        console.log('thang bi keo qua')
-        console.log(taskListUpdate[idxTagDragEnter]);
+        // console.log("taskListUpdate");
+        // console.log(taskListUpdate);
 
-        console.log("taskListUpdate");
-        console.log(taskListUpdate);
+        // let clonedProject = JSON.parse(JSON.stringify(projectDetail));
 
-        let clonedProject = JSON.parse(JSON.stringify(projectDetail));
-
-        clonedProject?.lstTask.map((taskDetailList: ITaskDetailList, idx: number) => {
-            taskDetailList.lstTaskDeTail = [...taskListUpdate];
-        })
+        // clonedProject?.lstTask.map((taskDetailList: ITaskDetailList, idx: number) => {
+        //     taskDetailList.lstTaskDeTail = [...taskListUpdate];
+        // })
 
         // setProjectDetail(clonedProject);
 
@@ -101,6 +106,7 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
     }
 
     const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
+        set({ bottom: 0 });
         console.log("handleDragEnd", e.target)
     };
 
@@ -122,8 +128,8 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                         draggable={true}
                         key={taskDetail.taskId.toString() + idx}
                         // onClick={() => { handleEditTask(taskDetail) }}
-                        onDragStart={(e) => { handleDragDropCard(e, taskDetail, idx) }}
-                        onDragEnter={(e) => { handleDragEnter(e, taskDetail) }}
+                        onDragStart={(e) => { handleDragStart(e, taskDetail, idx) }}
+                        onDragEnter={(e) => { handleDragEnter(e, taskDetail, idx) }}
                         onDragEnd={handleDragEnd}
                         style={{
                             position: 'relative',
@@ -175,8 +181,8 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                         draggable={true}
                         key={taskDetail.taskId.toString() + idx}
                         // onClick={() => { handleEditTask(taskDetail) }}
-                        onDragStart={(e) => { handleDragDropCard(e, taskDetail, idx) }}
-                        onDragEnter={(e) => { handleDragEnter(e, taskDetail) }}
+                        onDragStart={(e) => { handleDragStart(e, taskDetail, idx) }}
+                        onDragEnter={(e) => { handleDragEnter(e, taskDetail, idx) }}
                         onDragEnd={handleDragEnd}
 
                     >
@@ -225,10 +231,10 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                         project?.lstTask.map((taskDetailList: ITaskDetailList, idx: number) => {
                             return (
                                 <div className="col w-1/4 shadow-md" key={taskDetailList.statusId.toString() + idx} draggable={true}
-                                    // onDragOver={
-                                    //     (e) => handleDragOver(e, taskDetailList.statusName, idx)
-                                    // }
-                                    onDrop={handleDrop}
+                                // onDragOver={
+                                //     (e) => handleDragOver(e, taskDetailList.statusName, idx)
+                                // }
+                                // onDrop={handleDrop}
                                 >
                                     <div className="content-wrapper flex-1 px-2 bg-[#F4F5F7] shadow-md h-full">
                                         <div className="content">
