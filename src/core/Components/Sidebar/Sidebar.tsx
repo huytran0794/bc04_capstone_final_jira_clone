@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 // import redux
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
@@ -8,32 +8,44 @@ import { generalActions } from "../../redux/slice/generalSlice";
 // import ANTD components
 import {
   FileAddOutlined,
+  FileTextOutlined,
   SnippetsOutlined,
-  UserAddOutlined,
+  UsergroupAddOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import Sider from "antd/lib/layout/Sider";
+import generalHooks from "../../hooks/utils/generalHooks";
 
 export default function Sidebar() {
   const dispatch = useAppDispatch();
-  const location = useLocation();
-  const [currentMenuItem, setCurrentMenuItem] = useState("0");
+  const params = useParams();
 
+  const [currentMenuItem, setCurrentMenuItem] = useState("0");
+  const [projectID, setProjectID] = useState<string | undefined>(undefined);
   let sidebarCollapse = useAppSelector(
     (state) => state.generalReducer.sidebarCollapse
   );
 
-  const routes: { [key: string]: string } = {
+  const routesKey: { [key: string]: string } = {
     "/create-project": "create-project",
     "/": "project-management",
     "/profile": "profile",
     "/admin/userManagement": "user-management",
+    "/project-detail/:projectId": "project-detail",
   };
+  const currentPath = generalHooks.usePathPattern();
 
   useEffect(() => {
-    setCurrentMenuItem(routes[location.pathname]);
-  }, [location.pathname]);
+    if (currentPath) {
+      if (currentPath === "/project-detail/:projectId") {
+        setProjectID(params.projectId);
+      }
+      setCurrentMenuItem(routesKey[currentPath]);
+    } else {
+      setCurrentMenuItem("0");
+    }
+  }, [currentPath]);
 
   return (
     <Sider
@@ -44,14 +56,14 @@ export default function Sidebar() {
       breakpoint="lg"
       theme={"light"}
       width="230"
-      style={{ height: "100%", paddingTop: "80px" }}
+      style={{ height: "100%" }}
       onBreakpoint={(broken) => {
         if (broken) {
           dispatch(generalActions.collapseSidebar());
         }
       }}
     >
-      <div className="logo">
+      <div className="logo py-12">
         <NavLink to="/" className="px-12 flex justify-center items-center">
           <img className="w-full" src="/jiraCloneLogo.png" alt="web-logo" />
         </NavLink>
@@ -87,6 +99,26 @@ export default function Sidebar() {
             ),
           },
           {
+            key: "project-detail",
+            icon: (
+              <div className="py-1 transition">
+                <FileTextOutlined className="flex text-lg" />
+              </div>
+            ),
+            label: (
+              <NavLink
+                to={`/project-detail/${projectID}`}
+                className="text-base font-semibold"
+              >
+                Project Detail{" "}
+                <span className="text-sm text-gray-400 font-normal">
+                  {projectID}
+                </span>
+              </NavLink>
+            ),
+            disabled: projectID ? false : true,
+          },
+          {
             key: "profile",
             icon: (
               <div className="py-1 transition">
@@ -103,11 +135,14 @@ export default function Sidebar() {
             key: "user-management",
             icon: (
               <div className="py-1 transition">
-                <UserAddOutlined className="flex text-lg" />
+                <UsergroupAddOutlined className="flex text-lg" />
               </div>
             ),
             label: (
-              <NavLink to="/admin/userManagement" className="text-base font-semibold">
+              <NavLink
+                to="/admin/userManagement"
+                className="text-base font-semibold"
+              >
                 User Management
               </NavLink>
             ),
