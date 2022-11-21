@@ -28,7 +28,7 @@ export default function Sidebar() {
     "/create-project": "create-project",
     "/": "project-management",
     "/profile": "profile",
-    "/admin/userManagement": "admin/userManagement",
+    "/admin/userManagement": "user-management",
   };
 
   useEffect(() => {
