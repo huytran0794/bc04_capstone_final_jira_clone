@@ -42,12 +42,16 @@ const ProjectDetail = () => {
     let projectDetailInfo = useAppSelector((state) => state.projectReducer.project as InterfaceProject);
 
 
-    const pageContent = (
-        <>
-            <DetailHeader project={projectDetailInfo} />
-            <DetailIssueBoard project={projectDetailInfo} />
-        </>
-    );
+    const pageContent = () => {
+        if (projectDetailInfo) {
+            return (
+                <>
+                    <DetailHeader project={projectDetailInfo} />
+                    <DetailIssueBoard project={projectDetailInfo} />
+                </>
+            );
+        }
+    }
 
     return (
         <div className="project-detail-page h-full">
@@ -56,7 +60,7 @@ const ProjectDetail = () => {
             </div>
             <SectionWrapper
                 title={`${projectDetailInfo?.projectName}`}
-                content={pageContent}
+                content={pageContent()}
                 sectionClass="project-detail-section"
             />
         </div>
