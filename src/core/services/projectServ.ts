@@ -80,8 +80,6 @@ const PROJECT_SERVICE = {
           categoryName: resContent.projectCategory.name,
         };
         dispatch(projectActions.putProjectDetail(resContent));
-        console.log("project rescontent");
-        console.log(resContent);
         setTimeout(() => {
           dispatch(spinnerActions.setLoadingOff());
         }, 2500);

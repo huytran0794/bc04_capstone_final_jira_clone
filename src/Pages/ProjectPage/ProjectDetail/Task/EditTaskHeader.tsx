@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Popconfirm, Select } from "antd";
 import clsx from "clsx";
 import React from "react";
 import { FiSend, FiLink } from "react-icons/fi";
@@ -6,6 +6,8 @@ import { FiSend, FiLink } from "react-icons/fi";
 import { TfiTrash } from "react-icons/tfi";
 
 import { useAppDispatch, useAppSelector } from "../../../../core/hooks/redux/useRedux";
+import { ITask } from "../../../../core/models/Task/Task.Interface";
+import { modalActions } from "../../../../core/redux/slice/modalSlice";
 import { taskActions } from "../../../../core/redux/slice/taskSlice";
 import TASK_SERVICE from "../../../../core/services/taskServ";
 
@@ -30,6 +32,13 @@ const EditTaskHeader = () => {
     clonedTask = { ...clonedTask, typeId: value };
     dispatch(TASK_SERVICE.updateTaskThunk(clonedTask));
   }
+
+  const text = 'Are you sure to delete this task?';
+  const handleDetele = (task: ITask) => {
+    dispatch(modalActions.closeModal());
+    dispatch(TASK_SERVICE.deleteTaskThunk(task));
+  }
+
   let defaultOption = task && task.typeId;
   return (
     <div className="content">
@@ -94,11 +103,14 @@ const EditTaskHeader = () => {
             </div>
             <span className="txt capitalize tracking-wide">copy link</span>
           </div>
-          <div className={clsx("btn btn-del", btnActionClass)}>
-            <div className="icon">
-              <TfiTrash className="text-slate-600 text-lg" />
+          <Popconfirm placement="topLeft" title={text} onConfirm={() => { handleDetele(task as ITask) }} okText="Yes" cancelText="No">
+            <div className={clsx("btn btn-del", btnActionClass)}>
+              <div className="icon">
+                <TfiTrash className="text-slate-600 text-lg" />
+              </div>
             </div>
-          </div>
+          </Popconfirm>
+
         </div>
       </div>
     </div>

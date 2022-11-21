@@ -86,9 +86,8 @@ const TASK_SERVICE = {
   },
   // delete task
   deleteTask: async (taskId: string | number) => {
-    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).post(
-      `removeTask`,
-      taskId
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).delete(
+      `removeTask?taskId=${taskId}`
     );
     return data;
   },
@@ -109,6 +108,18 @@ const TASK_SERVICE = {
           await updateRedux(dispatch, task);
           await updateProjectDetails(dispatch, task);
         })();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+
+  deleteTaskThunk: (task: ITask) => (dispatch: AppDispatch) => {
+    dispatch(spinnerActions.setLoadingOn());
+    AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
+      .delete(`removeTask?taskId=${task.taskId}`)
+      .then((res) => {
+        dispatch(PROJECT_SERVICE.getDetailsThunk(task.projectId));
       })
       .catch((error) => {
         console.log(error);

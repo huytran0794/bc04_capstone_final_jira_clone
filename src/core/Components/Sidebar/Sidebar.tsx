@@ -9,6 +9,7 @@ import { generalActions } from "../../redux/slice/generalSlice";
 import {
   FileAddOutlined,
   SnippetsOutlined,
+  UserAddOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
@@ -27,6 +28,7 @@ export default function Sidebar() {
     "/create-project": "create-project",
     "/": "project-management",
     "/profile": "profile",
+    "/admin/userManagement": "user-management",
   };
 
   useEffect(() => {
@@ -94,6 +96,19 @@ export default function Sidebar() {
             label: (
               <NavLink to="/profile" className="text-base font-semibold">
                 My Profile
+              </NavLink>
+            ),
+          },
+          {
+            key: "user-management",
+            icon: (
+              <div className="py-1 transition">
+                <UserAddOutlined className="flex text-lg" />
+              </div>
+            ),
+            label: (
+              <NavLink to="/admin/userManagement" className="text-base font-semibold">
+                User Management
               </NavLink>
             ),
           },

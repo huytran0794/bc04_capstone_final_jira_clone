@@ -222,7 +222,7 @@ const EditTaskForm = ({
                             <div className="btn-list mt-4">
                                 <div className="wrapper flex gap-3">
                                     <ButtonLocal
-                                        className="btn-save bg-science-blue-500 text-white border-none rounded-[4px] hover:bg-[#0065ff] font-semibold text-base transition-all duration-[400ms] order-2"
+                                        className="btn-save bg-science-blue-500 text-white border-none rounded-[4px] hover:bg-[#0065ff] font-semibold text-base transition-all duration-[400ms] order-2 px-5 py-2.5"
                                         handleOnClick={() => {
                                             setVisibleEditor(false);
                                             componentMounted.current = true;
@@ -235,7 +235,7 @@ const EditTaskForm = ({
                                         Save
                                     </ButtonLocal>
                                     <ButtonLocal
-                                        className="btn-cancel btn-txt--underlined border-none text-[#6B778C] text-base order-1"
+                                        className="btn-cancel btn-txt--underlined border-none text-[#6B778C] text-base order-1 px-5 py-2.5"
                                         handleOnClick={() => {
                                             setVisibleEditor(false);
                                             componentMounted.current = true;
