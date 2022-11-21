@@ -17,8 +17,7 @@ const projectCategorySlice = createSlice({
       state,
       action: PayloadAction<IProjectCategory[]>
     ) => {
-      console.log(action.payload);
-
+      // console.log(action.payload);
       state.projectCategoryArr = [...action.payload];
     },
   },
