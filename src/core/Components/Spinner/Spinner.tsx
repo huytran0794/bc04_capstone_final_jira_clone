@@ -7,8 +7,6 @@ import { ClimbingBoxLoader } from "react-spinners";
 
 export default function Spinner() {
   let isLoading = useAppSelector((state) => state.spinnerReducer.isLoading);
-  console.log("Sppiner is loading");
-  console.log(isLoading);
 
   const loadingClass = isLoading
     ? "opacity-100 visible "

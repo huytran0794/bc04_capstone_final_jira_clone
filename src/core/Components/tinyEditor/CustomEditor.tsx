@@ -6,14 +6,11 @@ import { initEditorConfig } from "./editorConfig";
 
 const CustomEditor = ({ name, className, formInstance }: EditorProps) => {
   const [value, setValue] = useState<string>("");
-  console.log('editor init value');
-  console.log(value)
   const editorRef = useRef<TinyMCEEditor | null>(null);
   const handleChange = (newValue: string, editor: TinyMCEEditor) => {
     formInstance?.setFieldValue("description", newValue);
     setValue(newValue);
   };
-
 
   return (
     <Editor
