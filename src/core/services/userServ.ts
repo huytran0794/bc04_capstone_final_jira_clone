@@ -46,6 +46,13 @@ const USER_SERVICE = {
     );
     return data;
   },
+  edit: async (userInfo: Partial<User>) => {
+    let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).put(
+      "/editUser",
+      userInfo
+    );
+    return data;
+  },
 };
 
 export default USER_SERVICE;

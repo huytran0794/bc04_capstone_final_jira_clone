@@ -1,12 +1,16 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 // import redux
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
 import { generalActions } from "../../redux/slice/generalSlice";
 
+// import local interface
+import { User } from "../../models/User/User.interface";
+
 // import local component
 import Container from "../Container/Container";
+import toastify from "../../utils/toastify/toastifyUtils";
 
 // import local services
 import { LOCAL_SERVICE } from "../../services/localServ";
@@ -19,7 +23,6 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Avatar, Dropdown, Menu, Space } from "antd";
-import toastify from "../../utils/toastify/toastifyUtils";
 
 const Header = () => {
   const dispatch = useAppDispatch();
@@ -28,8 +31,8 @@ const Header = () => {
     (state) => state.generalReducer.sidebarCollapse
   );
 
-  const user = LOCAL_SERVICE.user.get();
-  if (!user) return null;
+  const user = useAppSelector((state) => state.userReducer.user);
+  if (Object.keys(user).length === 0) return null;
 
   // ANTD dropdown control
   const menu = (
@@ -38,9 +41,9 @@ const Header = () => {
         {
           key: "1",
           label: (
-            <a onClick={() => { }} className="text-base">
+            <NavLink to="profile" className="text-base">
               Profile
-            </a>
+            </NavLink>
           ),
           icon: (
             <div className="py-1">
