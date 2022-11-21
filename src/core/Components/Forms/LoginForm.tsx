@@ -5,7 +5,6 @@ import { LockOutlined, MailOutlined } from "@ant-design/icons";
 /* import react router dom packages */
 import { useNavigate } from "react-router-dom";
 
-
 /* import local interface */
 import { FormProps } from "../../models/common/FormProps.interface";
 import { User } from "../../models/User/User.interface";
@@ -38,8 +37,11 @@ const LoginForm = ({ layout = "horizontal", size = "large" }: FormProps) => {
         }, 2500);
       })
       .catch((err) => {
-        
-        
+        setTimeout(() => {
+          console.log(err);
+          toastify("error", err.response.data.message);
+          dispatch(spinnerActions.setLoadingOff());
+        }, 500);
       });
   };
 

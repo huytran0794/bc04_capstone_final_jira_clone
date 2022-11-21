@@ -72,7 +72,7 @@ export default function ProjectManagementMobile() {
           <p
             className="p-3 mb-0 flex-grow text-xl font-semibold cursor-pointer"
             onClick={() => {
-              window.location.href = `/project-details/${project.id}`;
+              window.location.href = `/project-detail/${project.id}`;
             }}
           >
             {project.projectName}
