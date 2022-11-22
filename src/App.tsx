@@ -16,8 +16,8 @@ import GeneralDrawer from "./core/Components/Drawer/GeneralDrawer";
 import ProjectDetail from "./Pages/ProjectPage/ProjectDetail/ProjectDetail";
 import UserManagementPage from './Pages/AdminPage/UserManagementPage/UserManagementPage';
 
-import CreateTask from "./Pages/ProjectPage/ProjectDetail/Task/CreateTask";
 import ModalComponent from "./core/Components/Modal/ModalComponent";
+
 
 function App() {
   return (

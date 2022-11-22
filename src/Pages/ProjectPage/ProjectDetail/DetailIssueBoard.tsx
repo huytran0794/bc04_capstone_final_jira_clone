@@ -47,8 +47,6 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                                             <span className="icon">
                                                 {taskTypeIcons[taskDetail.taskTypeDetail.taskType]}
                                             </span>
-                                            
-                                            
                                         </div>
                                         <div className="priority flex items-center gap-1">
                                             <span className="icon flex items-center">
@@ -91,7 +89,7 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                                         <div className="icon-wrapper"></div>
                                     </div>
                                     <div className="card__list-container min-h-[80px] pb-3 max-w-full truncate">
-                                        <div className="wrapper px-2 pt-2 flex flex-col gap-4">
+                                        <div className="wrapper px-2 py-1 flex flex-col gap-4">
                                             {renderProjectCard(taskDetailList.lstTaskDeTail)}
                                         </div>
                                     </div>

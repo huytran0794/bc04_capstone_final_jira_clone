@@ -13,8 +13,6 @@ import TASK_SERVICE from "../../services/taskServ";
 import USER_SERVICE from "../../services/userServ";
 import { AppDispatch } from "../store/store";
 
-type PartialTask = Partial<ITask>;
-
 type InitialState = {
   taskTypeList: ITaskType[];
   taskPriorityList: ITaskPriority[];

@@ -21,7 +21,7 @@ import {
 
 /* import local interfaces */
 import { ITaskForm } from "../../../models/common/FormProps.interface";
-import { ITask } from "../../../models/Task/Task.Interface";
+
 
 import PROJECT_SERVICE from "../../../services/projectServ";
 import CustomEditor from "../../tinyEditor/CustomEditor";
@@ -31,6 +31,9 @@ import Label from "../Label/Label";
 import { modalActions } from "../../../redux/slice/modalSlice";
 
 import clsx from "clsx";
+
+import useResetFormOnCloseModal from "../../../hooks/utils/resetFormModal";
+import { ITask } from "../../../models/Task/Task.Interface";
 
 const CreateTaskForm = ({
   layout = "horizontal",
@@ -43,10 +46,8 @@ const CreateTaskForm = ({
   const [form] = Form.useForm();
   const { Option } = Select;
   const componentMounted = useRef<boolean>(true);
-  const onFinish = (values: ITask) => {
-    handleOnFinish(values);
-  };
-
+  let isOpenModal = useAppSelector((state) => state.modalReducer.modalProps.open);
+  useResetFormOnCloseModal({ form, open: isOpenModal });
   const [timeTracking, setTimeTracking] = useState<{
     timeSpent: number;
     timeRemains: number;
@@ -60,6 +61,11 @@ const CreateTaskForm = ({
       {labelText}
     </Label>
   );
+
+  const onFinish = (values: ITask) => {
+    handleOnFinish!(values);
+  }
+
   const projectList = useAppSelector(
     (state) => state.projectReducer.projectList
   );
@@ -135,10 +141,44 @@ const CreateTaskForm = ({
     setProjectId(Number(value));
   };
 
+  let sliderRemaingText = (
+    <>
+      <span className="time-text">
+        {Number(form.getFieldValue('timeTrackingRemaining'))}
+      </span>
+      <span>h remaining</span>
+    </>
+  );
+
+  let sliderMax = () => {
+    if (Number(form.getFieldValue("originalEstimate")) > 0 && Number(form.getFieldValue("timeTrackingRemaining")) === 0) {
+      sliderRemaingText = (
+        <>
+          <span className="time-text">
+            {Number(form.getFieldValue('originalEstimate'))}
+          </span>
+          <span>h esitmated</span>
+        </>
+      )
+      return form.getFieldValue("originalEstimate");
+    }
+    return timeTracking.timeRemains + timeTracking.timeSpent;
+  }
+
+
+
   const onValuesChange = (changedValues: any, values: any) => {
     let fieldChangedName = Object.keys(changedValues)[0];
-    let fieldChangedValue: string | number =
-      form.getFieldValue(fieldChangedName);
+    let fieldChangedValue: string | number = form.getFieldValue(fieldChangedName);
+    if (fieldChangedName === "originalEstimate") {
+      componentMounted.current = false;
+      setTimeTracking({
+        ...timeTracking,
+        timeSpent: Number(form.getFieldValue("timeTrackingSpent")),
+        timeRemains: Number(form.getFieldValue("timeTrackingRemaining")),
+      });
+    }
+
     if (fieldChangedName === "timeTrackingSpent") {
       componentMounted.current = false;
       setTimeTracking({
@@ -155,11 +195,6 @@ const CreateTaskForm = ({
       });
     }
   };
-
-  // update time tracking
-  console.log("timeTracking");
-  console.log(timeTracking);
-
   const formProps = { form, layout, size, onFinish, onValuesChange };
   return (
     <Form name="create-task-form" className="myform projectForm" {...formProps}>
@@ -273,8 +308,8 @@ const CreateTaskForm = ({
         <div className="form-item-wrapper time-tracking-input-wrapper w-1/2">
           <Form.Item name="timeTracking" label={labelItem("time tracking")}>
             <Slider
-              value={timeTracking.timeSpent}
-              max={timeTracking.timeSpent + timeTracking.timeRemains}
+              value={form.getFieldValue('timeTrackingSpent')}
+              max={sliderMax()}
               disabled={true}
               tooltip={{ open: false }}
               trackStyle={{
@@ -288,16 +323,11 @@ const CreateTaskForm = ({
             <div className="time-logged flex items-center justify-between">
               <div className="time-spent-logged font-bold">
                 <span className="time-text">
-                  {form.getFieldValue("timeTrackingSpent")}
+                  {Number(form.getFieldValue("timeTrackingSpent"))}
                 </span>
                 <span>h logged</span>
               </div>
-              <div className="time-remain-logged font-bold">
-                <span className="time-text">
-                  {form.getFieldValue("timeTrackingRemaining")}
-                </span>
-                <span>h remaining</span>
-              </div>
+              <div className="time-remain-logged font-bold">{sliderRemaingText}</div>
             </div>
           </Form.Item>
         </div>
@@ -336,27 +366,6 @@ const CreateTaskForm = ({
             <Form.Item
               name="timeTrackingRemaining"
               label={labelItem("time remaining (hours)")}
-              dependencies={["timeTrackingSpent"]}
-              rules={[
-                { type: "number", min: 0 },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    let timeSpent = getFieldValue("timeTrackingSpent");
-                    let condition =
-                      value >= 0 &&
-                      timeSpent >= 0 &&
-                      getFieldValue("timeTrackingSpent") <= value;
-                    if (condition) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      new Error(
-                        "Time tracking remaining can't be smaller than time trackingspent"
-                      )
-                    );
-                  },
-                }),
-              ]}
             >
               <InputNumber
                 placeholder="0"
