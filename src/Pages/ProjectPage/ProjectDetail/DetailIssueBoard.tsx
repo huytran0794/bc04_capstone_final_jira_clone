@@ -253,15 +253,15 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    )
-                })
-            }
-        </div>
-    );
+                            )
+                        })
+                    }
+                </div>)
+        }
+    };
+
     return (
-        <>{projectBoard}</>
+        <>{renderProjectBoard(projectDetail)}</>
     )
 }
 
