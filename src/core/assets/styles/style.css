@@ -159,12 +159,18 @@ h6 {
   height: 40px !important;
 }
 
-.editTaskForm .select-task-type .ant-select-selector {
+.edit-task-header .select-task-type .ant-select-selector {
   border: none !important;
 }
 
-.editTaskForm .select-task-type:hover .ant-select-selector {
-  background-color: transparent !important;
+.edit-task-header .select-task-type:hover .ant-select-selector {
+  background-color: none !important;
+  border: none !important;
+}
+
+.edit-task-header
+  .ant-select:not(.ant-select-disabled):hover
+  .ant-select-selector {
   border: none !important;
 }
 /* ================================== edit task form header taskType styling */
