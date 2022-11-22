@@ -24,23 +24,6 @@ interface IEditTask {
 }
 
 const EditTask = ({ project, task }: IEditTask) => {
-    const dispatch = useAppDispatch();
-
-    const handleOnFinish = (values: ITask) => {
-        // dispatch(modalActions.closeModal());
-        // dispatch(spinnerActions.setLoadingOn());
-        // TASK_SERVICE.EditTask(values)
-        //     .then((res) => {
-        //         toastify("success", res.message);
-        //         dispatch(PROJECT_SERVICE.getDetailsThunk(project.id));
-        //     })
-        //     .catch((error) => {
-        //         setTimeout(() => {
-        //             toastify("error", error.response.data.message);
-        //             dispatch(spinnerActions.setLoadingOff());
-        //         }, 2500);
-        //     });
-    };
     return (
         <div className="form-wrapper min-w-full">
             <div className="form-body">
@@ -50,7 +33,6 @@ const EditTask = ({ project, task }: IEditTask) => {
                     project={project}
                     task={task}
                     buttonText="create task"
-                    handleOnFinish={handleOnFinish}
                 />
             </div>
         </div>

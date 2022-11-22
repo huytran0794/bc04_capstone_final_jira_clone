@@ -21,6 +21,7 @@ import toastify from "../../../../core/utils/toastify/toastifyUtils";
 const CreateTask = ({ project }: IProjectDetail) => {
     const dispatch = useAppDispatch();
     const handleOnFinish = (values: ITask) => {
+        console.log('handleOnFinish');
         dispatch(modalActions.closeModal());
         dispatch(spinnerActions.setLoadingOn());
         TASK_SERVICE.createTask(values)

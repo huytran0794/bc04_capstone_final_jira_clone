@@ -47,8 +47,6 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                                             <span className="icon">
                                                 {taskTypeIcons[taskDetail.taskTypeDetail.taskType]}
                                             </span>
-                                            
-                                            
                                         </div>
                                         <div className="priority flex items-center gap-1">
                                             <span className="icon flex items-center">
