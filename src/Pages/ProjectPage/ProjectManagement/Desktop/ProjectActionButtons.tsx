@@ -71,9 +71,18 @@ export default function ProjectActionButtons({
         }
         onConfirm={handleDeleteProject}
         okText="Yes"
-        okButtonProps={{ danger: true, type: "default", size: "middle" }}
+        okButtonProps={{
+          danger: true,
+          type: "default",
+          size: "large",
+          className: "btn-delete-ok",
+        }}
         cancelText="No"
-        cancelButtonProps={{ type: "primary", size: "middle" }}
+        cancelButtonProps={{
+          type: "primary",
+          size: "large",
+          className: "btn-delete-cancel",
+        }}
         icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
       >
         <Tooltip title="Delete Project">

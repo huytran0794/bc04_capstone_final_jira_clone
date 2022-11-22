@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 
 // import redux
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
@@ -19,6 +19,7 @@ import generalHooks from "../../hooks/utils/generalHooks";
 
 export default function Sidebar() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const params = useParams();
 
   const [currentMenuItem, setCurrentMenuItem] = useState("0");
@@ -47,8 +48,14 @@ export default function Sidebar() {
     }
   }, [currentPath]);
 
+  const handleMenuClick = (to: string) => {
+    navigate(to);
+    // dispatch(generalActions.collapseSidebar());
+  };
+
   return (
     <Sider
+      className="project-sidebar"
       trigger={null}
       collapsible
       collapsed={sidebarCollapse}
@@ -80,9 +87,14 @@ export default function Sidebar() {
               </div>
             ),
             label: (
-              <NavLink to="/create-project" className="text-base font-semibold">
+              <a
+                className="text-base font-semibold"
+                onClick={() => {
+                  handleMenuClick("/create-project");
+                }}
+              >
                 Create Project
-              </NavLink>
+              </a>
             ),
           },
           {
@@ -93,9 +105,14 @@ export default function Sidebar() {
               </div>
             ),
             label: (
-              <NavLink to="/" className="text-base font-semibold">
+              <a
+                className="text-base font-semibold"
+                onClick={() => {
+                  handleMenuClick("/");
+                }}
+              >
                 Project Management
-              </NavLink>
+              </a>
             ),
           },
           {
@@ -106,15 +123,17 @@ export default function Sidebar() {
               </div>
             ),
             label: (
-              <NavLink
-                to={`/project-detail/${projectID}`}
+              <a
                 className="text-base font-semibold"
+                onClick={() => {
+                  handleMenuClick(`/project-detail/${projectID}`);
+                }}
               >
                 Project Detail{" "}
                 <span className="text-sm text-gray-400 font-normal">
                   {projectID}
                 </span>
-              </NavLink>
+              </a>
             ),
             disabled: projectID ? false : true,
           },
@@ -126,9 +145,14 @@ export default function Sidebar() {
               </div>
             ),
             label: (
-              <NavLink to="/profile" className="text-base font-semibold">
+              <a
+                className="text-base font-semibold"
+                onClick={() => {
+                  handleMenuClick("/profile");
+                }}
+              >
                 My Profile
-              </NavLink>
+              </a>
             ),
           },
           {
@@ -139,12 +163,14 @@ export default function Sidebar() {
               </div>
             ),
             label: (
-              <NavLink
-                to="/admin/userManagement"
+              <a
                 className="text-base font-semibold"
+                onClick={() => {
+                  handleMenuClick("/admin/userManagement");
+                }}
               >
                 User Management
-              </NavLink>
+              </a>
             ),
           },
         ]}

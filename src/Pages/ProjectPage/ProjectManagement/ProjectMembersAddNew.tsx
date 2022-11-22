@@ -67,8 +67,10 @@ export default function ProjectMembersAddNew({
       icon: <ExclamationCircleOutlined className="text-2xl" />,
       content: <span className="text-lg">{user.name}</span>,
       okText: "Yes",
+      okButtonProps: { size: "large" },
       okType: "primary",
       cancelText: "No",
+      cancelButtonProps: { size: "large" },
       onOk() {
         handleAssignUser(user.userId!);
       },
@@ -111,9 +113,9 @@ export default function ProjectMembersAddNew({
         inputRef.current!.focus();
       }}
       okText="Yes"
-      okButtonProps={{ size: "middle" }}
+      okButtonProps={{ size: "large" }}
       cancelText="No"
-      cancelButtonProps={{ size: "middle" }}
+      cancelButtonProps={{ size: "large" }}
       icon={
         <QuestionCircleOutlined className="top-1 text-yellow-500 text-xl" />
       }

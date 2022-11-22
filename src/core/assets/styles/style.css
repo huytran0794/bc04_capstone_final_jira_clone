@@ -110,6 +110,28 @@ h6 {
 }
 /* ================================== edit task form styling */
 /* START ================================== ANT Design component styling */
+/* START Sidebar */
+.project-sidebar .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected,
+.project-sidebar .ant-menu-item:active {
+  background-color: #fffaf0;
+}
+.project-sidebar .ant-menu-inline .ant-menu-item::after {
+  border-color: #ed8936;
+}
+.project-sidebar .ant-menu-item-selected,
+.project-sidebar .ant-menu-light .ant-menu-item-active {
+  color: #ed8936;
+}
+.project-sidebar .ant-menu-light .ant-menu-item:hover,
+.project-sidebar .ant-menu-item a:hover {
+  color: #ed8936;
+}
+.project-sidebar .ant-menu-item-selected a,
+.project-sidebar .ant-menu-item-selected a:hover {
+  color: #ed8936;
+}
+/* END Sidebar */
+
 /* START Project Management */
 /* Start DESKTOP */
 .projectManagement
@@ -118,6 +140,16 @@ h6 {
   .ant-table-cell
   .projectName {
   color: #f56565;
+}
+.ant-btn.btn-delete-cancel,
+.ant-btn.btn-delete-cancel {
+  border-color: #a0aec0;
+  background: #a0aec0;
+}
+.ant-btn.btn-delete-cancel:hover,
+.ant-btn.btn-delete-cancel:focus {
+  border-color: rgba(160, 174, 192, 0.8);
+  background: rgba(160, 174, 192, 0.8);
 }
 /* End DESKTOP */
 
