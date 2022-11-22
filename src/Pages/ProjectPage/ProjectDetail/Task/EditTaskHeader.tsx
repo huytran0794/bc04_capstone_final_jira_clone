@@ -68,8 +68,6 @@ const EditTaskHeader = () => {
                       </p>
                     </div>
                   );
-                  console.log("type")
-                  console.log(type)
                   return (
                     <Option
                       key={type.id.toString() + idx}
