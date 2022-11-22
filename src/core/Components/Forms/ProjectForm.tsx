@@ -112,14 +112,14 @@ const ProjectForm = ({
         <Button
           type="primary"
           htmlType="submit"
-          className="btn-login bg-science-blue-500 text-white border-none rounded-[4px] hover:bg-[#0065ff] font-semibold text-base transition-all duration-[400ms] order-2"
+          className="btn-login bg-orange-500 text-white border-none rounded-[4px] hover:bg-orange-400 font-semibold text-lg transition-all duration-[400ms] order-2"
         >
           {confirmText}
         </Button>
         <Button
           htmlType="button"
           onClick={onReset}
-          className="btn-reset btn-txt--underlined border-none text-[#6B778C] text-base order-1"
+          className="btn-reset btn-txt--underlined border-none text-[#6B778C] text-lg order-1"
         >
           Reset
         </Button>

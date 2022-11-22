@@ -40,7 +40,7 @@ const DetailHeader = ({ project }: IProjectDetail) => {
             <div className="col--right">
                 <ButtonLocal
                     handleOnClick={handleModalCreateTask}
-                    className="bg-science-blue-500 text-base border-none rounded-md hover:bg-[#0065ff] font-semibold px-5 py-2.5"
+                    className="bg-orange-500 text-base border-none rounded-md hover:bg-orange-400 font-semibold px-5 py-2.5"
                 >
                     Create Task
                 </ButtonLocal>
