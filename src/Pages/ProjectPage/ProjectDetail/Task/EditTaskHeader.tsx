@@ -1,6 +1,5 @@
 import { Popconfirm, Select } from "antd";
 import clsx from "clsx";
-import React from "react";
 import { FiSend, FiLink } from "react-icons/fi";
 
 import { TfiTrash } from "react-icons/tfi";
@@ -41,13 +40,13 @@ const EditTaskHeader = () => {
 
   let defaultOption = task && task.typeId;
   return (
-    <div className="content">
+    <div className={clsx("content edit-task-header")}>
       <div className={clsx("content-wrapper", flexBetweenClass)}>
         <div className="col-right">
           <div className="task-title">
             <div className="wrapper flex items-center gap-1">
               <Select
-                className="select-task-type w-[200px]  hover:bg-slate-400/20 p-3 rounded-md transition-all duration-[700ms]"
+                className="select-task-type w-[200px] hover:bg-slate-400/20 rounded-md transition-all duration-[700ms]"
                 value={defaultOption}
                 defaultValue={defaultOption}
                 optionLabelProp="label"

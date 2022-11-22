@@ -1,7 +1,7 @@
 /* import antd components */
 import { Modal } from "antd";
 import { FormInstance } from "antd/es/form/Form";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 /* import redux */
 import { useAppDispatch, useAppSelector } from "../../hooks/redux/useRedux";
@@ -13,11 +13,7 @@ const ModalComponent = () => {
   let { open, modalContent, headerContent, width, form } = useAppSelector(
     (state) => state.modalReducer.modalProps
   );
-
-  
-
   const onCancel = () => {
-
     dispatch(modalActions.closeModal());
   };
 

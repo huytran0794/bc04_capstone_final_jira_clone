@@ -97,9 +97,15 @@ export default function ProjectMobileSettting({
       okText: "Yes",
       okType: "danger",
       okButtonProps: {
-        type: "primary",
+        size: "large",
+        className: "btn-delete-ok",
       },
       cancelText: "No",
+      cancelButtonProps: {
+        type: "primary",
+        size: "large",
+        className: "btn-delete-cancel",
+      },
       onOk() {
         handleDeleteProject();
       },

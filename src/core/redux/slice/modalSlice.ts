@@ -22,6 +22,7 @@ const modalSlice = createSlice({
   reducers: {
     setUpModal: (state, action: PayloadAction<IModalProps>) => {
       state.modalProps = action.payload;
+      state.modalProps.open = true;
     },
     openModal: (state, action: PayloadAction<React.ReactNode>) => {
       state.modalProps.open = true;

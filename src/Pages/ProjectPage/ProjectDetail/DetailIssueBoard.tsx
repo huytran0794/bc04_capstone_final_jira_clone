@@ -23,7 +23,7 @@ import { DropwDownIcons } from '../../../core/utils/TaskIcons/Dropdown';
 
 const DetailIssueBoard = ({ project }: IProjectDetail) => {
     let dispatch = useAppDispatch();
-    let modalProps = useAppSelector((state) => state.modalReducer.modalProps);
+    let modalProps = useAppSelector(state => state.modalReducer.modalProps);
     let taskTypeIcons = DropwDownIcons.taskType;
     let taskStatusIcons = DropwDownIcons.status;
 
@@ -120,7 +120,7 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                 let cssTag = (taskDetail.taskId === cardDrag.current?.taskId) ? 'dragTag' : "";
                 if (taskDetail.taskId === cardDragEnter.current?.taskId) {
                     return <animated.div className={clsx(
-                        "card ",
+                        "card cursor-pointer",
                         "rounded-[3px] bg-white hover:shadow-md border border-solid ",
                         "text-[#172B4D] hover:bg-[#F4F5F7] hover:text-[#172B4D]",
                         "transition-all duration-700",
@@ -172,8 +172,8 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                 }
                 return (
                     <div className={clsx(
-                        "card ",
-                        "rounded-[3px] bg-white hover:shadow-md border border-solid ",
+                        "card cursor-pointer select-none",
+                        "rounded-[3px] bg-white hover:shadow-md",
                         "text-[#172B4D] hover:bg-[#F4F5F7] hover:text-[#172B4D]",
                         "transition-all duration-700",
                         cssTag
@@ -197,8 +197,6 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                                             <span className="icon">
                                                 {taskTypeIcons[taskDetail.taskTypeDetail.taskType]}
                                             </span>
-
-
                                         </div>
                                         <div className="priority flex items-center gap-1">
                                             <span className="icon flex items-center">
@@ -255,15 +253,15 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
                                         </div>
                                     </div>
                                 </div>
-                            )
-                        })
-                    }
-                </div>
-            );
-        }
-    }
+                            </div>
+                        </div>
+                    )
+                })
+            }
+        </div>
+    );
     return (
-        <>{renderProjectBoard(projectDetail)}</>
+        <>{projectBoard}</>
     )
 }
 

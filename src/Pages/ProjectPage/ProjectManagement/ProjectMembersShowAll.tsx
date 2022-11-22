@@ -34,10 +34,13 @@ export default function ProjectMembersShowAll({
       content: <span className="text-lg">{member.name}</span>,
       okText: "Yes",
       okType: "danger",
-      okButtonProps: {
-        type: "primary",
-      },
+      okButtonProps: { size: "large", className: "btn-delete-ok" },
       cancelText: "No",
+      cancelButtonProps: {
+        size: "large",
+        type: "primary",
+        className: "btn-delete-cancel",
+      },
       onOk() {
         handleDeleteMember(member.userId!);
       },
@@ -57,9 +60,18 @@ export default function ProjectMembersShowAll({
         handleDeleteMember(member.userId!);
       }}
       okText="Yes"
-      okButtonProps={{ type: "default", danger: true, size: "middle" }}
+      okButtonProps={{
+        type: "default",
+        danger: true,
+        size: "large",
+        className: "btn-delete-ok",
+      }}
       cancelText="No"
-      cancelButtonProps={{ type: "primary", size: "middle" }}
+      cancelButtonProps={{
+        type: "primary",
+        size: "large",
+        className: "btn-delete-cancel",
+      }}
       icon={<QuestionCircleOutlined className="top-1 text-red-500 text-xl" />}
     >
       <CloseCircleOutlined

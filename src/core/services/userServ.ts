@@ -1,13 +1,8 @@
-import { InterfaceProject } from "../models/Project/Project.interface";
-import { User, UserInterface } from "./../models/User/User.interface";
+import { User } from "./../models/User/User.interface";
 import { AXIOS_INSTANCE_GENERATOR, BASE_USER_URL } from "./configURL";
 
 type TaskGetUserListResponse = {
   content: User[];
-};
-
-type ProjectResponse = {
-  content: InterfaceProject;
 };
 
 const USER_SERVICE = {
@@ -61,7 +56,7 @@ const USER_SERVICE = {
     );
     return data;
   },
-  
+
   edit: async (userInfo: Partial<User>) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_USER_URL).put(
       "/editUser",

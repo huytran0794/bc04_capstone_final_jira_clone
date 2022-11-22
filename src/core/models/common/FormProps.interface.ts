@@ -20,7 +20,7 @@ export interface ITaskForm extends FormProps {
   project?: InterfaceProject;
   task?: ITask;
   buttonText?: string;
-  handleOnFinish: (value: any) => void;
+  handleOnFinish?: (value: any) => void;
 }
 
 export interface InterfaceProfileFormComponent extends FormProps {

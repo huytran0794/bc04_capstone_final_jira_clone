@@ -80,7 +80,7 @@ const Header = () => {
 
   return (
     <Container>
-      <div className="my-4 flex justify-between items-center">
+      <div className="my-4 py-5 flex justify-between items-center">
         <div>
           {React.createElement(
             sidebarCollapse ? MenuUnfoldOutlined : MenuFoldOutlined,

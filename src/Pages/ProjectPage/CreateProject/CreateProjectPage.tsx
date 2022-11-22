@@ -39,7 +39,7 @@ const CreateProjectPage = () => {
       })
       .catch((err) => {
         setTimeout(() => {
-          toastify("error", err.response.data.message);
+          toastify("error", err.response.data.content);
           dispatch(spinnerActions.setLoadingOff());
         }, 2500);
       });
