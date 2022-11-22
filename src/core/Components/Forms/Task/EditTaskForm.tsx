@@ -53,6 +53,7 @@ const EditTaskForm = ({
 
     useEffect(() => {
         if (componentMounted.current) {
+            console.log('run get data from api');
             dispatch(getAllInfoThunk());
             dispatch(getTaskUsersThunk(task!.projectId));
             dispatch(getTaskDetailThunk(task!.taskId));
@@ -85,6 +86,9 @@ const EditTaskForm = ({
                 listUserAsign: taskDetail.assigness.map(assignee => assignee.id),
             }
         }
+
+        console.log('before returned initialValues');
+        console.log(returnedValue)
 
         return { ...returnedValue, timeTracking: 0, };
     };
@@ -310,8 +314,7 @@ const EditTaskForm = ({
             });
         }
         formAllTaskValue.originalEstimate = Number(form.getFieldValue('originalEstimate'));
-        console.log("formAllTaskValue");
-        console.log(formAllTaskValue);
+
         handleSubmitData(formAllTaskValue);
     }
     const formProps = { form, layout, size, onValuesChange };
@@ -340,11 +343,11 @@ const EditTaskForm = ({
                                         <ButtonLocal
                                             className="btn-save bg-science-blue-500 text-white border-none rounded-[4px] hover:bg-[#0065ff] font-semibold text-base transition-all duration-[400ms] order-2 px-5 py-2.5"
                                             handleOnClick={() => {
-                                                setVisibleEditor(false);
-                                                componentMounted.current = true;
+                                                componentMounted.current = false;
                                                 if (taskDetail) {
                                                     handleSubmitData(form.getFieldsValue());
                                                 }
+                                                setVisibleEditor(false);
                                             }}
                                         >
                                             Save
@@ -352,9 +355,10 @@ const EditTaskForm = ({
                                         <ButtonLocal
                                             className="btn-cancel btn-txt--underlined border-none text-[#6B778C] text-base order-1 px-5 py-2.5"
                                             handleOnClick={() => {
-                                                setVisibleEditor(false);
                                                 componentMounted.current = true;
                                                 form.setFieldValue('description', taskDetail?.description);
+                                                console.log('cancel editor value');
+                                                setVisibleEditor(false);
                                             }}
                                         >
                                             Cancel
