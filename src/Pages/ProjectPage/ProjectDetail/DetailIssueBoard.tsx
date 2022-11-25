@@ -36,7 +36,6 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
         let { destination: dest, source, draggableId }: DragResult = result;
 
         let taskDragged: ITask = JSON.parse(draggableId);
-        taskDrag.current = taskDragged;
 
         // neu ma ko keo toi duoc dia diem nao => return
         if (!dest) {
