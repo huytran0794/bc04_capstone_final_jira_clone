@@ -18,7 +18,7 @@ const EditTaskHeader = () => {
     (state) => state.taskReducer
   );
   const dispatch = useAppDispatch();
-  let clonedTask = task ? JSON.parse(JSON.stringify(task)) : "";
+  let clonedTask = task ? JSON.parse(JSON.stringify(task)) : [];
   const { Option } = Select;
 
   // class flex between

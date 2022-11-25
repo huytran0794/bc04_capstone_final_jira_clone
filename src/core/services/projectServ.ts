@@ -1,5 +1,6 @@
 /* import antd components */
 import { message } from "antd";
+import { useAppSelector } from "../hooks/redux/useRedux";
 
 /* import local interfaces */
 import {
@@ -71,6 +72,9 @@ const PROJECT_SERVICE = {
   },
 
   getDetailsThunk: (projectId: any) => (dispatch: AppDispatch) => {
+    let spinnerStatus = useAppSelector(
+      (state) => state.spinnerReducer.isLoading
+    );
     AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
       .get(`/getProjectDetail?id=${projectId}`)
       .then((res) => {
@@ -80,15 +84,16 @@ const PROJECT_SERVICE = {
           categoryName: resContent.projectCategory.name,
         };
         dispatch(projectActions.putProjectDetail(resContent));
-        setTimeout(() => {
-          dispatch(spinnerActions.setLoadingOff());
-        }, 2500);
       })
       .catch((err) => {
         console.log(err);
-        setTimeout(() => {
-          dispatch(spinnerActions.setLoadingOff());
-        }, 2500);
+      })
+      .finally(() => {
+        if (spinnerStatus) {
+          setTimeout(() => {
+            dispatch(spinnerActions.setLoadingOff());
+          }, 2500);
+        }
       });
   },
 

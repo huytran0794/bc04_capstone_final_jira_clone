@@ -32,10 +32,9 @@ type TaskResponse = {
   content: ITask;
 };
 
-type taskUpdateStatus = {
+type TaskUpdateStatus = {
   taskId: number | string;
   statusId: number | string;
-  projectId: number | string;
 };
 
 let updateRedux = async (dispatch: AppDispatch, task: ITask) => {
@@ -91,7 +90,7 @@ const TASK_SERVICE = {
     return data;
   },
 
-  updateTaskStatus: async ({ taskId, statusId }: taskUpdateStatus) => {
+  updateTaskStatus: async ({ taskId, statusId }: TaskUpdateStatus) => {
     let { data } = await AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL).put(
       `updateStatus`,
       { taskId, statusId }
