@@ -24,7 +24,6 @@ import { projectActions } from '../../../core/redux/slice/projectSlice';
 const DetailIssueBoard = ({ project }: IProjectDetail) => {
     let dispatch = useAppDispatch();
     let modalProps = useAppSelector(state => state.modalReducer.modalProps);
-    let taskDrag = useRef<ITask>();
 
     const handleEditTask = (task: ITask) => {
         dispatch(modalActions.setUpModal({ ...modalProps, width: 1000, headerContent: <EditTaskHeader /> }));
@@ -35,10 +34,6 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
         console.log(result)
 
         let { destination: dest, source, draggableId }: DragResult = result;
-        console.log("source");
-        console.log(source)
-        console.log("destination");
-        console.log(dest);
 
         let taskDragged: ITask = JSON.parse(draggableId);
         taskDrag.current = taskDragged;
@@ -51,7 +46,7 @@ const DetailIssueBoard = ({ project }: IProjectDetail) => {
 
         // drag n drop tai vi tri hien tai => return
         if (dest.index === source.index && dest.droppableId === source.droppableId) {
-            console.log('bot mua lua tai cho');
+            console.log('dang keo tai cho nen khong can update');
             return;
         }
 
