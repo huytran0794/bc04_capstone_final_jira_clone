@@ -17,6 +17,8 @@ import ProjectDetail from "./Pages/ProjectPage/ProjectDetail/ProjectDetail";
 import UserManagementPage from './Pages/AdminPage/UserManagementPage/UserManagementPage';
 
 import ModalComponent from "./core/Components/Modal/ModalComponent";
+import Test from "./Pages/Test";
+import TestDnd from "./Pages/TestDnd";
 
 
 function App() {
@@ -37,6 +39,8 @@ function App() {
             <Route path="project-detail/:projectId" element={<ProjectDetail />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="admin/userManagement" element={<UserManagementPage />} />
+            <Route path="test" element={<Test />} />
+            <Route path="test-dnd" element={<TestDnd />} />
           </Route>
         </Route>
       </Routes>
