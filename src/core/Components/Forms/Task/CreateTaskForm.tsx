@@ -393,7 +393,7 @@ const CreateTaskForm = ({
         <Button
           type="primary"
           htmlType="submit"
-          className="btn-login bg-science-blue-500 text-white border-none rounded-[4px] hover:bg-[#0065ff] font-semibold text-base capitalize transition-all duration-[400ms] order-2"
+          className="btn-login bg-orange-500 text-white border-none rounded-[4px] hover:bg-orange-600 font-semibold text-base capitalize transition-all duration-[400ms] order-2"
         >
           {buttonText}
         </Button>

@@ -4,6 +4,7 @@ import {
   ITaskStatus,
   ITaskType,
 } from "../models/Task/Task.Interface";
+import { projectActions } from "../redux/slice/projectSlice";
 import { spinnerActions } from "../redux/slice/spinnerSlice";
 import { taskActions } from "../redux/slice/taskSlice";
 import { AppDispatch } from "../redux/store/store";
@@ -117,7 +118,23 @@ const TASK_SERVICE = {
     AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
       .delete(`removeTask?taskId=${task.taskId}`)
       .then((res) => {
-        dispatch(PROJECT_SERVICE.getDetailsThunk(task.projectId));
+        PROJECT_SERVICE.getDetails(task.projectId)
+          .then((res) => {
+            let resContent = res.data.content;
+            resContent = {
+              ...resContent,
+              categoryName: resContent.projectCategory.name,
+            };
+            dispatch(projectActions.putProjectDetail(resContent));
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            setTimeout(() => {
+              dispatch(spinnerActions.setLoadingOff());
+            }, 1000);
+          });
       })
       .catch((error) => {
         console.log(error);

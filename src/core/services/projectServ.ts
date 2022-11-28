@@ -78,6 +78,7 @@ const PROJECT_SERVICE = {
     AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
       .get(`/getProjectDetail?id=${projectId}`)
       .then((res) => {
+        console.log("here22222");
         let resContent = res.data.content;
         resContent = {
           ...resContent,
@@ -89,11 +90,9 @@ const PROJECT_SERVICE = {
         console.log(err);
       })
       .finally(() => {
-        if (spinnerStatus) {
-          setTimeout(() => {
-            dispatch(spinnerActions.setLoadingOff());
-          }, 2500);
-        }
+        setTimeout(() => {
+          dispatch(spinnerActions.setLoadingOff());
+        }, 2500);
       });
   },
 
