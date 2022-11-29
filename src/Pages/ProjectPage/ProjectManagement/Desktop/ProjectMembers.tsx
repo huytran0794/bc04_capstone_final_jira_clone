@@ -84,7 +84,7 @@ export default function ProjectMembers({
     <div className="flex items-center">
       <Popover
         className="cursor-pointer"
-        placement="bottom"
+        placement="top"
         content={
           <ProjectMembersShowAll
             members={members}
@@ -98,7 +98,7 @@ export default function ProjectMembers({
         </div>
       </Popover>
       <Popover
-        placement="top"
+        placement="right"
         content={
           <ProjectMembersAddNew
             projectName={projectName}
