@@ -99,7 +99,7 @@ export default function ProfileForm({
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     >
-      <Form.Item label={labelItem("Your ID")} name="id">
+      <Form.Item label={labelItem("My ID")} name="id">
         <Input disabled />
       </Form.Item>
       <Form.Item

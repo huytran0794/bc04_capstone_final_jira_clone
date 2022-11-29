@@ -30,11 +30,11 @@ const ProjectDetail = () => {
                 }));
                 setTimeout(() => {
                     dispatch(spinnerActions.setLoadingOff());
-                }, 2500);
+                }, 1000);
             }).catch((err) => {
                 setTimeout(() => {
                     dispatch(spinnerActions.setLoadingOff());
-                }, 2500);
+                }, 1000);
                 console.log(err);
             });
     }, [])

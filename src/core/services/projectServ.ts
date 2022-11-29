@@ -72,13 +72,9 @@ const PROJECT_SERVICE = {
   },
 
   getDetailsThunk: (projectId: any) => (dispatch: AppDispatch) => {
-    let spinnerStatus = useAppSelector(
-      (state) => state.spinnerReducer.isLoading
-    );
     AXIOS_INSTANCE_GENERATOR(BASE_PROJECT_URL)
       .get(`/getProjectDetail?id=${projectId}`)
       .then((res) => {
-        console.log("here22222");
         let resContent = res.data.content;
         resContent = {
           ...resContent,
@@ -92,7 +88,7 @@ const PROJECT_SERVICE = {
       .finally(() => {
         setTimeout(() => {
           dispatch(spinnerActions.setLoadingOff());
-        }, 2500);
+        }, 1000);
       });
   },
 

@@ -15,7 +15,7 @@ export default function Spinner() {
     <div
       className={clsx(
         "spinner",
-        "fixed left-0 top-0 bg-[#282c34] flex justify-center items-center z-[100]",
+        "fixed left-0 top-0 bg-[#282c34] flex justify-center items-center z-[9999]",
         "h-screen w-screen",
         loadingClass,
         "transition-all duration-[1200ms]"

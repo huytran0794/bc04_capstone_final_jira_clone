@@ -120,7 +120,7 @@ const TASK_SERVICE = {
       .then((res) => {
         PROJECT_SERVICE.getDetails(task.projectId)
           .then((res) => {
-            let resContent = res.data.content;
+            let resContent = res.content;
             resContent = {
               ...resContent,
               categoryName: resContent.projectCategory.name,
